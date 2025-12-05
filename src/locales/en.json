@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "headlinePrimary": "individual",
+    "headlineSecondary": "space",
+    "headlineTertiary": "digital",
+    "headlineQuaternary": "dentistry",
+    "subtext": "Modern dentistry where care and technology work for your comfort.",
+    "cta": "Request a call",
+    "ctaArrow": "↗",
+    "counter": "2000+",
+    "counterLabel": "smiles crafted with care and precision",
+    "address": "28a Vasyl Tyutyunnyk St, Kyiv, Ukraine",
+    "hours": "Working hours:\nMon Sat - 10:00-20:00\nSun - closed",
+    "langUa": "UA",
+    "langEn": "EN"
+  }
+}
