@@ -88,6 +88,8 @@ const setLocale = (code: string) => {
         </div>
       </div>
 
+      <p class="hero__description" v-html="t('hero.subtext')" />
+
       <div class="hero__summary">
         <div class="hero__title hero__title--stacked">
           <div class="hero__title-line hero__title-line--secondary">
@@ -97,9 +99,6 @@ const setLocale = (code: string) => {
             {{ t("hero.headlineQuaternary") }}
           </div>
         </div>
-        <p class="hero__description">
-          {{ t("hero.subtext") }}
-        </p>
       </div>
 
       <button class="hero__cta" type="button">
@@ -375,7 +374,7 @@ const setLocale = (code: string) => {
 
   &__summary {
     position: absolute;
-    top: 455px;
+    top: 755px;
     right: 64px;
     max-width: 360px;
     display: flex;
@@ -385,6 +384,9 @@ const setLocale = (code: string) => {
   }
 
   &__description {
+    position: absolute;
+    top: 450px;
+    right: 67px;
     margin: 0;
     font-size: 18px;
     line-height: 1.4;
@@ -396,7 +398,7 @@ const setLocale = (code: string) => {
   &__cta {
     position: absolute;
     left: 128px;
-    top: 720px;
+    top: 920px;
     display: inline-flex;
     align-items: center;
     gap: 12px;

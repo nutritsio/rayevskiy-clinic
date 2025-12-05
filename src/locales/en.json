@@ -4,7 +4,7 @@
     "headlineSecondary": "space",
     "headlineTertiary": "digital",
     "headlineQuaternary": "dentistry",
-    "subtext": "Modern dentistry where care and technology work for your comfort.",
+    "subtext": "Modern dentistry where care<br/> and technology work for your comfort.",
     "cta": "Request a call",
     "ctaArrow": "↗",
     "counter": "2000+",
@@ -13,5 +13,29 @@
     "hours": "Working hours:\nMon Sat - 10:00-20:00\nSun - closed",
     "langUa": "UA",
     "langEn": "EN"
+  },
+  "about": {
+    "headlinePrimary": "why patients",
+    "headlineAccent": "choose",
+    "headlineSecondary": "us",
+    "subtitle": "Modern dentistry where care and technology work for your comfort.",
+    "cards": [
+      {
+        "title": "Individual approach",
+        "text": "We consider each patient's needs and offer optimal solutions."
+      },
+      {
+        "title": "Modern technology",
+        "text": "We use advanced equipment and innovative treatment methods."
+      },
+      {
+        "title": "Comfort and safety",
+        "text": "We create a pleasant atmosphere and ensure safety at every visit."
+      },
+      {
+        "title": "Quality guarantee",
+        "text": "The result of our work is durable, and your smile is perfect."
+      }
+    ]
   }
 }
