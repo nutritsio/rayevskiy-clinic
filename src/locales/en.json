@@ -37,5 +37,16 @@
         "text": "The result of our work is durable, and your smile is perfect."
       }
     ]
+  },
+  "reviews": {
+    "title": "reviews",
+    "rating": "5.0",
+    "stars": "★★★★★",
+    "clinic": "Raevskiy Dental Clinic",
+    "address": "28a Vasyl Tyutyunnyk St, Kyiv, Ukraine",
+    "leaveReview": "leave a review",
+    "time": "3 days ago",
+    "author": "Alina Shvets",
+    "text": "Very satisfied with the visit! Friendly staff, attentive and professional doctor. Everything was explained clearly, the procedure was quick and painless. The clinic is clean, modern, and comfortable. Highly recommend to anyone seeking quality dental care!"
   }
 }

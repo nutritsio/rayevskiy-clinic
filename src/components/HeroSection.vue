@@ -113,13 +113,18 @@ const setLocale = (code: string) => {
 .hero {
   position: relative;
   min-height: 1064px;
+  width: 100%;
   color: var(--color-text);
   isolation: isolate;
   overflow: hidden;
 
   &__background {
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
     z-index: 0;
   }
 
@@ -128,6 +133,7 @@ const setLocale = (code: string) => {
     inset: 0;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     filter: none;
 
     &--desktop {

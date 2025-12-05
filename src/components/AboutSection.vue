@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const cards = [
   {
-    id: '01',
-    title: t('about.cards.0.title'),
-    text: t('about.cards.0.text'),
-    image: '/assets/about/opt/card-I1-240_34-111.jpg',
+    id: "01",
+    title: t("about.cards.0.title"),
+    text: t("about.cards.0.text"),
+    image: "/assets/about/opt/card-I1-240_34-111.jpg",
     offset: false,
   },
   {
-    id: '02',
-    title: t('about.cards.1.title'),
-    text: t('about.cards.1.text'),
-    image: '/assets/about/opt/card-I1-241_34-111.jpg',
+    id: "02",
+    title: t("about.cards.1.title"),
+    text: t("about.cards.1.text"),
+    image: "/assets/about/opt/card-I1-241_34-111.jpg",
     offset: true,
   },
   {
-    id: '03',
-    title: t('about.cards.2.title'),
-    text: t('about.cards.2.text'),
-    image: '/assets/about/opt/card-I1-242_34-111.jpg',
+    id: "03",
+    title: t("about.cards.2.title"),
+    text: t("about.cards.2.text"),
+    image: "/assets/about/opt/card-I1-242_34-111.jpg",
     offset: false,
   },
   {
-    id: '04',
-    title: t('about.cards.3.title'),
-    text: t('about.cards.3.text'),
-    image: '/assets/about/opt/card-I1-243_34-111.jpg',
+    id: "04",
+    title: t("about.cards.3.title"),
+    text: t("about.cards.3.text"),
+    image: "/assets/about/opt/card-I1-243_34-111.jpg",
     offset: true,
   },
-]
+];
 </script>
 
 <template>
@@ -40,9 +40,11 @@ const cards = [
     <div class="container about__inner">
       <div class="about__header">
         <div class="about__title">
-          <div class="about__title-line">{{ t('about.headlinePrimary') }}</div>
-          <div class="about__title-accent">{{ t('about.headlineAccent') }}</div>
-          <div class="about__title-line about__title-line--small">{{ t('about.headlineSecondary') }}</div>
+          <div class="about__title-line">{{ t("about.headlinePrimary") }}</div>
+          <div class="about__title-accent">{{ t("about.headlineAccent") }}</div>
+          <div class="about__title-line about__title-line--small">
+            {{ t("about.headlineSecondary") }}
+          </div>
         </div>
         <div class="about__aside">
           <p class="about__subtitle" v-html="t('about.subtitle')" />
@@ -57,14 +59,17 @@ const cards = [
           :class="{ 'about__card--offset': card.offset }"
         >
           <div class="about__card-index">{{ card.id }}</div>
-          <div class="about__card-media" :style="{ backgroundImage: `url(${card.image})` }" />
+          <div
+            class="about__card-media"
+            :style="{ backgroundImage: `url(${card.image})` }"
+          />
           <div class="about__card-body">
             <h3 class="about__card-title">{{ card.title }}</h3>
             <p class="about__card-text">{{ card.text }}</p>
           </div>
         </article>
         <button class="about__cta-floating" type="button">
-          {{ t('hero.cta') }}
+          {{ t("hero.cta") }}
         </button>
       </div>
     </div>
@@ -107,7 +112,7 @@ const cards = [
   }
 
   &__title-accent {
-    font-family: 'ClassicaTwo', 'Classica Two', 'Unbounded', serif;
+    font-family: "ClassicaTwo", "Classica Two", "Unbounded", serif;
     font-size: 150px;
     font-weight: 500;
     font-style: italic;
@@ -210,14 +215,14 @@ const cards = [
 
   &__cta-floating {
     position: absolute;
-    top: 120px;
-    right: -140px;
+    top: -80px;
+    right: 50px;
     width: 250px;
     height: 250px;
     border-radius: 50%;
     border: none;
     background: var(--color-accent);
-    color: var(--color-text);
+    color: #111;
     font-family: var(--font-display);
     font-size: 26px;
     font-weight: 400;
