@@ -56,5 +56,22 @@
     "beforeAfter": "Before/After",
     "team": "Dentists",
     "cta": "Request a call"
+  },
+  "services": {
+    "headingPrimary": "our",
+    "headingAccent": "services",
+    "subtitle": "We offer a full range of services to keep your smile healthy, harmonious, and confident.",
+    "items": [
+      {
+        "title": "Dental implants",
+        "detailTitle": "Dental implants",
+        "detailLeft": "Dental implants: reliability and natural look",
+        "detailRight": "Dental implants are a modern and reliable way to restore lost teeth. The procedure places a titanium implant into the jawbone to replace the tooth root."
+      },
+      { "title": "Dental implants", "detailTitle": "", "detailLeft": "", "detailRight": "" },
+      { "title": "Orthodontics", "detailTitle": "", "detailLeft": "", "detailRight": "" },
+      { "title": "Gnathology", "detailTitle": "", "detailLeft": "", "detailRight": "" },
+      { "title": "Ceramic veneers", "detailTitle": "", "detailLeft": "", "detailRight": "" }
+    ]
   }
 }

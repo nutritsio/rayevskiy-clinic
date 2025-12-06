@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import ArrowIcon from "./ui/ArrowIcon.vue";
 
 const { t, locale } = useI18n();
 
@@ -70,7 +71,12 @@ const openMenu = () => emit("open-menu");
               {{ lang.label }}
             </button>
           </div>
-          <button class="hero__menu" type="button" aria-label="Menu" @click="openMenu">
+          <button
+            class="hero__menu"
+            type="button"
+            aria-label="Menu"
+            @click="openMenu"
+          >
             <img src="/assets/header/item-1-216.svg" alt="" />
           </button>
         </div>
@@ -109,7 +115,9 @@ const openMenu = () => emit("open-menu");
 
       <button class="hero__cta" type="button">
         <span class="hero__cta-text">{{ t("hero.cta") }}</span>
-        <span class="hero__cta-arrow" aria-hidden="true">↗</span>
+        <span class="hero__cta-arrow" aria-hidden="true">
+          <ArrowIcon />
+        </span>
       </button>
     </div>
   </section>
@@ -424,11 +432,46 @@ const openMenu = () => emit("open-menu");
     letter-spacing: 0.01em;
     padding: 0;
     cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+    transition: color 0.25s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(249, 249, 249, 0.25) 50%,
+        transparent 100%
+      );
+      transform: skewX(-20deg);
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      color: #f9f9f9;
+    }
+
+    &:hover::after {
+      left: 120%;
+    }
   }
 
   &__cta-arrow {
-    font-size: 20px;
-    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+
+    .arrow-icon {
+      width: 40px;
+      height: 40px;
+      transform: rotate(-90deg);
+      transition: transform 0.25s ease, color 0.25s ease;
+    }
   }
 
   @media (max-width: 1024px) {
