@@ -25,7 +25,9 @@ const slides = Array.from({ length: 4 }).map((_, idx) => ({
         <div class="reviews__address">{{ t("reviews.address") }}</div>
       </div>
       <button class="reviews__cta" type="button">
-        <span class="reviews__cta-icon">G</span>
+        <span class="reviews__cta-icon">
+          <img src="/assets/reviews/google.svg" alt="" />
+        </span>
         <span class="reviews__cta-text">{{ t("reviews.leaveReview") }}</span>
       </button>
     </div>
@@ -104,26 +106,60 @@ const slides = Array.from({ length: 4 }).map((_, idx) => ({
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 20px;
+    padding: 12px 22px;
     border-radius: 28px;
     border: 2px solid #e6e6e6;
     background: transparent;
-    color: #e6e6e6;
+    color: #f2f2f2;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
+    font-family: var(--font-display);
     cursor: pointer;
     text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(249, 249, 249, 0.25) 50%,
+        transparent 100%
+      );
+      transform: skewX(-20deg);
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      color: #f9f9f9;
+      border-color: #f9f9f9;
+      transform: translateY(-1px);
+    }
+
+    &:hover::after {
+      left: 120%;
+    }
   }
 
   &__cta-icon {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #fff;
-    color: #4285f4;
     display: grid;
     place-items: center;
-    font-weight: 700;
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
   }
 
   &__cta-text {
