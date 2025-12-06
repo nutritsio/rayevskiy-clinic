@@ -11,10 +11,16 @@ const languages = [
 const setLocale = (code: string) => {
   locale.value = code;
 };
+
+const emit = defineEmits<{
+  (e: "open-menu"): void;
+}>();
+
+const openMenu = () => emit("open-menu");
 </script>
 
 <template>
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero__background" aria-hidden="true">
       <div class="hero__image hero__image--desktop" />
       <div class="hero__image hero__image--mobile" />
@@ -64,7 +70,7 @@ const setLocale = (code: string) => {
               {{ lang.label }}
             </button>
           </div>
-          <button class="hero__menu" type="button" aria-label="Menu">
+          <button class="hero__menu" type="button" aria-label="Menu" @click="openMenu">
             <img src="/assets/header/item-1-216.svg" alt="" />
           </button>
         </div>

@@ -48,5 +48,13 @@
     "time": "3 days ago",
     "author": "Alina Shvets",
     "text": "Very satisfied with the visit! Friendly staff, attentive and professional doctor. Everything was explained clearly, the procedure was quick and painless. The clinic is clean, modern, and comfortable. Highly recommend to anyone seeking quality dental care!"
+  },
+  "nav": {
+    "home": "Home",
+    "why": "Why us",
+    "services": "Our services",
+    "beforeAfter": "Before/After",
+    "team": "Dentists",
+    "cta": "Request a call"
   }
 }
