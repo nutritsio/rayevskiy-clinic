@@ -73,5 +73,25 @@
       { "title": "Gnathology", "detailTitle": "", "detailLeft": "", "detailRight": "" },
       { "title": "Ceramic veneers", "detailTitle": "", "detailLeft": "", "detailRight": "" }
     ]
+  },
+  "footer": {
+    "heading": "Dental clinic",
+    "nav": {
+      "title": "Navigation",
+      "choose": "Choose a service",
+      "why": "Why us",
+      "services": "Our services",
+      "doctors": "Doctors",
+      "consult": "Consultation"
+    },
+    "contacts": { "title": "Contacts" },
+    "hours": {
+      "title": "Working hours",
+      "weekdays": "Mon-Sat: 10:00-20:00",
+      "weekend": "Sun: closed"
+    },
+    "social": { "title": "Social networks" },
+    "copyright": "All rights reserved",
+    "cookies": "Cookies settings"
   }
 }

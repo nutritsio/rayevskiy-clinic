@@ -4,6 +4,7 @@ import AboutSection from "./components/AboutSection.vue";
 import ReviewsSection from "./components/ReviewsSection.vue";
 import MenuOverlay from "./components/MenuOverlay.vue";
 import ServicesSection from "./components/ServicesSection.vue";
+import FooterSection from "./components/FooterSection.vue";
 import { ref, watch } from "vue";
 
 const isMenuOpen = ref(false);
@@ -31,5 +32,6 @@ watch(
     <ReviewsSection />
     <MenuOverlay :open="isMenuOpen" @close="closeMenu" />
     <ServicesSection />
+    <FooterSection />
   </div>
 </template>

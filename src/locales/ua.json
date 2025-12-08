@@ -73,5 +73,25 @@
       { "title": "Гнатологія", "detailTitle": "", "detailLeft": "", "detailRight": "" },
       { "title": "Керамічні вініри", "detailTitle": "", "detailLeft": "", "detailRight": "" }
     ]
+  },
+  "footer": {
+    "heading": "Стоматологічна клініка",
+    "nav": {
+      "title": "Навігація",
+      "choose": "Оберіть послугу",
+      "why": "Чому ми",
+      "services": "Наші послуги",
+      "doctors": "Лікарі",
+      "consult": "Консультація"
+    },
+    "contacts": { "title": "Контакти" },
+    "hours": {
+      "title": "Робочі години",
+      "weekdays": "ПН-СБ: 10:00-20:00",
+      "weekend": "НД: вихідний"
+    },
+    "social": { "title": "Соціальні мережі" },
+    "copyright": "Всі права захищені",
+    "cookies": "Налаштування cookies"
   }
 }
