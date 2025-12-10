@@ -229,7 +229,93 @@ const cards = [
     cursor: pointer;
     line-height: 1.2;
     padding: 0 24px;
+    transition: transform 0.25s ease, box-shadow 0.3s ease, opacity 0.25s ease;
+    box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35);
+    overflow: hidden;
+    transform: scale(1);
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 160, 90, 0.35);
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+      animation: none;
+    }
+
+    &::before {
+      inset: -14px;
+      border-width: 1.5px;
+      border-color: rgba(255, 200, 150, 0.28);
+    }
+
+    &:hover {
+      animation: pulse-core 1.4s ease-in-out infinite;
+
+      &::after {
+        animation: pulse-ring 1.2s ease-out infinite;
+      }
+
+      &::before {
+        animation: pulse-ring-soft 1.4s ease-out infinite;
+      }
+    }
+
+    &:active {
+      animation: none;
+      transform: translateY(0) scale(1);
+      box-shadow: none;
+    }
   }
+
+@keyframes pulse-core {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 14px 32px rgba(255, 107, 0, 0.28);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes pulse-ring-soft {
+  0% {
+    opacity: 0.25;
+    transform: scale(0.95);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
 
   @media (max-width: 1280px) {
     &__grid {
