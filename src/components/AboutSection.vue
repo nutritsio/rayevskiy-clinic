@@ -226,7 +226,6 @@ const cards = [
     font-family: var(--font-display);
     font-size: 26px;
     font-weight: 400;
-    text-transform: uppercase;
     cursor: pointer;
     line-height: 1.2;
     padding: 0 24px;

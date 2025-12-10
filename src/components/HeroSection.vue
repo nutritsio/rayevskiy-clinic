@@ -357,7 +357,8 @@ const openMenu = () => emit("open-menu");
       font-weight: 500;
       font-style: italic;
       color: var(--color-accent);
-      font-family: "Classica Two", "Unbounded", serif;
+      font-family: var(--font-accent);
+      text-transform: lowercase;
       line-height: 132px;
     }
   }
