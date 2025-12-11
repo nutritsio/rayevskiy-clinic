@@ -1,0 +1,39 @@
+{
+  "services": {
+    "headingPrimary": "our",
+    "headingAccent": "services",
+    "subtitle": "We offer a full range of services to keep your smile healthy, harmonious, and confident.",
+    "items": [
+      {
+        "title": "Dental implants",
+        "detailTitle": "Dental implants",
+        "detailLeft": "Dental implants: reliability and natural look",
+        "detailRight": "Dental implants are a modern and reliable way to restore lost teeth. The procedure places a titanium implant into the jawbone to replace the tooth root."
+      },
+      {
+        "title": "Dental implants",
+        "detailTitle": "Dental implants",
+        "detailLeft": "Reliability and natural aesthetics",
+        "detailRight": "We plan and place implants tailored to your anatomy to restore comfort, function, and confidence."
+      },
+      {
+        "title": "Orthodontics",
+        "detailTitle": "Orthodontics",
+        "detailLeft": "A straight smile without compromise",
+        "detailRight": "Modern alignment methods that balance aesthetics and comfort, selected individually for every case."
+      },
+      {
+        "title": "Gnathology",
+        "detailTitle": "Gnathology",
+        "detailLeft": "Healthy joints and bite",
+        "detailRight": "Comprehensive diagnostics and treatment of bite disorders to remove pain and restore harmony in jaw function."
+      },
+      {
+        "title": "Ceramic veneers",
+        "detailTitle": "Ceramic veneers",
+        "detailLeft": "Perfect shade and shape",
+        "detailRight": "Ultra-thin ceramic shells that mirror natural enamel shine, crafting a flawless smile."
+      }
+    ]
+  }
+}

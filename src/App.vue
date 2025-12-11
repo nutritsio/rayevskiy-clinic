@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import HeroSection from "./components/HeroSection.vue";
-import AboutSection from "./components/AboutSection.vue";
-import ReviewsSection from "./components/ReviewsSection.vue";
-import MenuOverlay from "./components/MenuOverlay.vue";
-import ServicesSection from "./components/ServicesSection.vue";
-import FooterSection from "./components/FooterSection.vue";
+import HeroSection from "./components/HeroSection/index.vue";
+import AboutSection from "./components/AboutSection/index.vue";
+import ReviewsSection from "./components/ReviewsSection/index.vue";
+import MenuOverlay from "./components/MenuOverlay/index.vue";
+import ServicesSection from "./components/ServicesSection/index.vue";
+import FooterSection from "./components/FooterSection/index.vue";
 import { ref, watch } from "vue";
 
 const isMenuOpen = ref(false);
