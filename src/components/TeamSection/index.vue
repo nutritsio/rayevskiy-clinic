@@ -28,7 +28,7 @@ const members: TeamMember[] = Array.from({ length: 5 }, (_, index) => ({
 const activeIndex = ref(0);
 const slidesPerView = ref(3.5);
 const trackRef = ref<HTMLElement | null>(null);
-const firstCardRef = ref<HTMLElement | null>(null);
+const cardRefs = ref<HTMLElement[]>([]);
 
 const maxIndex = computed(() =>
   Math.max(0, Math.ceil(members.length - slidesPerView.value))
@@ -47,7 +47,7 @@ const updateSlidesPerView = () => {
 
 const updatePosition = () => {
   const track = trackRef.value;
-  const card = firstCardRef.value;
+  const card = cardRefs.value[0];
   if (!track || !card) return;
 
   const styles = getComputedStyle(track);
@@ -138,10 +138,10 @@ watch(slidesPerView, () => {
             :style="{ '--per': slidesPerView }"
           >
             <article
-              v-for="(member, index) in members"
+              v-for="member in members"
               :key="member.id"
               class="team__card"
-              :ref="index === 0 ? firstCardRef : null"
+              ref="cardRefs"
             >
               <div class="team__photo">
                 <img :src="member.photo" :alt="member.name" loading="lazy" />

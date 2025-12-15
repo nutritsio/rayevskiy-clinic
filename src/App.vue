@@ -31,11 +31,11 @@ watch(
   <div class="page">
     <HeroSection @open-menu="openMenu" />
     <AboutSection />
-    <TeamSection />
     <ReviewsSection />
     <MenuOverlay :open="isMenuOpen" @close="closeMenu" />
     <ServicesSection />
     <TransformSection />
+    <TeamSection />
     <FooterSection />
   </div>
 </template>
