@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import HeroSection from "./components/HeroSection/index.vue";
 import AboutSection from "./components/AboutSection/index.vue";
-import TransformSection from "./components/TransformSection/index.vue";
 import ReviewsSection from "./components/ReviewsSection/index.vue";
+import TransformSection from "./components/TransformSection/index.vue";
 import MenuOverlay from "./components/MenuOverlay/index.vue";
 import ServicesSection from "./components/ServicesSection/index.vue";
 import FooterSection from "./components/FooterSection/index.vue";
+import TeamSection from "./components/TeamSection/index.vue";
 import { ref, watch } from "vue";
 
 const isMenuOpen = ref(false);
@@ -30,6 +31,7 @@ watch(
   <div class="page">
     <HeroSection @open-menu="openMenu" />
     <AboutSection />
+    <TeamSection />
     <ReviewsSection />
     <MenuOverlay :open="isMenuOpen" @close="closeMenu" />
     <ServicesSection />

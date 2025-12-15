@@ -172,9 +172,8 @@ const handleMarkup = `
 
 .transform__title-accent {
   font-family: var(--font-accent);
-  font-size: clamp(56px, 8vw, 144px);
+  font-size: 100px;
   font-weight: 500;
-  font-style: italic;
   color: var(--color-accent);
   letter-spacing: 0.04em;
   transform: translateY(-8px);
