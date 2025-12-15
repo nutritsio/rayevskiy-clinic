@@ -1,29 +1,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { VueCompareImage } from "vue3-compare-image";
 
 type Slide = {
   id: number;
-  image: string;
+  before: string;
+  after: string;
   alt: string;
 };
 
-const slides: Slide[] = [
-  {
-    id: 1,
-    image: "/assets/transform/smile.png",
-    alt: "Трансформація усмішки — приклад 1",
-  },
-  {
-    id: 2,
-    image: "/assets/transform/smile.png",
-    alt: "Трансформація усмішки — приклад 2",
-  },
-  {
-    id: 3,
-    image: "/assets/transform/smile.png",
-    alt: "Трансформація усмішки — приклад 3",
-  },
-];
+const slides: Slide[] = Array.from({ length: 3 }, (_, index) => ({
+  id: index + 1,
+  before: "/assets/transform/before.png",
+  after: "/assets/transform/after.png",
+  alt: `Трансформація усмішки — кейс ${index + 1}`,
+}));
 
 const activeIndex = ref(0);
 const total = slides.length;
@@ -47,6 +38,16 @@ const goTo = (nextIndex: number) => {
 
 const goPrev = () => goTo(activeIndex.value - 1);
 const goNext = () => goTo(activeIndex.value + 1);
+
+const handleMarkup = `
+  <div class="transform__handle">
+    <div class="transform__handle-ring"></div>
+    <div class="transform__handle-core">
+      <span class="transform__handle-icon" aria-hidden="true">↔</span>
+      <span class="visually-hidden">Пересунути повзунок</span>
+    </div>
+  </div>
+`;
 </script>
 
 <template>
@@ -82,12 +83,20 @@ const goNext = () => goTo(activeIndex.value + 1);
           }"
           :style="slideStyle(index)"
         >
-          <img
-            class="transform__image"
-            :src="slide.image"
-            :alt="slide.alt"
-            loading="lazy"
+          <VueCompareImage
+            :left-image="slide.before"
+            :right-image="slide.after"
+            left-image-alt="До трансформації"
+            right-image-alt="Після трансформації"
+            left-image-label="До"
+            right-image-label="Після"
+            :handle-size="84"
+            :handle="handleMarkup"
+            :slide-on-click="true"
+            :slider-line-color="'rgba(255, 255, 255, 0.9)'"
+            :slider-line-width="2"
           />
+          <span class="visually-hidden">{{ slide.alt }}</span>
         </article>
       </div>
 
@@ -212,11 +221,112 @@ const goNext = () => goTo(activeIndex.value + 1);
   z-index: 2;
 }
 
-.transform__image {
+:global(.transform .vci--container) {
   width: 100%;
   height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f0f10;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+}
+
+:global(.transform .vci--right-image),
+:global(.transform .vci--left-image) {
+  display: flex;
+  position: absolute;
   object-fit: cover;
-  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+:global(.transform .vci--slider) {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global(.transform .vci--left-label),
+:global(.transform .vci--right-label) {
+  top: 18px;
+  padding: 10px 18px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(12, 12, 13, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+:global(.transform .vci--left-label) {
+  left: 20px;
+}
+
+:global(.transform .vci--right-label) {
+  right: 20px;
+}
+
+:global(.transform .vci--slider-line) {
+  box-shadow: none;
+}
+
+:global(.transform .vci--custom-handle) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:global(.transform .vci--default-handle) {
+  display: none;
+}
+
+:global(.transform .vci--left-arrow),
+:global(.transform .vci--right-arrow) {
+  height: 0;
+  width: 0;
+}
+
+:global(.transform .vci--left-label-container),
+:global(.transform .vci--right-label-container) {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.transform__handle {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.transform__handle-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(12, 12, 13, 0.2);
+}
+
+.transform__handle-core {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(12, 12, 13, 0.75);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  display: grid;
+  place-items: center;
+}
+
+.transform__handle-icon {
+  color: #f7f7f7;
+  font-size: 20px;
+  letter-spacing: 0.05em;
 }
 
 .transform__nav {
@@ -291,6 +401,13 @@ const goNext = () => goTo(activeIndex.value + 1);
   .transform__slide--left,
   .transform__slide--right {
     opacity: 0.3;
+  }
+
+  :global(.transform .vci--left-label),
+  :global(.transform .vci--right-label) {
+    top: 12px;
+    padding: 8px 14px;
+    font-size: 14px;
   }
 
   .transform__nav {
