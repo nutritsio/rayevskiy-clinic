@@ -30,10 +30,10 @@ watch(
   <div class="page">
     <HeroSection @open-menu="openMenu" />
     <AboutSection />
-    <TransformSection />
     <ReviewsSection />
     <MenuOverlay :open="isMenuOpen" @close="closeMenu" />
     <ServicesSection />
+    <TransformSection />
     <FooterSection />
   </div>
 </template>
