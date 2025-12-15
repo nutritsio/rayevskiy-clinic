@@ -18,6 +18,8 @@ const slides: Slide[] = Array.from({ length: 3 }, (_, index) => ({
 
 const activeIndex = ref(0);
 const total = slides.length;
+const sliderPositions = ref<number[]>(slides.map(() => 0.5));
+const resetKeys = ref<number[]>(slides.map(() => 0));
 
 const normalizeOffset = (index: number) => {
   const diff = index - activeIndex.value;
@@ -33,7 +35,29 @@ const slideStyle = (index: number) => ({
 });
 
 const goTo = (nextIndex: number) => {
-  activeIndex.value = (nextIndex + total) % total;
+  const prev = activeIndex.value;
+  const normalizedNext = (nextIndex + total) % total;
+  const nextPositions = [...sliderPositions.value];
+  const nextResetKeys = [...resetKeys.value];
+
+  if (prev !== normalizedNext) {
+    nextPositions[prev] = 0.5;
+    nextResetKeys[prev] += 1;
+  }
+
+  nextPositions[normalizedNext] = 0.5;
+  nextResetKeys[normalizedNext] += 1;
+
+  sliderPositions.value = nextPositions;
+  resetKeys.value = nextResetKeys;
+  activeIndex.value = normalizedNext;
+};
+
+const updateSliderPosition = (index: number, position: number) => {
+  if (index !== activeIndex.value) return;
+  const next = [...sliderPositions.value];
+  next[index] = Math.min(1, Math.max(0, position));
+  sliderPositions.value = next;
 };
 
 const goPrev = () => goTo(activeIndex.value - 1);
@@ -89,18 +113,21 @@ const handleMarkup = `
           :style="slideStyle(index)"
         >
           <VueCompareImage
+            :key="`vci-${slide.id}-${resetKeys[index]}`"
             :left-image="slide.before"
-          :right-image="slide.after"
-          left-image-alt="До трансформації"
-          right-image-alt="Після трансформації"
-          left-image-label="До"
-          right-image-label="Після"
-          :handle-size="130"
-          :handle="handleMarkup"
-          :slide-on-click="true"
-          :slider-line-color="'rgba(255, 255, 255, 0.9)'"
-          :slider-line-width="2"
-        />
+            :right-image="slide.after"
+            left-image-alt="До трансформації"
+            right-image-alt="Після трансформації"
+            left-image-label="До"
+            right-image-label="Після"
+            :handle-size="130"
+            :handle="handleMarkup"
+            :slide-on-click="true"
+            :slider-line-color="'rgba(255, 255, 255, 0.9)'"
+            :slider-line-width="2"
+            :slider-position-percentage="sliderPositions[index]"
+            :on-slider-position-change="(pos) => updateSliderPosition(index, pos)"
+          />
           <span class="visually-hidden">{{ slide.alt }}</span>
         </article>
       </div>
@@ -176,7 +203,6 @@ const handleMarkup = `
 
 .transform__slide {
   --pos: 0;
-  --scale: 0.82;
   position: absolute;
   inset: 0;
   margin: auto;
@@ -187,7 +213,7 @@ const handleMarkup = `
   justify-content: center;
   border-radius: 12px;
   overflow: hidden;
-  transform: translateX(calc(var(--pos) * 52%)) scale(var(--scale));
+  transform: translateX(calc(var(--pos) * 52%));
   opacity: 0.4;
   filter: grayscale(0.1) brightness(0.55);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
@@ -210,7 +236,7 @@ const handleMarkup = `
 }
 
 .transform__slide--active {
-  --scale: 1;
+  width: min(1180px, 88vw);
   opacity: 1;
   filter: none;
   z-index: 3;
@@ -224,6 +250,7 @@ const handleMarkup = `
 
 .transform__slide--left,
 .transform__slide--right {
+  width: clamp(760px, 78vw, 980px);
   z-index: 2;
 }
 
@@ -415,7 +442,7 @@ const handleMarkup = `
   }
 
   .transform__slide {
-    transform: translateX(calc(var(--pos) * 48%)) scale(var(--scale));
+    transform: translateX(calc(var(--pos) * 48%));
   }
 }
 
@@ -426,14 +453,14 @@ const handleMarkup = `
   }
 
   .transform__slide {
-    --scale: 0.9;
-    transform: translateX(calc(var(--pos) * 20%)) scale(var(--scale));
+    transform: translateX(calc(var(--pos) * 20%));
     opacity: 0.55;
     filter: brightness(0.7);
   }
 
   .transform__slide--left,
   .transform__slide--right {
+    width: 78vw;
     opacity: 0.3;
   }
 
@@ -475,8 +502,7 @@ const handleMarkup = `
 
   .transform__slide {
     width: 100%;
-    --scale: 1;
-    transform: translateX(calc(var(--pos) * 6%)) scale(var(--scale));
+    transform: translateX(calc(var(--pos) * 6%));
     opacity: 0.9;
     filter: none;
   }
