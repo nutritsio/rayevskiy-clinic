@@ -43,7 +43,12 @@ const handleMarkup = `
   <div class="transform__handle">
     <div class="transform__handle-ring"></div>
     <div class="transform__handle-core">
-      <span class="transform__handle-icon" aria-hidden="true">↔</span>
+      <img
+        class="transform__handle-img"
+        src="/assets/transform/slider.png"
+        alt=""
+        aria-hidden="true"
+      />
       <span class="visually-hidden">Пересунути повзунок</span>
     </div>
   </div>
@@ -85,17 +90,17 @@ const handleMarkup = `
         >
           <VueCompareImage
             :left-image="slide.before"
-            :right-image="slide.after"
-            left-image-alt="До трансформації"
-            right-image-alt="Після трансформації"
-            left-image-label="До"
-            right-image-label="Після"
-            :handle-size="84"
-            :handle="handleMarkup"
-            :slide-on-click="true"
-            :slider-line-color="'rgba(255, 255, 255, 0.9)'"
-            :slider-line-width="2"
-          />
+          :right-image="slide.after"
+          left-image-alt="До трансформації"
+          right-image-alt="Після трансформації"
+          left-image-label="До"
+          right-image-label="Після"
+          :handle-size="130"
+          :handle="handleMarkup"
+          :slide-on-click="true"
+          :slider-line-color="'rgba(255, 255, 255, 0.9)'"
+          :slider-line-width="2"
+        />
           <span class="visually-hidden">{{ slide.alt }}</span>
         </article>
       </div>
@@ -187,10 +192,7 @@ const handleMarkup = `
   filter: grayscale(0.1) brightness(0.55);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
   pointer-events: none;
-  transition:
-    transform 340ms ease,
-    opacity 340ms ease,
-    filter 340ms ease,
+  transition: transform 340ms ease, opacity 340ms ease, filter 340ms ease,
     box-shadow 340ms ease;
 }
 
@@ -198,7 +200,11 @@ const handleMarkup = `
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.45));
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.45)
+  );
   pointer-events: none;
   transition: opacity 320ms ease;
 }
@@ -250,22 +256,32 @@ const handleMarkup = `
 
 :global(.transform .vci--left-label),
 :global(.transform .vci--right-label) {
-  top: 18px;
-  padding: 10px 18px;
-  font-size: 15px;
+  top: 32px !important;
+  padding: 10px 22px;
+  font-size: 16px;
   letter-spacing: 0.01em;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(12, 12, 13, 0.45);
+  background: rgba(12, 12, 13, 0.35);
   backdrop-filter: blur(6px);
+  transform: none !important;
+  opacity: 1 !important;
+  color: #f9f9f9 !important;
+  text-align: justify !important;
+  font-family: Unbounded !important;
+  font-size: 20px !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  line-height: 24px !important; /* 120% */
+  letter-spacing: 0.1px !important;
 }
 
 :global(.transform .vci--left-label) {
-  left: 20px;
+  left: 32px !important;
 }
 
 :global(.transform .vci--right-label) {
-  right: 20px;
+  right: 32px !important;
 }
 
 :global(.transform .vci--slider-line) {
@@ -297,8 +313,8 @@ const handleMarkup = `
 
 .transform__handle {
   position: relative;
-  width: 84px;
-  height: 84px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -306,27 +322,48 @@ const handleMarkup = `
 
 .transform__handle-ring {
   position: absolute;
-  inset: -6px;
+  inset: 0;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(12, 12, 13, 0.2);
+  background: rgba(12, 12, 13, 0.18);
 }
 
 .transform__handle-core {
   position: relative;
-  width: 72px;
-  height: 72px;
+  width: 116px;
+  height: 116px;
   border-radius: 50%;
-  background: rgba(12, 12, 13, 0.75);
+  background: rgba(12, 12, 13, 0.82);
   border: 2px solid rgba(255, 255, 255, 0.9);
   display: grid;
   place-items: center;
 }
 
-.transform__handle-icon {
-  color: #f7f7f7;
-  font-size: 20px;
-  letter-spacing: 0.05em;
+.transform__handle-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .transform__handle {
+    width: 110px;
+    height: 110px;
+  }
+
+  .transform__handle-ring {
+    inset: 0;
+  }
+
+  .transform__handle-core {
+    width: 90px;
+    height: 90px;
+  }
+
+  .transform__handle-img {
+    width: 46px;
+    height: 46px;
+  }
 }
 
 .transform__nav {
@@ -344,10 +381,7 @@ const handleMarkup = `
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  transition:
-    transform 200ms ease,
-    border-color 200ms ease,
-    color 200ms ease,
+  transition: transform 200ms ease, border-color 200ms ease, color 200ms ease,
     background 200ms ease;
 }
 
@@ -405,9 +439,17 @@ const handleMarkup = `
 
   :global(.transform .vci--left-label),
   :global(.transform .vci--right-label) {
-    top: 12px;
-    padding: 8px 14px;
-    font-size: 14px;
+    top: 16px !important;
+    padding: 8px 16px;
+    font-size: 15px;
+  }
+
+  :global(.transform .vci--left-label) {
+    left: 16px !important;
+  }
+
+  :global(.transform .vci--right-label) {
+    right: 16px !important;
   }
 
   .transform__nav {
