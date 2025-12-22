@@ -100,9 +100,6 @@ const socials = [
 
     <div class="container footer__bottom">
       <div class="footer__copyright">© 2025. {{ t("footer.copyright") }}</div>
-      <a class="footer__cookies" href="#cookies">
-        {{ t("footer.cookies") }}
-      </a>
     </div>
   </footer>
 </template>
@@ -347,20 +344,6 @@ const socials = [
   align-items: center;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
-}
-
-.footer__cookies {
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 16px;
-  font-family: var(--font-display);
-  letter-spacing: 0.02em;
-  transition: color 0.25s ease;
-
-  &:hover {
-    color: #f9f9f9;
-  }
 }
 
 @media (max-width: 1024px) {

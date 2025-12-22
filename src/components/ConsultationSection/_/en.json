@@ -1,0 +1,34 @@
+{
+  "consult": {
+    "discountPrefix": "Get",
+    "discountAccent": "10% off",
+    "discountSuffix": "your first visit",
+    "headingPrimary": "Book a",
+    "headingAccent": "consultation",
+    "photoAlt": "Doctor consulting patients",
+    "fields": {
+      "name": "Name",
+      "service": "Service",
+      "phone": "Phone number",
+      "datetime": "Date / time",
+      "message": "Comment"
+    },
+    "placeholders": {
+      "name": "How should we address you?",
+      "service": "Which service are you interested in?",
+      "phone": "+1 (___) ___ __ __",
+      "datetime": "Preferred day and time",
+      "message": "Any extra details"
+    },
+    "upload": {
+      "title": "Drag a file here or click to upload",
+      "subtitle": "You can attach photos, x-rays, or documents"
+    },
+    "note": "* By submitting the form, you agree to the processing of your personal data",
+    "submit": "Send",
+    "submitting": "Sending…",
+    "success": "Thank you! We will contact you shortly.",
+    "error": "Could not send the form. Please try again.",
+    "errorFallback": "Something went wrong"
+  }
+}
