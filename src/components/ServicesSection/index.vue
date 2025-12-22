@@ -13,7 +13,7 @@ const services = [
       t("services.items.0.detailTitle") || t("services.items.0.title"),
     detailLeft: t("services.items.0.detailLeft"),
     detailRight: t("services.items.0.detailRight"),
-    image: "/assets/services/service-01.png",
+    image: "/assets/services/1.png",
   },
   {
     id: "02",
@@ -24,7 +24,7 @@ const services = [
       t("services.items.1.detailLeft") || t("services.items.0.detailLeft"),
     detailRight:
       t("services.items.1.detailRight") || t("services.items.0.detailRight"),
-    image: "/assets/services/service-01.png",
+    image: "/assets/services/2.png",
   },
   {
     id: "03",
@@ -35,7 +35,7 @@ const services = [
       t("services.items.2.detailLeft") || t("services.items.0.detailLeft"),
     detailRight:
       t("services.items.2.detailRight") || t("services.items.0.detailRight"),
-    image: "/assets/services/service-01.png",
+    image: "/assets/services/3.png",
   },
   {
     id: "04",
@@ -46,7 +46,7 @@ const services = [
       t("services.items.3.detailLeft") || t("services.items.0.detailLeft"),
     detailRight:
       t("services.items.3.detailRight") || t("services.items.0.detailRight"),
-    image: "/assets/services/service-01.png",
+    image: "/assets/services/4.png",
   },
   {
     id: "05",
@@ -57,7 +57,7 @@ const services = [
       t("services.items.4.detailLeft") || t("services.items.0.detailLeft"),
     detailRight:
       t("services.items.4.detailRight") || t("services.items.0.detailRight"),
-    image: "/assets/services/service-01.png",
+    image: "/assets/services/5.png",
   },
 ];
 
