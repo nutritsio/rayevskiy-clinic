@@ -9,17 +9,32 @@ type Slide = {
   alt: string;
 };
 
-const slides: Slide[] = Array.from({ length: 3 }, (_, index) => ({
-  id: index + 1,
-  before: "/assets/transform/before.png",
-  after: "/assets/transform/after.png",
-  alt: `Трансформація усмішки — кейс ${index + 1}`,
-}));
+const slides: Slide[] = [
+  {
+    id: 1,
+    before: "/assets/transform/before-0.png",
+    after: "/assets/transform/after-0.png",
+    alt: "Трансформація усмішки — кейс 1",
+  },
+  {
+    id: 2,
+    before: "/assets/transform/before-1.png",
+    after: "/assets/transform/after-1.png",
+    alt: "Трансформація усмішки — кейс 2",
+  },
+  {
+    id: 3,
+    before: "/assets/transform/before-2.png",
+    after: "/assets/transform/after-2.png",
+    alt: "Трансформація усмішки — кейс 3",
+  },
+];
 
 const activeIndex = ref(0);
 const total = slides.length;
-const sliderPositions = ref<number[]>(slides.map(() => 0.5));
-const resetKeys = ref<number[]>(slides.map(() => 0));
+const createSlideArray = (value: number) => slides.map(() => value);
+const sliderPositions = ref<number[]>(createSlideArray(0.5));
+const resetKeys = ref<number[]>(createSlideArray(0));
 
 const normalizeOffset = (index: number) => {
   const diff = index - activeIndex.value;
@@ -126,7 +141,9 @@ const handleMarkup = `
             :slider-line-color="'rgba(255, 255, 255, 0.9)'"
             :slider-line-width="2"
             :slider-position-percentage="sliderPositions[index]"
-            :on-slider-position-change="(pos) => updateSliderPosition(index, pos)"
+            :on-slider-position-change="
+              (pos) => updateSliderPosition(index, pos)
+            "
           />
           <span class="visually-hidden">{{ slide.alt }}</span>
         </article>
