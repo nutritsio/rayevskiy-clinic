@@ -113,12 +113,12 @@ const openMenu = () => emit("open-menu");
         </div>
       </div>
 
-      <button class="hero__cta" type="button">
+      <a class="hero__cta" href="#consult">
         <span class="hero__cta-text">{{ t("hero.cta") }}</span>
         <span class="hero__cta-arrow" aria-hidden="true">
           <ArrowIcon />
         </span>
-      </button>
+      </a>
     </div>
   </section>
 </template>
@@ -435,6 +435,7 @@ const openMenu = () => emit("open-menu");
     cursor: pointer;
     position: absolute;
     overflow: hidden;
+    text-decoration: none;
     transition: color 0.25s ease;
 
     &::after {

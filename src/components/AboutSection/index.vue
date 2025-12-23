@@ -68,9 +68,9 @@ const cards = [
             <p class="about__card-text">{{ card.text }}</p>
           </div>
         </article>
-        <button class="about__cta-floating" type="button">
+        <a class="about__cta-floating" href="#consult">
           {{ t("hero.cta") }}
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -150,6 +150,7 @@ const cards = [
     cursor: pointer;
     line-height: 1.2;
     padding: 0 24px;
+    text-decoration: none;
   }
 
   &__grid {
@@ -226,13 +227,18 @@ const cards = [
     font-family: var(--font-display);
     font-size: 26px;
     font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     line-height: 1.2;
     padding: 0 24px;
+    text-align: center;
     transition: transform 0.25s ease, box-shadow 0.3s ease, opacity 0.25s ease;
     box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35);
     overflow: hidden;
     transform: scale(1);
+    text-decoration: none;
 
     &::after,
     &::before {

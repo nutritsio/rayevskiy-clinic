@@ -17,7 +17,7 @@ const links = computed(() => [
   { label: t('nav.services'), href: '#services' },
   { label: t('nav.beforeAfter'), href: '#ba' },
   { label: t('nav.team'), href: '#team' },
-  { label: t('nav.cta'), href: '#cta' },
+  { label: t('nav.cta'), href: '#consult' },
 ])
 
 const activeLink = ref<string | null>(null)

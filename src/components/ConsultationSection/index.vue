@@ -101,19 +101,29 @@ const handleSubmit = async () => {
     <div class="container consult__head">
       <div class="consult__discount">
         <span>{{ t("consult.discountPrefix") }}</span>
-        <span class="consult__discount-strong">{{ t("consult.discountAccent") }}</span>
-        <span class="consult__discount-suffix">{{ t("consult.discountSuffix") }}</span>
+        <span class="consult__discount-strong">{{
+          t("consult.discountAccent")
+        }}</span>
+        <span class="consult__discount-suffix">{{
+          t("consult.discountSuffix")
+        }}</span>
       </div>
       <div class="consult__title">
         <div class="consult__title-main">{{ t("consult.headingPrimary") }}</div>
-        <div class="consult__title-accent">{{ t("consult.headingAccent") }}</div>
+        <div class="consult__title-accent">
+          {{ t("consult.headingAccent") }}
+        </div>
       </div>
     </div>
 
     <div class="container">
       <div class="consult__card">
         <div class="consult__media">
-          <img src="/assets/vetal.png" :alt="t('consult.photoAlt')" loading="lazy" />
+          <img
+            src="/assets/vetal.png"
+            :alt="t('consult.photoAlt')"
+            loading="lazy"
+          />
         </div>
 
         <form class="consult__form" @submit.prevent="handleSubmit" novalidate>
@@ -131,7 +141,9 @@ const handleSubmit = async () => {
             </label>
 
             <label class="consult__field">
-              <span class="consult__label">{{ t("consult.fields.service") }}</span>
+              <span class="consult__label">{{
+                t("consult.fields.service")
+              }}</span>
               <input
                 v-model="form.service"
                 class="consult__input"
@@ -142,7 +154,9 @@ const handleSubmit = async () => {
             </label>
 
             <label class="consult__field">
-              <span class="consult__label">{{ t("consult.fields.datetime") }}</span>
+              <span class="consult__label">{{
+                t("consult.fields.datetime")
+              }}</span>
               <input
                 v-model="form.datetime"
                 class="consult__input"
@@ -153,7 +167,9 @@ const handleSubmit = async () => {
             </label>
 
             <label class="consult__field">
-              <span class="consult__label">{{ t("consult.fields.phone") }}</span>
+              <span class="consult__label">{{
+                t("consult.fields.phone")
+              }}</span>
               <input
                 v-model="form.phone"
                 class="consult__input"
@@ -166,7 +182,9 @@ const handleSubmit = async () => {
           </div>
 
           <label class="consult__field consult__field--full">
-            <span class="consult__label">{{ t("consult.fields.message") }}</span>
+            <span class="consult__label">{{
+              t("consult.fields.message")
+            }}</span>
             <textarea
               v-model="form.message"
               class="consult__input consult__input--textarea"
@@ -190,14 +208,16 @@ const handleSubmit = async () => {
               ref="fileInput"
               class="consult__file-input"
               type="file"
-            name="file"
-            @change="onFileChange"
-            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+              name="file"
+              @change="onFileChange"
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
             />
             <div class="consult__upload-icon">📎</div>
             <div class="consult__upload-text">
               <div>{{ t("consult.upload.title") }}</div>
-              <div class="consult__upload-sub">{{ t("consult.upload.subtitle") }}</div>
+              <div class="consult__upload-sub">
+                {{ t("consult.upload.subtitle") }}
+              </div>
             </div>
           </div>
 
@@ -225,7 +245,11 @@ const handleSubmit = async () => {
           <div class="consult__footer">
             <div class="consult__note" v-html="t('consult.note')"></div>
 
-            <button class="consult__submit" type="submit" :disabled="isSubmitting">
+            <button
+              class="consult__submit"
+              type="submit"
+              :disabled="isSubmitting"
+            >
               <span v-if="!isSubmitting">{{ t("consult.submit") }}</span>
               <span v-else>{{ t("consult.submitting") }}</span>
             </button>
@@ -263,6 +287,7 @@ const handleSubmit = async () => {
 
 .consult__discount {
   color: #f9f9f9;
+  margin-left: 10%;
   font-family: var(--font-body);
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 400;
@@ -282,6 +307,9 @@ const handleSubmit = async () => {
 }
 
 .consult__title {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
   text-align: right;
   line-height: 1;
 }
@@ -300,6 +328,8 @@ const handleSubmit = async () => {
   font-weight: 500;
   color: var(--color-accent);
   letter-spacing: 0.02em;
+  align-self: flex-start;
+  margin-left: -100px;
 }
 
 .consult__card {
@@ -399,7 +429,8 @@ const handleSubmit = async () => {
   cursor: pointer;
   background: #fff;
   text-align: center;
-  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  transition: border-color 160ms ease, transform 160ms ease,
+    background 160ms ease;
 }
 
 .consult__upload:hover {
@@ -551,7 +582,12 @@ const handleSubmit = async () => {
   }
 
   .consult__title {
+    align-items: flex-start;
     text-align: left;
+  }
+
+  .consult__title-accent {
+    margin-left: 0;
   }
 
   .consult__form-grid {

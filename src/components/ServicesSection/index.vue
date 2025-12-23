@@ -155,9 +155,9 @@ const setActive = (id: string) => {
                       </p>
                     </div>
 
-                    <button class="services__cta" type="button">
+                    <a class="services__cta" href="#consult">
                       {{ t("hero.cta") }} ↗
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -343,6 +343,7 @@ const setActive = (id: string) => {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
   transition: color 0.25s ease;
 
   &::after {
