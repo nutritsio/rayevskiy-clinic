@@ -1,0 +1,18 @@
+{
+  "transform": {
+    "headingMain": "Smile",
+    "headingAccent": "transformations",
+    "navPrev": "Previous slide",
+    "navNext": "Next slide",
+    "handleLabel": "Move the slider",
+    "leftLabel": "Before",
+    "rightLabel": "After",
+    "leftAlt": "Before transformation",
+    "rightAlt": "After transformation",
+    "slides": [
+      { "alt": "Smile transformation — case 1" },
+      { "alt": "Smile transformation — case 2" },
+      { "alt": "Smile transformation — case 3" }
+    ]
+  }
+}

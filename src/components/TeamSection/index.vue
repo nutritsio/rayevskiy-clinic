@@ -7,6 +7,7 @@ import {
   ref,
   watch,
 } from "vue";
+import { useI18n } from "vue-i18n";
 
 type TeamMember = {
   id: number;
@@ -16,39 +17,72 @@ type TeamMember = {
   photo: string;
 };
 
-const members: TeamMember[] = [
+const { t, tm } = useI18n();
+
+const memberPresets: TeamMember[] = [
   {
     id: 1,
-    name: "Віталій Раєвський",
-    role: "Головний лікар-ортопед, хірург",
+    name: "Vitalii Raievskyi",
+    role: "Chief prosthodontist & surgeon",
     description:
-      "Спеціалізується на естетичній та хірургічній стоматології, встановленню імплантатів, протезуванню.",
+      "Specializes in aesthetic and surgical dentistry, implant placement, and prosthetics.",
     photo: "/assets/team/vitaliy.png",
   },
   {
     id: 2,
-    name: "Андрій Коцюра",
-    role: "Ортопед, гнатолог",
+    name: "Andrii Kotsiura",
+    role: "Prosthodontist, gnathologist",
     description:
-      "Складні краніо-мандибулярні тотальні ортопедичні реконструкції. Лікування дисфункції СНЩС.",
+      "Complex cranio-mandibular full-mouth reconstructions. TMJ dysfunction treatment.",
     photo: "/assets/team/andriy.png",
   },
   {
     id: 3,
-    name: "Вадим Токар",
-    role: "Хірург-імплантолог",
-    description: "Спеціалізація — трансформація посмішки за одну операцію.",
+    name: "Vadym Tokar",
+    role: "Implant surgeon",
+    description: "Focuses on smile transformations in a single surgery.",
     photo: "/assets/team/vadym.png",
   },
   {
     id: 4,
-    name: "Дар’я",
-    role: "Дантист",
+    name: "Daria",
+    role: "Dentist",
     description:
-      "Спеціалізується на естетичній та терапевтичній стоматології, поєднуючи професіоналізм із турботою про комфорт пацієнтів.",
+      "Specializes in aesthetic and therapeutic dentistry, combining professionalism with patient comfort.",
     photo: "/assets/team/vadym.png",
   },
 ];
+
+const members = computed<TeamMember[]>(() => {
+  const translated = (tm("team.members") as Partial<TeamMember>[] | undefined) || [];
+  return memberPresets.map((member, index) => {
+    const data = translated[index] || {};
+    return {
+      ...member,
+      name: data.name || member.name,
+      role: data.role || member.role,
+      description: data.description || member.description,
+    };
+  });
+});
+
+const headingLines = computed(() => {
+  const lines = (tm("team.headingLines") as string[] | undefined) || [];
+  return lines.length ? lines : ["AESTHETICS &", "MEDICINE"];
+});
+
+const headingAccent = computed(
+  () => t("team.headingAccent") || "in trusted hands"
+);
+
+const introText = computed(
+  () =>
+    t("team.intro") ||
+    "We believe a smile is about comfort and health, not only beauty. Every patient gets a personal approach and a natural-looking result."
+);
+
+const navPrevLabel = computed(() => t("team.navPrev"));
+const navNextLabel = computed(() => t("team.navNext"));
 
 const activeIndex = ref(0);
 const slidesPerView = ref(3.5);
@@ -56,7 +90,7 @@ const trackRef = ref<HTMLElement | null>(null);
 const cardRefs = ref<HTMLElement[]>([]);
 
 const maxIndex = computed(() =>
-  Math.max(0, Math.ceil(members.length - slidesPerView.value))
+  Math.max(0, Math.ceil(members.value.length - slidesPerView.value))
 );
 
 const updateSlidesPerView = () => {
@@ -123,15 +157,18 @@ watch(slidesPerView, () => {
       <div class="team__head">
         <div class="team__title">
           <div class="team__title-main">
-            <span class="team__line">ЕСТЕТИКА ТА</span>
-            <span class="team__line">МЕДИЦИНА</span>
+            <span
+              v-for="line in headingLines"
+              :key="line"
+              class="team__line"
+            >
+              {{ line }}
+            </span>
           </div>
-          <div class="team__title-accent">в надійних руках</div>
+          <div class="team__title-accent">{{ headingAccent }}</div>
         </div>
         <p class="team__intro">
-          Віримо, що усмішка — це не лише про красу, а й про комфорт та
-          здоров’я. Тому кожен мій пацієнт отримує індивідуальний підхід і
-          результат, який виглядає природно.
+          {{ introText }}
         </p>
       </div>
     </div>
@@ -142,7 +179,7 @@ watch(slidesPerView, () => {
           <button
             class="team__nav-btn team__nav-btn--prev"
             type="button"
-            aria-label="Попередній слайд"
+            :aria-label="navPrevLabel"
             @click="goPrev"
           >
             ←
@@ -150,7 +187,7 @@ watch(slidesPerView, () => {
           <button
             class="team__nav-btn team__nav-btn--next"
             type="button"
-            aria-label="Наступний слайд"
+            :aria-label="navNextLabel"
             @click="goNext"
           >
             →

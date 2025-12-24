@@ -1,38 +1,59 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { VueCompareImage } from "vue3-compare-image";
+import { useI18n } from "vue-i18n";
 
-type Slide = {
+type SlideConfig = {
   id: number;
   before: string;
   after: string;
-  alt: string;
+  altFallback: string;
 };
 
-const slides: Slide[] = [
+const { t, tm } = useI18n();
+
+const slideConfigs: SlideConfig[] = [
   {
     id: 1,
     before: "/assets/transform/before-0.png",
     after: "/assets/transform/after-0.png",
-    alt: "Трансформація усмішки — кейс 1",
+    altFallback: "Smile transformation — case 1",
   },
   {
     id: 2,
     before: "/assets/transform/before-1.png",
     after: "/assets/transform/after-1.png",
-    alt: "Трансформація усмішки — кейс 2",
+    altFallback: "Smile transformation — case 2",
   },
   {
     id: 3,
     before: "/assets/transform/before-2.png",
     after: "/assets/transform/after-2.png",
-    alt: "Трансформація усмішки — кейс 3",
+    altFallback: "Smile transformation — case 3",
   },
 ];
 
+const slides = computed(() => {
+  const translatedSlides = (tm("transform.slides") as { alt?: string }[] | undefined) || [];
+  return slideConfigs.map((slide, index) => ({
+    ...slide,
+    alt: translatedSlides[index]?.alt || slide.altFallback,
+  }));
+});
+
+const headingMain = computed(() => t("transform.headingMain"));
+const headingAccent = computed(() => t("transform.headingAccent"));
+const handleLabel = computed(() => t("transform.handleLabel"));
+const leftLabel = computed(() => t("transform.leftLabel"));
+const rightLabel = computed(() => t("transform.rightLabel"));
+const leftAlt = computed(() => t("transform.leftAlt"));
+const rightAlt = computed(() => t("transform.rightAlt"));
+const navPrevLabel = computed(() => t("transform.navPrev"));
+const navNextLabel = computed(() => t("transform.navNext"));
+
 const activeIndex = ref(0);
-const total = slides.length;
-const createSlideArray = (value: number) => slides.map(() => value);
+const total = slideConfigs.length;
+const createSlideArray = (value: number) => slideConfigs.map(() => value);
 const sliderPositions = ref<number[]>(createSlideArray(0.5));
 const resetKeys = ref<number[]>(createSlideArray(0));
 
@@ -78,7 +99,8 @@ const updateSliderPosition = (index: number, position: number) => {
 const goPrev = () => goTo(activeIndex.value - 1);
 const goNext = () => goTo(activeIndex.value + 1);
 
-const handleMarkup = `
+const handleMarkup = computed(
+  () => `
   <div class="transform__handle">
     <div class="transform__handle-ring"></div>
     <div class="transform__handle-core">
@@ -88,10 +110,11 @@ const handleMarkup = `
         alt=""
         aria-hidden="true"
       />
-      <span class="visually-hidden">Пересунути повзунок</span>
+      <span class="visually-hidden">${handleLabel.value}</span>
     </div>
   </div>
-`;
+`
+);
 </script>
 
 <template>
@@ -99,8 +122,8 @@ const handleMarkup = `
     <div class="container">
       <header class="transform__head">
         <div class="transform__title">
-          <div class="transform__title-main">Трансформація</div>
-          <div class="transform__title-accent">усмішки</div>
+          <div class="transform__title-main">{{ headingMain }}</div>
+          <div class="transform__title-accent">{{ headingAccent }}</div>
         </div>
       </header>
     </div>
@@ -109,7 +132,7 @@ const handleMarkup = `
       <button
         class="transform__nav transform__nav--prev"
         type="button"
-        aria-label="Попередній слайд"
+        :aria-label="navPrevLabel"
         @click="goPrev"
       >
         <span aria-hidden="true">←</span>
@@ -131,10 +154,10 @@ const handleMarkup = `
             :key="`vci-${slide.id}-${resetKeys[index]}`"
             :left-image="slide.before"
             :right-image="slide.after"
-            left-image-alt="До трансформації"
-            right-image-alt="Після трансформації"
-            left-image-label="До"
-            right-image-label="Після"
+            :left-image-alt="leftAlt"
+            :right-image-alt="rightAlt"
+            :left-image-label="leftLabel"
+            :right-image-label="rightLabel"
             :handle-size="130"
             :handle="handleMarkup"
             :slide-on-click="true"
@@ -152,7 +175,7 @@ const handleMarkup = `
       <button
         class="transform__nav transform__nav--next"
         type="button"
-        aria-label="Наступний слайд"
+        :aria-label="navNextLabel"
         @click="goNext"
       >
         <span aria-hidden="true">→</span>

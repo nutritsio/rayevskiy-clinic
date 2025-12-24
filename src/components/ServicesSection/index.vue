@@ -5,7 +5,7 @@ import ArrowIcon from "../ui/ArrowIcon.vue";
 
 const { t } = useI18n();
 
-const services = [
+const services = computed(() => [
   {
     id: "01",
     title: t("services.items.0.title"),
@@ -59,11 +59,11 @@ const services = [
       t("services.items.4.detailRight") || t("services.items.0.detailRight"),
     image: "/assets/services/5.png",
   },
-];
+]);
 
 const activeId = ref<string | null>("01");
 const activeItem = computed(
-  () => services.find((s) => s.id === activeId.value) || null
+  () => services.value.find((s) => s.id === activeId.value) || null
 );
 
 const setActive = (id: string) => {

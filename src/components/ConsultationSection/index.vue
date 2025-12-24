@@ -25,7 +25,7 @@ const serviceOptions = computed<ServiceOption[]>(() => {
     }))
     .filter((item) => Boolean(item.label));
 
-  const otherLabel = t("consult.serviceOther") || "Інше";
+  const otherLabel = t("consult.serviceOther");
 
   return [
     ...titles,

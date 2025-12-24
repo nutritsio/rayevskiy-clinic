@@ -1,0 +1,31 @@
+{
+  "team": {
+    "headingLines": ["AESTHETICS &", "MEDICINE"],
+    "headingAccent": "in trusted hands",
+    "intro": "We believe a smile is about comfort and health, not only beauty. Every patient gets a personal approach and a natural-looking result.",
+    "navPrev": "Previous slide",
+    "navNext": "Next slide",
+    "members": [
+      {
+        "name": "Vitalii Raievskyi",
+        "role": "Chief prosthodontist & surgeon",
+        "description": "Specializes in aesthetic and surgical dentistry, implant placement, and prosthetics."
+      },
+      {
+        "name": "Andrii Kotsiura",
+        "role": "Prosthodontist, gnathologist",
+        "description": "Complex cranio-mandibular full-mouth reconstructions. TMJ dysfunction treatment."
+      },
+      {
+        "name": "Vadym Tokar",
+        "role": "Implant surgeon",
+        "description": "Focuses on smile transformations in a single surgery."
+      },
+      {
+        "name": "Daria",
+        "role": "Dentist",
+        "description": "Specializes in aesthetic and therapeutic dentistry, combining professionalism with patient comfort."
+      }
+    ]
+  }
+}
