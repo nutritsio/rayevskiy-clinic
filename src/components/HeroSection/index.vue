@@ -49,18 +49,30 @@ const openMenu = () => emit("open-menu");
               {{ t("hero.hours") }}
             </p>
           </div>
-        </div>
-        <div class="hero__actions">
-          <div class="hero__social">
-            <a class="hero__social-button" href="#" aria-label="Facebook">
-              <img src="/assets/header/item-1-209.svg" alt="" />
-            </a>
-            <a class="hero__social-button" href="#" aria-label="Instagram">
-              <img src="/assets/header/item-1-210.svg" alt="" />
-            </a>
           </div>
-          <div class="hero__lang">
-            <button
+          <div class="hero__actions">
+            <div class="hero__social">
+              <a
+                class="hero__social-button"
+                href="https://www.facebook.com/raievskiy.dental.clinic"
+                aria-label="Facebook"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <img src="/assets/header/item-1-209.svg" alt="" />
+              </a>
+              <a
+                class="hero__social-button"
+                href="https://www.instagram.com/raievskiy_dental_clinic"
+                aria-label="Instagram"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <img src="/assets/header/item-1-210.svg" alt="" />
+              </a>
+            </div>
+            <div class="hero__lang">
+              <button
               v-for="lang in languages"
               :key="lang.code"
               class="hero__lang-button"
@@ -256,11 +268,20 @@ const openMenu = () => emit("open-menu");
     height: 56px;
     display: grid;
     place-items: center;
+    border-radius: 50%;
+    border: 1px solid rgba(249, 249, 249, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.2s ease, border-color 0.2s ease;
 
     img {
       width: 56px;
       height: 56px;
       display: block;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(249, 249, 249, 0.35);
     }
   }
 
