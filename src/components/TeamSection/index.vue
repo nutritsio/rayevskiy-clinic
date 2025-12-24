@@ -16,14 +16,39 @@ type TeamMember = {
   photo: string;
 };
 
-const members: TeamMember[] = Array.from({ length: 5 }, (_, index) => ({
-  id: index + 1,
-  name: "ВІТАЛІЙ РАЄВСЬКИЙ",
-  role: "Дантист",
-  description:
-    "Спеціалізується на естетичній та терапевтичній стоматології, поєднуючи професіоналізм із турботою про комфорт пацієнтів.",
-  photo: "/assets/team/andriy.png",
-}));
+const members: TeamMember[] = [
+  {
+    id: 1,
+    name: "Віталій Раєвський",
+    role: "Головний лікар-ортопед, хірург",
+    description:
+      "Спеціалізується на естетичній та хірургічній стоматології, встановленню імплантатів, протезуванню.",
+    photo: "/assets/team/vitaliy.png",
+  },
+  {
+    id: 2,
+    name: "Андрій Коцюра",
+    role: "Ортопед, гнатолог",
+    description:
+      "Складні краніо-мандибулярні тотальні ортопедичні реконструкції. Лікування дисфункції СНЩС.",
+    photo: "/assets/team/andriy.png",
+  },
+  {
+    id: 3,
+    name: "Вадим Токар",
+    role: "Хірург-імплантолог",
+    description: "Спеціалізація — трансформація посмішки за одну операцію.",
+    photo: "/assets/team/vadym.png",
+  },
+  {
+    id: 4,
+    name: "Дар’я",
+    role: "Дантист",
+    description:
+      "Спеціалізується на естетичній та терапевтичній стоматології, поєднуючи професіоналізм із турботою про комфорт пацієнтів.",
+    photo: "/assets/team/vadym.png",
+  },
+];
 
 const activeIndex = ref(0);
 const slidesPerView = ref(3.5);
@@ -147,8 +172,10 @@ watch(slidesPerView, () => {
                 <img :src="member.photo" :alt="member.name" loading="lazy" />
               </div>
               <div class="team__meta">
-                <div class="team__role">{{ member.role }}</div>
-                <p class="team__desc">{{ member.description }}</p>
+                <div class="team__info">
+                  <div class="team__role">{{ member.role }}</div>
+                  <p class="team__desc">{{ member.description }}</p>
+                </div>
                 <div class="team__name">{{ member.name }}</div>
               </div>
             </article>
@@ -314,11 +341,24 @@ watch(slidesPerView, () => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1 1 auto;
+}
+
+.team__info {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .team__role {
-  font-size: 16px;
-  color: #2f2f2f;
+  color: #111;
+  font-family: Manrope;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -1.12px;
+  flex: 0 0 36%;
+  max-width: 180px;
 }
 
 .team__desc {
@@ -326,12 +366,13 @@ watch(slidesPerView, () => {
   color: #4a4a4a;
   line-height: 1.5;
   font-size: 15px;
+  flex: 1 1 auto;
 }
 
 .team__name {
   margin-top: auto;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 25px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -384,6 +425,16 @@ watch(slidesPerView, () => {
 
   .team__card {
     min-height: 420px;
+  }
+
+  .team__info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .team__role {
+    max-width: none;
+    flex: 0 0 auto;
   }
 }
 </style>
