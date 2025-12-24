@@ -50,6 +50,42 @@ const fileInput = ref<HTMLInputElement | null>(null);
 const isSubmitting = ref(false);
 const status = ref<"idle" | "success" | "error">("idle");
 const errorMessage = ref("");
+const errors = ref<Partial<Record<keyof FormState, string>>>({});
+const lastSubmitAt = ref(0);
+const SUBMIT_COOLDOWN_MS = 5000;
+
+const normalizePhone = (phone: string) => phone.replace(/[^\d]/g, "");
+
+const validateForm = () => {
+  const nextErrors: Partial<Record<keyof FormState, string>> = {};
+  const trimmedName = form.value.name.trim();
+  const trimmedService = form.value.service.trim();
+  const trimmedDatetime = form.value.datetime.trim();
+  const phoneDigits = normalizePhone(form.value.phone);
+
+  if (!trimmedName) {
+    nextErrors.name = t("consult.validation.nameRequired");
+  } else if (trimmedName.length < 2) {
+    nextErrors.name = t("consult.validation.nameTooShort");
+  }
+
+  if (!trimmedService) {
+    nextErrors.service = t("consult.validation.serviceRequired");
+  }
+
+  if (!form.value.phone.trim()) {
+    nextErrors.phone = t("consult.validation.phoneRequired");
+  } else if (phoneDigits.length < 10) {
+    nextErrors.phone = t("consult.validation.phoneInvalid");
+  }
+
+  if (!trimmedDatetime) {
+    nextErrors.datetime = t("consult.validation.datetimeRequired");
+  }
+
+  errors.value = nextErrors;
+  return Object.keys(nextErrors).length === 0;
+};
 
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -74,6 +110,7 @@ const clearFile = () => {
 const resetForm = () => {
   form.value = { ...initialState };
   file.value = null;
+  errors.value = {};
 };
 
 const openFileDialog = () => {
@@ -81,9 +118,28 @@ const openFileDialog = () => {
 };
 
 const handleSubmit = async () => {
-  isSubmitting.value = true;
   status.value = "idle";
   errorMessage.value = "";
+
+  const now = Date.now();
+  const remainingCooldown = SUBMIT_COOLDOWN_MS - (now - lastSubmitAt.value);
+  if (remainingCooldown > 0) {
+    status.value = "error";
+    errorMessage.value = t("consult.validation.cooldown", {
+      seconds: Math.ceil(remainingCooldown / 1000),
+    });
+    return;
+  }
+
+  const isValid = validateForm();
+  if (!isValid) {
+    status.value = "error";
+    errorMessage.value = t("consult.validation.fixErrors");
+    return;
+  }
+
+  isSubmitting.value = true;
+  lastSubmitAt.value = now;
 
   try {
     const body = new FormData();
@@ -156,12 +212,14 @@ const handleSubmit = async () => {
               <span class="consult__label">{{ t("consult.fields.name") }}</span>
               <input
                 v-model="form.name"
-                class="consult__input"
+                :class="['consult__input', { 'consult__input--invalid': errors.name }]"
                 type="text"
                 name="name"
                 :placeholder="t('consult.placeholders.name')"
                 required
+                :aria-invalid="Boolean(errors.name)"
               />
+              <div v-if="errors.name" class="consult__error">{{ errors.name }}</div>
             </label>
 
             <label class="consult__field">
@@ -171,8 +229,13 @@ const handleSubmit = async () => {
               <div class="consult__select">
                 <select
                   v-model="form.service"
-                  class="consult__input consult__select-control"
+                  :class="[
+                    'consult__input consult__select-control',
+                    { 'consult__input--invalid': errors.service },
+                  ]"
                   name="service"
+                  required
+                  :aria-invalid="Boolean(errors.service)"
                 >
                   <option value="" disabled>
                     {{ t("consult.placeholders.service") }}
@@ -187,6 +250,9 @@ const handleSubmit = async () => {
                 </select>
                 <span class="consult__select-arrow" aria-hidden="true"></span>
               </div>
+              <div v-if="errors.service" class="consult__error">
+                {{ errors.service }}
+              </div>
             </label>
 
             <label class="consult__field">
@@ -195,11 +261,19 @@ const handleSubmit = async () => {
               }}</span>
               <input
                 v-model="form.datetime"
-                class="consult__input"
+                :class="[
+                  'consult__input',
+                  { 'consult__input--invalid': errors.datetime },
+                ]"
                 type="text"
                 name="datetime"
                 :placeholder="t('consult.placeholders.datetime')"
+                required
+                :aria-invalid="Boolean(errors.datetime)"
               />
+              <div v-if="errors.datetime" class="consult__error">
+                {{ errors.datetime }}
+              </div>
             </label>
 
             <label class="consult__field">
@@ -208,12 +282,19 @@ const handleSubmit = async () => {
               }}</span>
               <input
                 v-model="form.phone"
-                class="consult__input"
+                :class="[
+                  'consult__input',
+                  { 'consult__input--invalid': errors.phone },
+                ]"
                 type="tel"
                 name="phone"
                 :placeholder="t('consult.placeholders.phone')"
                 required
+                :aria-invalid="Boolean(errors.phone)"
               />
+              <div v-if="errors.phone" class="consult__error">
+                {{ errors.phone }}
+              </div>
             </label>
           </div>
 
@@ -421,6 +502,12 @@ const handleSubmit = async () => {
   color: #4a4a4a;
 }
 
+.consult__error {
+  color: #c13624;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
 .consult__input {
   width: 100%;
   padding: 10px 0;
@@ -436,6 +523,11 @@ const handleSubmit = async () => {
 
 .consult__input::placeholder {
   color: #9a9a9a;
+}
+
+.consult__input--invalid {
+  border-color: #c13624;
+  color: #c13624;
 }
 
 .consult__input:focus {
@@ -484,6 +576,10 @@ const handleSubmit = async () => {
   border-radius: 10px;
   padding: 12px 14px;
   background: #fafafa;
+}
+
+.consult__field--full .consult__input--invalid {
+  border-color: #c13624;
 }
 
 .consult__upload {

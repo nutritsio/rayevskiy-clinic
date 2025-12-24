@@ -30,6 +30,16 @@
     "submitting": "Sending…",
     "success": "Thank you! We will contact you shortly.",
     "error": "Could not send the form. Please try again.",
-    "errorFallback": "Something went wrong"
+    "errorFallback": "Something went wrong",
+    "validation": {
+      "fixErrors": "Please check the fields and correct the errors.",
+      "nameRequired": "Please enter your name.",
+      "nameTooShort": "Name should be at least 2 characters long.",
+      "serviceRequired": "Please choose a service.",
+      "phoneRequired": "Please enter your phone number.",
+      "phoneInvalid": "Phone number should have at least 10 digits.",
+      "datetimeRequired": "Please specify a convenient date and time.",
+      "cooldown": "Request already sent. Try again in {{seconds}}s."
+    }
   }
 }
