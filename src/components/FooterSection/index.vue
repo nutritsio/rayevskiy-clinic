@@ -40,12 +40,17 @@ const socials = [
           <div class="footer__clinic">{{ t("reviews.clinic") }}</div>
           <div class="footer__address">{{ t("reviews.address") }}</div>
 
-          <button class="footer__cta" type="button">
+          <a
+            class="footer__cta"
+            href="https://maps.app.goo.gl/JgE4UcntBuGbSLSdA"
+            target="_blank"
+            rel="noreferrer"
+          >
             <span class="footer__cta-icon">
               <img src="/assets/reviews/google.svg" alt="" />
             </span>
             <span class="footer__cta-text">{{ t("reviews.leaveReview") }}</span>
-          </button>
+          </a>
         </div>
 
         <div class="footer__columns">

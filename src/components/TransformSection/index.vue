@@ -57,11 +57,11 @@ const goTo = (nextIndex: number) => {
 
   if (prev !== normalizedNext) {
     nextPositions[prev] = 0.5;
-    nextResetKeys[prev] += 1;
+    nextResetKeys[prev] = (nextResetKeys[prev] ?? 0) + 1;
   }
 
   nextPositions[normalizedNext] = 0.5;
-  nextResetKeys[normalizedNext] += 1;
+  nextResetKeys[normalizedNext] = (nextResetKeys[normalizedNext] ?? 0) + 1;
 
   sliderPositions.value = nextPositions;
   resetKeys.value = nextResetKeys;
@@ -142,7 +142,7 @@ const handleMarkup = `
             :slider-line-width="2"
             :slider-position-percentage="sliderPositions[index]"
             :on-slider-position-change="
-              (pos) => updateSliderPosition(index, pos)
+              (pos: number) => updateSliderPosition(index, pos)
             "
           />
           <span class="visually-hidden">{{ slide.alt }}</span>

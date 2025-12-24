@@ -1,35 +1,59 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+type Review = {
+  id: number;
+  name: string;
+  text: string;
+  avatar: string;
+  time: string;
+  stars: string;
+};
 
-const slides = Array.from({ length: 4 }).map((_, idx) => ({
-  id: idx + 1,
-  name: t("reviews.author"),
-  text: t("reviews.text"),
-  avatar: "/assets/reviews/avatar.png",
-  time: t("reviews.time"),
-  stars: t("reviews.stars"),
-}));
+const { t, tm } = useI18n();
+
+const slides = computed(() => {
+  const rawList = tm("reviews.list") as unknown;
+  const list = Array.isArray(rawList)
+    ? (rawList as Array<Record<string, string>>)
+    : [];
+
+  return list.map<Review>((item, idx) => ({
+    id: idx + 1,
+    name: item.name ?? (t("reviews.author") as string),
+    text: item.text ?? (t("reviews.text") as string),
+    avatar: item.avatar ?? "/assets/reviews/avatar.png",
+    time: item.time ?? (t("reviews.time") as string),
+    stars: item.stars ?? (t("reviews.stars") as string),
+  }));
+});
 </script>
 
 <template>
   <section class="reviews" id="reviews">
     <div class="container reviews__head">
-      <div class="reviews__rating">
-        <div class="reviews__rating-value">{{ t("reviews.rating") }}</div>
-        <div class="reviews__rating-stars">{{ t("reviews.stars") }}</div>
+      <div class="reviews__info">
+        <div class="reviews__rating">
+          <div class="reviews__rating-value">{{ t("reviews.rating") }}</div>
+          <div class="reviews__rating-stars">{{ t("reviews.stars") }}</div>
+        </div>
+        <div class="reviews__meta">
+          <div class="reviews__clinic">{{ t("reviews.clinic") }}</div>
+          <div class="reviews__address">{{ t("reviews.address") }}</div>
+        </div>
       </div>
-      <div class="reviews__meta">
-        <div class="reviews__clinic">{{ t("reviews.clinic") }}</div>
-        <div class="reviews__address">{{ t("reviews.address") }}</div>
-      </div>
-      <button class="reviews__cta" type="button">
+      <a
+        class="reviews__cta"
+        href="https://maps.app.goo.gl/JgE4UcntBuGbSLSdA"
+        target="_blank"
+        rel="noreferrer"
+      >
         <span class="reviews__cta-icon">
           <img src="/assets/reviews/google.svg" alt="" />
         </span>
         <span class="reviews__cta-text">{{ t("reviews.leaveReview") }}</span>
-      </button>
+      </a>
     </div>
     <div class="reviews__slider">
       <div class="reviews__track">
@@ -58,11 +82,19 @@ const slides = Array.from({ length: 4 }).map((_, idx) => ({
   color: var(--color-text);
 
   &__head {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
     margin-bottom: 48px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   &__rating {
@@ -119,6 +151,8 @@ const slides = Array.from({ length: 4 }).map((_, idx) => ({
     position: relative;
     overflow: hidden;
     transition: color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    align-self: flex-end;
+    margin-left: auto;
 
     &::after {
       content: "";
@@ -254,9 +288,14 @@ const slides = Array.from({ length: 4 }).map((_, idx) => ({
 
   @media (max-width: 1280px) {
     &__head {
-      grid-template-columns: 1fr;
-      gap: 16px;
       padding: 0 32px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__cta {
+      margin-left: 0;
+      align-self: flex-start;
     }
 
     &__slider {

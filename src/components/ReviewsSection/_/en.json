@@ -6,8 +6,28 @@
     "clinic": "Raevskiy Dental Clinic",
     "address": "28a Vasyl Tyutyunnyk St, Kyiv, Ukraine",
     "leaveReview": "leave a review",
-    "time": "3 days ago",
-    "author": "Alina Shvets",
-    "text": "Very satisfied with the visit! Friendly staff, attentive and professional doctor. Everything was explained clearly, the procedure was quick and painless. The clinic is clean, modern, and comfortable. Highly recommend to anyone seeking quality dental care!"
+    "time": "Google Maps",
+    "list": [
+      {
+        "name": "Nikolas",
+        "text": "A modern digital dental clinic that is pleasant to be in. A friend recommended it, and I have no regrets. I had ceramic veneers installed by Vitalii Raievskyi and I'm thrilled with the work. I always dreamed of an aesthetic smile and I'm glad I finally found my doctor.",
+        "avatar": "/assets/reviews/avatar-0.png"
+      },
+      {
+        "name": "Iryna Stepanova",
+        "text": "Excellent clinic. Service and treatment at the highest level. Convenient location in the center of Kyiv. Highly recommend!",
+        "avatar": "/assets/reviews/avatar-1.png"
+      },
+      {
+        "name": "Dmytro",
+        "text": "Yesterday I finally came to Vitalii for a cleaning. Like a fairy tale). And removing tartar with ultrasound was completely painless, unlike one well-known clinic. And the secret is simple, the doctor explained. Wonderful. I'll probably bring my sister to him.",
+        "avatar": "/assets/reviews/avatar-2.png"
+      },
+      {
+        "name": "Anna",
+        "text": "A gorgeous clinic, service at the highest level, very satisfied with the doctors and their approach. Responsible, punctual. Highly recommend.",
+        "avatar": "/assets/reviews/avatar-3.png"
+      }
+    ]
   }
 }
