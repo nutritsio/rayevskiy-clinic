@@ -157,7 +157,7 @@ const cards = [
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    column-gap: 40px;
+    column-gap: 24px;
     row-gap: 0;
     align-items: start;
     padding-top: 36px;
@@ -168,7 +168,8 @@ const cards = [
     flex-direction: column;
     background: transparent;
     min-height: 566px;
-    width: 430px;
+    width: 100%;
+    max-width: 430px;
     position: relative;
   }
 

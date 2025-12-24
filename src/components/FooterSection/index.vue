@@ -12,8 +12,16 @@ const navLinks = [
 ];
 
 const socials = [
-  { label: "Instagram", href: "https://www.instagram.com", accent: true },
-  { label: "Facebook", href: "https://www.facebook.com", accent: true },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/raievskiy.dental.clinic",
+    icon: "/assets/header/item-1-209.svg",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/raievskiy_dental_clinic",
+    icon: "/assets/header/item-1-210.svg",
+  },
 ];
 </script>
 
@@ -70,7 +78,7 @@ const socials = [
             <div class="footer__col-title">
               {{ t("footer.contacts.title") }}
             </div>
-            <div class="footer__nav-link">077 777 51 03</div>
+            <a class="footer__nav-link" href="tel:0777775103">077 777 51 03</a>
             <div class="footer__nav-link footer__nav-link--muted">
               {{ t("hero.address") }}
             </div>
@@ -88,16 +96,19 @@ const socials = [
 
           <div class="footer__col footer__col--social">
             <div class="footer__col-title">{{ t("footer.social.title") }}</div>
-            <a
-              v-for="social in socials"
-              :key="social.label"
-              class="footer__nav-link footer__nav-link--accent"
-              :href="social.href"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {{ social.label }}
-            </a>
+            <div class="footer__social">
+              <a
+                v-for="social in socials"
+                :key="social.label"
+                class="footer__social-button"
+                :href="social.href"
+                :aria-label="social.label"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img :src="social.icon" :alt="social.label" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -310,6 +321,35 @@ const socials = [
 
 .footer__col--social {
   max-width: 250px;
+}
+
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__social-button {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(249, 249, 249, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+
+  img {
+    width: 52px;
+    height: 52px;
+    display: block;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(249, 249, 249, 0.35);
+    transform: translateY(-1px);
+  }
 }
 
 .footer__col-title {
