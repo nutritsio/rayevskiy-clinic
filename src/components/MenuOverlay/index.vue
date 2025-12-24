@@ -7,7 +7,7 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-import { computed, ref, watch, onBeforeUnmount } from 'vue'
+import { computed, ref, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -15,20 +15,13 @@ const { t } = useI18n()
 const links = computed(() => [
   { label: t('nav.why'), href: '#about' },
   { label: t('nav.services'), href: '#services' },
-  { label: t('nav.beforeAfter'), href: '#ba' },
+  { label: t('nav.beforeAfter'), href: '#transform' },
   { label: t('nav.team'), href: '#team' },
   { label: t('nav.cta'), href: '#consult' },
 ])
 
 const activeLink = ref<string | null>(null)
 const closeTimer = ref<number | null>(null)
-
-watch(
-  () => links.value,
-  () => {
-    activeLink.value = '#services'
-  }
-)
 
 const close = () => emit('close')
 
@@ -140,22 +133,30 @@ onBeforeUnmount(() => {
   &::after {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 50%;
+    width: 100%;
     bottom: -10px;
     height: 3px;
     background: var(--color-accent);
-    transform: scaleX(0);
+    transform: translateX(-50%) scaleX(0);
     transform-origin: center;
     transition: transform 220ms ease;
   }
+}
+
+.menu__link:hover {
+  color: var(--color-accent);
+}
+
+.menu__link:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .menu__link--active {
   color: var(--color-accent);
 
   &::after {
-    transform: scaleX(1);
+    transform: translateX(-50%) scaleX(1);
   }
 }
 

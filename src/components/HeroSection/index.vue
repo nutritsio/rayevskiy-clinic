@@ -271,7 +271,9 @@ const openMenu = () => emit("open-menu");
     border-radius: 50%;
     border: 1px solid rgba(249, 249, 249, 0.2);
     background: rgba(255, 255, 255, 0.08);
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease,
+      transform 0.2s ease;
+    cursor: pointer;
 
     img {
       width: 56px;
@@ -282,6 +284,7 @@ const openMenu = () => emit("open-menu");
     &:hover {
       background: rgba(255, 255, 255, 0.14);
       border-color: rgba(249, 249, 249, 0.35);
+      transform: translateY(-1px);
     }
   }
 
