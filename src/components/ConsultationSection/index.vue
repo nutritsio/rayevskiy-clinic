@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 type FormState = {
@@ -11,6 +11,30 @@ type FormState = {
 };
 
 const { t } = useI18n();
+
+type ServiceOption = {
+  id: string;
+  label: string;
+};
+
+const serviceOptions = computed<ServiceOption[]>(() => {
+  const titles = [0, 1, 2, 3, 4]
+    .map((index) => ({
+      id: `service-${index + 1}`,
+      label: t(`services.items.${index}.title`),
+    }))
+    .filter((item) => Boolean(item.label));
+
+  const otherLabel = t("consult.serviceOther") || "Інше";
+
+  return [
+    ...titles,
+    {
+      id: "service-other",
+      label: otherLabel,
+    },
+  ];
+});
 
 const initialState: FormState = {
   name: "",
@@ -144,13 +168,25 @@ const handleSubmit = async () => {
               <span class="consult__label">{{
                 t("consult.fields.service")
               }}</span>
-              <input
-                v-model="form.service"
-                class="consult__input"
-                type="text"
-                name="service"
-                :placeholder="t('consult.placeholders.service')"
-              />
+              <div class="consult__select">
+                <select
+                  v-model="form.service"
+                  class="consult__input consult__select-control"
+                  name="service"
+                >
+                  <option value="" disabled>
+                    {{ t("consult.placeholders.service") }}
+                  </option>
+                  <option
+                    v-for="option in serviceOptions"
+                    :key="option.id"
+                    :value="option.label"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+                <span class="consult__select-arrow" aria-hidden="true"></span>
+              </div>
             </label>
 
             <label class="consult__field">
@@ -341,7 +377,7 @@ const handleSubmit = async () => {
   border-radius: 0;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-  height: 612px;
+  height: 650px;
 }
 
 .consult__media {
@@ -398,6 +434,10 @@ const handleSubmit = async () => {
   transition: border-color 160ms ease, color 160ms ease;
 }
 
+.consult__input::placeholder {
+  color: #9a9a9a;
+}
+
 .consult__input:focus {
   border-color: var(--color-accent);
   color: #0c0c0d;
@@ -406,6 +446,37 @@ const handleSubmit = async () => {
 .consult__input--textarea {
   resize: vertical;
   min-height: 96px;
+}
+
+.consult__select {
+  position: relative;
+}
+
+.consult__select-control {
+  color: #0c0c0d;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 28px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.consult__select-control option[disabled] {
+  color: #9a9a9a;
+}
+
+.consult__select-arrow {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid #4a4a4a;
+  transform: translateY(-50%);
 }
 
 .consult__field--full .consult__input {

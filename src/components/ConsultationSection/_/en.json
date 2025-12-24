@@ -20,6 +20,7 @@
       "datetime": "Preferred day and time",
       "message": "Any extra details"
     },
+    "serviceOther": "Other",
     "upload": {
       "title": "Drag a file here or click to upload",
       "subtitle": "You can attach photos, x-rays, or documents"
