@@ -8,6 +8,7 @@ import ServicesSection from "./components/ServicesSection/index.vue";
 import FooterSection from "./components/FooterSection/index.vue";
 import TeamSection from "./components/TeamSection/index.vue";
 import ConsultationSection from "./components/ConsultationSection/index.vue";
+import LocationSection from "./components/LocationSection/index.vue";
 import { ref, watch } from "vue";
 
 const isMenuOpen = ref(false);
@@ -37,6 +38,7 @@ watch(
     <ServicesSection />
     <TransformSection />
     <TeamSection />
+    <LocationSection />
     <ConsultationSection />
     <FooterSection />
   </div>

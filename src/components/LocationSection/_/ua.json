@@ -1,0 +1,25 @@
+{
+  "location": {
+    "headingPrimary": "Наші клініки",
+    "headingAccent": "у Києві",
+    "tabsAria": "Локації клінік",
+    "tabs": {
+      "center": "Центр",
+      "rightBank": "Правий берег"
+    },
+    "cards": {
+      "center": {
+        "title": "Центр",
+        "address": "вулиця Василя Тютюнника, 28а, Київ",
+        "hours": "ПН СБ - 10:00-20:00"
+      },
+      "rightBank": {
+        "title": "Правий берег",
+        "address": "вулиця Василя Тютюнника, 28а, Київ",
+        "hours": "ПН СБ - 10:00-20:00"
+      }
+    },
+    "maps": "Google Maps",
+    "mapsAria": "Відкрити маршрут у Google Maps"
+  }
+}

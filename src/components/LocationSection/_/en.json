@@ -1,0 +1,25 @@
+{
+  "location": {
+    "headingPrimary": "Our clinics",
+    "headingAccent": "in Kyiv",
+    "tabsAria": "Clinic locations",
+    "tabs": {
+      "center": "Center",
+      "rightBank": "Right bank"
+    },
+    "cards": {
+      "center": {
+        "title": "Center",
+        "address": "28A Vasylya Tyutyunnyka Street, Kyiv",
+        "hours": "MON SAT - 10:00-20:00"
+      },
+      "rightBank": {
+        "title": "Right bank",
+        "address": "28A Vasylya Tyutyunnyka Street, Kyiv",
+        "hours": "MON SAT - 10:00-20:00"
+      }
+    },
+    "maps": "Google Maps",
+    "mapsAria": "Open route in Google Maps"
+  }
+}
