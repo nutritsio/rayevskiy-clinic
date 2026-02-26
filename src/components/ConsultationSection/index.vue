@@ -722,6 +722,33 @@ const handleSubmit = async () => {
   color: #c0392b;
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .consult {
+    padding: 92px 0 108px;
+  }
+
+  .consult__head {
+    margin-bottom: 32px;
+  }
+
+  .consult__title-main {
+    font-size: clamp(34px, 4.2vw, 74px);
+  }
+
+  .consult__title-accent {
+    font-size: clamp(54px, 4.4vw, 90px);
+    margin-left: -72px;
+  }
+
+  .consult__card {
+    height: 600px;
+  }
+
+  .consult__form {
+    padding: 28px 30px 22px;
+  }
+}
+
 @media (max-width: 1200px) {
   .consult__card {
     grid-template-columns: 1fr;

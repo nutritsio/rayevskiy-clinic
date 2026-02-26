@@ -325,6 +325,73 @@ const cards = computed(() => [
   }
 }
 
+  @media (min-width: 1025px) and (max-width: 1700px) {
+    padding: 92px 24px 104px;
+
+    &__header {
+      margin-bottom: 56px;
+    }
+
+    &__title-line {
+      font-size: 74px;
+      line-height: 84px;
+
+      &--small {
+        font-size: 74px;
+        line-height: 84px;
+      }
+    }
+
+    &__title-accent {
+      font-size: 116px;
+      line-height: 116px;
+      letter-spacing: -6px;
+    }
+
+    &__subtitle {
+      max-width: 240px;
+      font-size: 15px;
+    }
+
+    &__grid {
+      column-gap: 20px;
+      padding-top: 24px;
+    }
+
+    &__card {
+      min-height: 500px;
+      max-width: 360px;
+    }
+
+    &__card-media {
+      height: 270px;
+    }
+
+    &__card-index {
+      font-size: 20px;
+    }
+
+    &__card-title {
+      font-size: 20px;
+    }
+
+    &__card-text {
+      font-size: 14px;
+    }
+
+    &__card--offset {
+      margin-top: 96px;
+    }
+
+    &__cta-floating {
+      width: 200px;
+      height: 200px;
+      font-size: 22px;
+      right: 28px;
+      top: -56px;
+    }
+  }
+
   @media (max-width: 1280px) {
     &__grid {
       display: flex;

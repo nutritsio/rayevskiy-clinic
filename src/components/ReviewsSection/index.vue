@@ -286,6 +286,55 @@ const slides = computed(() => {
     color: var(--color-text);
   }
 
+  @media (min-width: 1025px) and (max-width: 1700px) {
+    padding: 84px 0 112px;
+
+    &__head {
+      margin-bottom: 36px;
+    }
+
+    &__rating-value {
+      font-size: 40px;
+    }
+
+    &__rating-stars {
+      font-size: 20px;
+    }
+
+    &__clinic {
+      font-size: 34px;
+    }
+
+    &__address {
+      font-size: 16px;
+    }
+
+    &__cta {
+      font-size: 14px;
+      padding: 10px 18px;
+    }
+
+    &__track {
+      gap: 18px;
+      padding: 10px 24px;
+      scroll-padding-left: 24px;
+      scroll-padding-right: 24px;
+      margin-right: -24px;
+    }
+
+    &__card {
+      min-width: 620px;
+      max-width: 620px;
+      padding: 18px 20px;
+    }
+
+    &__name,
+    &__text {
+      font-size: 16px;
+      line-height: 1.35;
+    }
+  }
+
   @media (max-width: 1280px) {
     &__head {
       padding: 0 32px;

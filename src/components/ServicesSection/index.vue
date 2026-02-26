@@ -463,6 +463,68 @@ const setActive = (id: string) => {
   margin-bottom: 8px;
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .services {
+    padding: 84px 0 106px;
+  }
+
+  .services__head {
+    margin-bottom: 36px;
+  }
+
+  .services__title-line {
+    font-size: 74px;
+  }
+
+  .services__title-accent {
+    font-size: 108px;
+  }
+
+  .services__subtitle {
+    max-width: 280px;
+    font-size: 15px;
+  }
+
+  .services__panel {
+    padding: 22px 0 24px;
+  }
+
+  .services__panel-inner {
+    gap: 34px;
+  }
+
+  .services__panel-media {
+    flex: 0 0 320px;
+  }
+
+  .services__panel-media img {
+    max-width: 320px;
+    height: 360px;
+  }
+
+  .services__panel-content {
+    min-height: 360px;
+    margin-top: 34px;
+    gap: 20px;
+  }
+
+  .services__panel-title {
+    font-size: 52px;
+  }
+
+  .services__panel-text p {
+    font-size: 15px;
+  }
+
+  .services__cta {
+    font-size: 32px;
+  }
+
+  .services__item-title {
+    font-size: 22px;
+  }
+}
+
 @media (max-width: 1024px) {
   .services__title-line {
     font-size: 64px;

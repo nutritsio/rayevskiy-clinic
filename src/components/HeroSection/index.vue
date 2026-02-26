@@ -500,6 +500,145 @@ const openMenu = () => emit("open-menu");
     }
   }
 
+  @media (min-width: 1025px) and (max-width: 1700px) {
+    min-height: 860px;
+
+    &__content {
+      max-width: 1500px;
+      height: 860px;
+      padding: 0 24px;
+    }
+
+    &__topbar {
+      top: 26px;
+      left: 24px;
+      right: 24px;
+      gap: 20px;
+    }
+
+    &__brand {
+      width: 244px;
+      height: 66px;
+    }
+
+    &__contact {
+      width: auto;
+      gap: 36px;
+    }
+
+    &__meta {
+      font-size: 15px;
+      line-height: 19px;
+      min-width: 176px;
+      max-width: 220px;
+    }
+
+    &__actions {
+      gap: 12px;
+    }
+
+    &__social {
+      gap: 12px;
+    }
+
+    &__social-button {
+      width: 48px;
+      height: 48px;
+
+      img {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    &__lang {
+      gap: 6px;
+      padding: 6px;
+    }
+
+    &__lang-button {
+      height: 34px;
+      min-width: 52px;
+      padding: 7px 10px;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    &__menu,
+    &__menu img {
+      width: 26px;
+      height: 26px;
+    }
+
+    &__headline {
+      left: 24px;
+      top: 208px;
+      max-width: 820px;
+    }
+
+    &__title {
+      max-width: 820px;
+      gap: 8px;
+    }
+
+    &__title-line {
+      &--primary,
+      &--secondary {
+        font-size: 72px;
+        line-height: 80px;
+      }
+
+      &--accent {
+        font-size: 96px;
+        line-height: 102px;
+      }
+    }
+
+    &__counter {
+      top: 136px;
+      right: 24px;
+      width: 430px;
+      gap: 4px;
+    }
+
+    &__counter-value {
+      font-size: 62px;
+      line-height: 66px;
+    }
+
+    &__counter-label {
+      max-width: 430px;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    &__description {
+      top: 344px;
+      right: 24px;
+      max-width: 400px;
+      font-size: 16px;
+    }
+
+    &__summary {
+      top: 604px;
+      right: 64px;
+      max-width: 320px;
+    }
+
+    &__cta {
+      left: 48px;
+      top: 754px;
+      font-size: 26px;
+    }
+
+    &__cta-arrow {
+      .arrow-icon {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
   @media (max-width: 1024px) {
     &__content {
       height: auto;

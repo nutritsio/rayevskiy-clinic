@@ -470,6 +470,56 @@ const handleMarkup = computed(
   right: 24px;
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .transform {
+    padding: 92px 0 112px;
+  }
+
+  .transform__head {
+    margin-bottom: 34px;
+  }
+
+  .transform__title-main {
+    font-size: clamp(34px, 4.2vw, 72px);
+  }
+
+  .transform__title-accent {
+    font-size: 78px;
+    transform: translateY(-6px);
+  }
+
+  .transform__stage {
+    max-width: 1360px;
+    min-height: clamp(300px, 46vw, 640px);
+    padding: 0 28px;
+  }
+
+  .transform__slide,
+  .transform__slide--active {
+    width: min(980px, 86vw);
+  }
+
+  .transform__slide--left,
+  .transform__slide--right {
+    width: clamp(640px, 70vw, 840px);
+  }
+
+  .transform__handle {
+    width: 112px;
+    height: 112px;
+  }
+
+  .transform__handle-core {
+    width: 96px;
+    height: 96px;
+  }
+
+  .transform__handle-img {
+    width: 46px;
+    height: 46px;
+  }
+}
+
 @media (max-width: 1200px) {
   .transform {
     padding: 96px 0 120px;

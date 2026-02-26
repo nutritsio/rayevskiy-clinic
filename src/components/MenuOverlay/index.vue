@@ -160,6 +160,35 @@ onBeforeUnmount(() => {
   }
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .menu {
+    padding: 32px 40px;
+  }
+
+  .menu__inner {
+    gap: 32px;
+  }
+
+  .menu__logo {
+    height: 52px;
+  }
+
+  .menu__close {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .menu__nav {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .menu__link {
+    font-size: clamp(40px, 5.2vw, 62px);
+  }
+}
+
 @media (max-width: 768px) {
   .menu {
     padding: 24px 16px;

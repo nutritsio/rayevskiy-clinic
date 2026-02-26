@@ -2,6 +2,7 @@
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+const currentYear = new Date().getFullYear();
 
 const navLinks = [
   { label: t("footer.nav.choose"), href: "#services" },
@@ -115,7 +116,7 @@ const socials = [
     </div>
 
     <div class="container footer__bottom">
-      <div class="footer__copyright">© 2025. {{ t("footer.copyright") }}</div>
+      <div class="footer__copyright">© {{ currentYear }}. {{ t("footer.copyright") }}</div>
     </div>
   </footer>
 </template>
@@ -175,7 +176,7 @@ const socials = [
 .footer__headline {
   margin-left: auto;
   font-family: var(--font-display);
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 300;
   color: var(--color-accent);
   text-transform: uppercase;
@@ -391,6 +392,82 @@ const socials = [
   color: rgba(255, 255, 255, 0.7);
 }
 
+@media (min-width: 1025px) {
+  .footer__col--hours,
+  .footer__col--social {
+    min-width: max-content;
+  }
+
+  .footer__col--hours .footer__col-title,
+  .footer__col--social .footer__col-title {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .footer {
+    padding: 84px 0 76px;
+  }
+
+  .footer__inner {
+    gap: 54px;
+  }
+
+  .footer__body {
+    gap: 52px;
+  }
+
+  .footer__logo {
+    width: 240px;
+  }
+
+  .footer__headline {
+    font-size: 42px;
+  }
+
+  .footer__left {
+    min-width: 340px;
+  }
+
+  .footer__rating-value {
+    font-size: 40px;
+  }
+
+  .footer__rating-stars {
+    font-size: 18px;
+  }
+
+  .footer__clinic {
+    font-size: 38px;
+  }
+
+  .footer__address {
+    font-size: 17px;
+  }
+
+  .footer__cta {
+    width: 258px;
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+
+  .footer__cta-text {
+    font-size: 14px;
+  }
+
+  .footer__columns {
+    gap: 24px;
+  }
+
+  .footer__col-title {
+    font-size: 18px;
+  }
+
+  .footer__nav-link {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 1024px) {
   .footer {
     padding: 72px 0 96px;
@@ -402,7 +479,7 @@ const socials = [
   }
 
   .footer__headline {
-    font-size: 56px;
+    font-size: 24px;
     align-self: flex-end;
   }
 

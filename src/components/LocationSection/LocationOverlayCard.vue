@@ -129,6 +129,7 @@ defineProps<Props>();
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
   min-height: 56px;
   border: 1px solid #f9f9f9;
   border-radius: 100px;
@@ -150,6 +151,27 @@ defineProps<Props>();
 .location-overlay__maps:hover {
   background: #f9f9f9;
   color: #111;
+}
+
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .location-overlay {
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .location-overlay__title {
+    font-size: 32px;
+  }
+
+  .location-overlay__line {
+    font-size: 16px;
+  }
+
+  .location-overlay__maps {
+    min-height: 48px;
+    font-size: 15px;
+    padding: 12px 16px;
+  }
 }
 
 @media (max-width: 1280px) {

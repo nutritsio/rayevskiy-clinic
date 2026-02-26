@@ -414,6 +414,63 @@ watch(slidesPerView, () => {
   text-transform: uppercase;
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .team {
+    padding: 90px 0 116px;
+  }
+
+  .team__head {
+    gap: 24px;
+    padding-right: 300px;
+  }
+
+  .team__title-main {
+    font-size: 72px;
+    max-width: 620px;
+  }
+
+  .team__title-accent {
+    font-size: 80px;
+    top: 136px;
+  }
+
+  .team__intro {
+    max-width: 330px;
+    font-size: 15px;
+  }
+
+  .team__slider {
+    margin-top: 230px;
+  }
+
+  .team__controls {
+    top: -92px;
+  }
+
+  .team__nav-btn {
+    width: 74px;
+    height: 74px;
+    font-size: 20px;
+  }
+
+  .team__track {
+    --gap: 22px;
+  }
+
+  .team__card {
+    min-height: 430px;
+    padding: 16px 16px 40px;
+  }
+
+  .team__role {
+    font-size: 18px;
+  }
+
+  .team__name {
+    font-size: 21px;
+  }
+}
+
 @media (max-width: 1200px) {
   .team__head {
     grid-template-columns: 1fr;

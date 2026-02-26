@@ -34,7 +34,7 @@ const tabs = computed<LocationTab[]>(() => {
       title: t("location.cards.center.title"),
       address: t("location.cards.center.address"),
       hours: t("location.cards.center.hours"),
-      mapsUrl: "https://maps.google.com/?q=вулиця+Василя+Тютюнника,+28а,+Київ",
+      mapsUrl: "https://maps.app.goo.gl/Zd1wQMk6bM4qWXFv8",
       images: sharedImages,
     },
     {
@@ -43,7 +43,7 @@ const tabs = computed<LocationTab[]>(() => {
       title: t("location.cards.rightBank.title"),
       address: t("location.cards.rightBank.address"),
       hours: t("location.cards.rightBank.hours"),
-      mapsUrl: "https://maps.google.com/?q=вулиця+Василя+Тютюнника,+28а,+Київ",
+      mapsUrl: "https://maps.google.com/?q=Тютюнника+39,+Київ",
       images: sharedImages,
     },
   ];
@@ -78,34 +78,38 @@ const activeLocation = computed<LocationTab>(
       </div>
 
       <div class="location__grid">
-        <article class="location__main">
-          <img
-            :src="activeLocation.images.main"
-            :alt="activeLocation.title"
-            loading="lazy"
-          />
-          <LocationOverlayCard
-            :title="activeLocation.title"
-            :address="activeLocation.address"
-            :hours="activeLocation.hours"
-            :maps-label="t('location.maps')"
-            :maps-aria-label="t('location.mapsAria')"
-            :maps-url="activeLocation.mapsUrl"
-          />
-        </article>
+        <Transition name="location-fade" mode="out-in">
+          <div :key="activeTab" class="location__grid-pane">
+            <article class="location__main">
+              <img
+                :src="activeLocation.images.main"
+                :alt="activeLocation.title"
+                loading="lazy"
+              />
+              <LocationOverlayCard
+                :title="activeLocation.title"
+                :address="activeLocation.address"
+                :hours="activeLocation.hours"
+                :maps-label="t('location.maps')"
+                :maps-aria-label="t('location.mapsAria')"
+                :maps-url="activeLocation.mapsUrl"
+              />
+            </article>
 
-        <div class="location__side">
-          <img
-            :src="activeLocation.images.sideTop"
-            :alt="`${activeLocation.title} view 1`"
-            loading="lazy"
-          />
-          <img
-            :src="activeLocation.images.sideBottom"
-            :alt="`${activeLocation.title} view 2`"
-            loading="lazy"
-          />
-        </div>
+            <div class="location__side">
+              <img
+                :src="activeLocation.images.sideTop"
+                :alt="`${activeLocation.title} view 1`"
+                loading="lazy"
+              />
+              <img
+                :src="activeLocation.images.sideBottom"
+                :alt="`${activeLocation.title} view 2`"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </Transition>
       </div>
     </div>
   </section>
@@ -152,8 +156,8 @@ const activeLocation = computed<LocationTab>(
 }
 
 .location__tab {
+  position: relative;
   border: 0;
-  border-bottom: 1px solid transparent;
   background: transparent;
   padding: 0 0 16px;
   color: #656565;
@@ -162,19 +166,52 @@ const activeLocation = computed<LocationTab>(
   font-weight: 300;
   line-height: 1.1;
   cursor: pointer;
-  transition: color 0.25s ease, border-color 0.25s ease;
+  transition: color 0.25s ease;
+}
+
+.location__tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #f9f9f9;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
 }
 
 .location__tab--active {
   color: #f9f9f9;
-  border-color: #f9f9f9;
 }
 
-.location__grid {
+.location__tab--active::after {
+  transform: scaleX(1);
+}
+
+.location__grid-pane {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.95fr);
   gap: var(--location-photo-gap);
   align-items: stretch;
+}
+
+.location-fade-enter-active,
+.location-fade-leave-active {
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+
+.location-fade-enter-from,
+.location-fade-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.location-fade-enter-to,
+.location-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .location__main {
@@ -203,6 +240,32 @@ const activeLocation = computed<LocationTab>(
   display: block;
 }
 
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .location {
+    padding: 88px 0 112px;
+  }
+
+  .location__title-main {
+    font-size: 76px;
+  }
+
+  .location__title-accent {
+    font-size: 100px;
+  }
+
+  .location__tabs {
+    margin-bottom: 28px;
+  }
+
+  .location__tab {
+    font-size: 32px;
+  }
+
+  .location__main {
+    min-height: 540px;
+  }
+}
+
 @media (max-width: 1280px) {
   .location {
     padding: 88px 0 112px;
@@ -226,7 +289,7 @@ const activeLocation = computed<LocationTab>(
 }
 
 @media (max-width: 900px) {
-  .location__grid {
+  .location__grid-pane {
     grid-template-columns: 1fr;
   }
 
