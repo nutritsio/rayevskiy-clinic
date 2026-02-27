@@ -536,6 +536,19 @@ const handleMarkup = computed(
 }
 
 @media (max-width: 900px) {
+  .transform__head {
+    margin-bottom: 34px;
+  }
+
+  .transform__title-main {
+    font-size: clamp(34px, 8.4vw, 56px);
+  }
+
+  .transform__title-accent {
+    font-size: clamp(48px, 10vw, 68px);
+    transform: translateY(-4px);
+  }
+
   .transform__stage {
     padding: 0 24px;
     min-height: clamp(320px, 68vw, 540px);
@@ -557,7 +570,8 @@ const handleMarkup = computed(
   :global(.transform .vci--right-label) {
     top: 16px !important;
     padding: 8px 16px;
-    font-size: 15px;
+    font-size: 15px !important;
+    line-height: 1.35 !important;
   }
 
   :global(.transform .vci--left-label) {
@@ -581,12 +595,21 @@ const handleMarkup = computed(
   }
 
   .transform__head {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+  }
+
+  .transform__title-main {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .transform__title-accent {
+    font-size: clamp(38px, 12vw, 52px);
+    transform: translateY(-3px);
   }
 
   .transform__stage {
     padding: 0 16px;
-    min-height: 420px;
+    min-height: 360px;
   }
 
   .transform__slide {
@@ -603,9 +626,9 @@ const handleMarkup = computed(
   }
 
   .transform__nav {
-    width: 56px;
-    height: 56px;
-    font-size: 22px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
     background: rgba(12, 12, 13, 0.82);
   }
 
@@ -615,6 +638,42 @@ const handleMarkup = computed(
 
   .transform__nav--next {
     right: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .transform__stage {
+    min-height: 332px;
+    padding: 0 12px;
+  }
+
+  .transform__handle {
+    width: 92px;
+    height: 92px;
+  }
+
+  .transform__handle-core {
+    width: 74px;
+    height: 74px;
+  }
+
+  .transform__handle-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .transform__nav {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .transform__nav--prev {
+    left: 8px;
+  }
+
+  .transform__nav--next {
+    right: 8px;
   }
 }
 </style>

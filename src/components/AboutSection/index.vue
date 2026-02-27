@@ -84,6 +84,10 @@ const cards = computed(() => [
   background: var(--color-bg);
   color: var(--color-text);
 
+  &__inner {
+    position: relative;
+  }
+
   &__header {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -410,8 +414,49 @@ const cards = computed(() => [
 
     &__cta-floating {
       position: static;
+      flex: 0 0 200px;
+      min-width: 200px;
+      min-height: 200px;
       align-self: flex-end;
       margin-top: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__grid {
+      gap: 16px;
+      padding-bottom: 128px;
+    }
+
+    &__cta-floating {
+      position: absolute;
+      right: 16px;
+      bottom: 12px;
+      width: 112px;
+      height: 112px;
+      min-width: 112px;
+      min-height: 112px;
+      margin-top: 0;
+      font-size: 16px;
+      line-height: 1.1;
+      padding: 0 10px;
+      z-index: 2;
+    }
+  }
+
+  @media (max-width: 360px) {
+    &__grid {
+      padding-bottom: 112px;
+    }
+
+    &__cta-floating {
+      right: 12px;
+      bottom: 8px;
+      width: 96px;
+      height: 96px;
+      min-width: 96px;
+      min-height: 96px;
+      font-size: 14px;
     }
   }
 }

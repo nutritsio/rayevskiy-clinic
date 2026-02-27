@@ -401,9 +401,9 @@ const handleTrackPointerUp = (event: PointerEvent) => {
 
   @media (max-width: 1280px) {
     &__head {
-      padding: 0 32px;
       flex-direction: column;
       align-items: flex-start;
+      margin-bottom: 32px;
     }
 
     &__cta {
@@ -412,16 +412,106 @@ const handleTrackPointerUp = (event: PointerEvent) => {
     }
 
     &__slider {
-      padding: 0 32px;
+      padding: 0 0 0 24px;
     }
 
     &__track {
+      gap: 16px;
+      padding: 10px 0 4px;
+      scroll-padding-left: 0;
+      scroll-padding-right: 0;
+      margin-right: 0;
       grid-auto-columns: 90%;
     }
 
     &__card {
       min-width: 90%;
       max-width: 90%;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    &__track {
+      grid-auto-columns: clamp(620px, 82vw, 760px);
+      gap: 16px;
+    }
+
+    &__card {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 76px 0 96px;
+
+    &__head {
+      margin-bottom: 24px;
+      gap: 14px;
+    }
+
+    &__rating-value {
+      font-size: 38px;
+    }
+
+    &__rating-stars {
+      font-size: 18px;
+    }
+
+    &__clinic {
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    &__address {
+      font-size: 16px;
+    }
+
+    &__cta {
+      font-size: 13px;
+      padding: 10px 16px;
+      gap: 8px;
+    }
+
+    &__slider {
+      padding: 0 0 0 16px;
+    }
+
+    &__track {
+      gap: 12px;
+    }
+
+    &__card {
+      min-width: 100%;
+      max-width: 100%;
+      padding: 16px;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      border-radius: 12px;
+    }
+
+    &__avatar {
+      width: 48px;
+      height: 48px;
+    }
+
+    &__name,
+    &__text {
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    &__stars,
+    &__time {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    &__cta {
+      width: 100%;
+      justify-content: center;
     }
   }
 }

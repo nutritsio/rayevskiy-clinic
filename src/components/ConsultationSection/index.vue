@@ -749,7 +749,7 @@ const handleSubmit = async () => {
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .consult__card {
     grid-template-columns: 1fr;
     height: auto;

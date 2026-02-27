@@ -472,10 +472,33 @@ watch(slidesPerView, () => {
 }
 
 @media (max-width: 1200px) {
+  .team {
+    padding: 96px 0 120px;
+  }
+
   .team__head {
     grid-template-columns: 1fr;
     align-items: flex-start;
     padding-right: 0;
+    gap: 20px;
+  }
+
+  .team__title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .team__title-main {
+    font-size: clamp(56px, 9vw, 76px);
+    max-width: none;
+  }
+
+  .team__title-accent {
+    position: static;
+    transform: none;
+    font-size: clamp(54px, 8.4vw, 74px);
+    line-height: 0.95;
   }
 
   .team__intro {
@@ -483,42 +506,68 @@ watch(slidesPerView, () => {
     max-width: none;
   }
 
+  .team__slider {
+    margin-top: 140px;
+  }
+
   .team__controls {
     right: 24px;
+    top: -96px;
   }
 }
 
 @media (max-width: 768px) {
   .team {
-    padding: 80px 0 110px;
+    padding: 72px 0 96px;
   }
 
   .team__title {
     gap: 6px;
   }
 
+  .team__title-main {
+    font-size: clamp(36px, 11vw, 52px);
+    line-height: 1.08;
+  }
+
+  .team__title-accent {
+    font-size: clamp(36px, 10vw, 50px);
+  }
+
   .team__intro {
     max-width: none;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .team__slider {
+    margin-top: 52px;
   }
 
   .team__controls {
-    top: 16px;
-    right: 16px;
+    position: static;
+    margin-bottom: 16px;
     gap: 10px;
+    justify-content: flex-end;
   }
 
   .team__nav-btn {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     font-size: 18px;
   }
 
   .team__track {
-    --gap: 20px;
+    --gap: 16px;
   }
 
   .team__card {
-    min-height: 420px;
+    min-height: 0;
+    padding: 14px 14px 24px;
+  }
+
+  .team__role {
+    font-size: 18px;
   }
 
   .team__info {
@@ -529,6 +578,34 @@ watch(slidesPerView, () => {
   .team__role {
     max-width: none;
     flex: 0 0 auto;
+  }
+
+  .team__name {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 360px) {
+  .team__nav-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .team__card {
+    padding: 12px 12px 20px;
+  }
+
+  .team__role {
+    font-size: 16px;
+  }
+
+  .team__desc {
+    font-size: 14px;
+  }
+
+  .team__name {
+    font-size: 20px;
   }
 }
 </style>
