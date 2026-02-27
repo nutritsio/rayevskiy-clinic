@@ -403,7 +403,7 @@ const openMenu = () => emit("open-menu");
     font-family: var(--font-display);
     font-size: 74px;
     color: var(--color-accent);
-    font-weight: 700;
+    font-weight: 500;
     line-height: 78px;
   }
 

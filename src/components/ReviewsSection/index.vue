@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 type Review = {
@@ -28,6 +28,29 @@ const slides = computed(() => {
     stars: item.stars ?? (t("reviews.stars") as string),
   }));
 });
+
+const trackRef = ref<HTMLElement | null>(null);
+
+const handleTrackWheel = (event: WheelEvent) => {
+  const track = trackRef.value;
+  if (!track) return;
+
+  const isMostlyVerticalScroll = Math.abs(event.deltaY) > Math.abs(event.deltaX);
+  if (!isMostlyVerticalScroll) return;
+
+  const maxScrollLeft = track.scrollWidth - track.clientWidth;
+  if (maxScrollLeft <= 0) return;
+
+  const nextScrollLeft = Math.min(
+    maxScrollLeft,
+    Math.max(0, track.scrollLeft + event.deltaY),
+  );
+
+  if (nextScrollLeft !== track.scrollLeft) {
+    track.scrollLeft = nextScrollLeft;
+    event.preventDefault();
+  }
+};
 </script>
 
 <template>
@@ -56,7 +79,7 @@ const slides = computed(() => {
       </a>
     </div>
     <div class="reviews__slider">
-      <div class="reviews__track">
+      <div ref="trackRef" class="reviews__track" @wheel="handleTrackWheel">
         <article v-for="slide in slides" :key="slide.id" class="reviews__card">
           <img class="reviews__avatar" :src="slide.avatar" alt="" />
           <div class="reviews__body">
@@ -211,14 +234,34 @@ const slides = computed(() => {
     grid-auto-columns: 1fr;
     gap: 24px;
     padding: 12px 64px;
+    padding-bottom: 14px;
     overflow-x: auto;
-    scrollbar-width: none;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 107, 0, 0.9) rgba(255, 255, 255, 0.14);
     scroll-padding-left: 64px;
     scroll-padding-right: 64px;
     margin-right: -64px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
 
     &::-webkit-scrollbar {
-      display: none;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, #ff6b00 0%, #ff8c3a 100%);
+      border-radius: 999px;
+      border: 2px solid rgba(12, 12, 13, 0.85);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(90deg, #ff7a22 0%, #ffa35c 100%);
     }
   }
 
@@ -317,6 +360,7 @@ const slides = computed(() => {
     &__track {
       gap: 18px;
       padding: 10px 24px;
+      padding-bottom: 12px;
       scroll-padding-left: 24px;
       scroll-padding-right: 24px;
       margin-right: -24px;
