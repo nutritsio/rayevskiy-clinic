@@ -94,7 +94,7 @@ defineProps<Props>();
 .location-overlay__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 40px;
+  font-size: 18px;
   font-weight: 300;
   line-height: 1.1;
   text-transform: uppercase;
@@ -113,7 +113,7 @@ defineProps<Props>();
   gap: 10px;
   color: #e0e0e0;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 300;
   line-height: 1.3;
   text-transform: uppercase;
@@ -197,16 +197,38 @@ defineProps<Props>();
 
 @media (max-width: 768px) {
   .location-overlay {
-    left: 2.5%;
-    right: 2.5%;
-    bottom: 2.5%;
-    padding: 16px;
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    margin-top: 16px;
+    padding: 0 6px;
+    background: transparent;
     flex-direction: column;
     align-items: flex-start;
+    gap: 18px;
   }
 
   .location-overlay__title {
-    font-size: 26px;
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .location-overlay__meta {
+    gap: 10px;
+  }
+
+  .location-overlay__line {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .location-overlay__maps {
+    width: 100%;
+    justify-content: center;
+    min-height: 40px;
+    font-size: 14px;
   }
 }
 </style>

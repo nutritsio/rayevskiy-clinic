@@ -41,7 +41,12 @@ const openMenu = () => emit("open-menu");
         <div class="hero__contact">
           <div class="hero__meta">
             <p class="hero__meta-title">
-              {{ t("hero.address") }}
+              {{ t("hero.addressPrimary") }}
+            </p>
+          </div>
+          <div class="hero__meta">
+            <p class="hero__meta-title">
+              {{ t("hero.addressSecondary") }}
             </p>
           </div>
           <div class="hero__meta">
@@ -221,8 +226,8 @@ const openMenu = () => emit("open-menu");
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 72px;
-    width: 513px;
+    gap: 32px;
+    width: auto;
 
     @media (max-width: 768px) {
       justify-content: flex-start;
@@ -245,10 +250,13 @@ const openMenu = () => emit("open-menu");
 
   &__meta-title {
     margin: 0;
-    font-family: var(--font-display);
-    text-transform: uppercase;
+    color: #9f9f9f;
+    font-family: Unbounded;
+    font-size: 14px;
+    font-style: normal;
     font-weight: 300;
-    line-height: 1.1;
+    line-height: 22px;
+    text-transform: uppercase;
   }
 
   &__actions {
@@ -523,7 +531,7 @@ const openMenu = () => emit("open-menu");
 
     &__contact {
       width: auto;
-      gap: 36px;
+      gap: 24px;
     }
 
     &__meta {
@@ -900,6 +908,11 @@ const openMenu = () => emit("open-menu");
     &__title--stacked {
       align-items: flex-end;
       text-align: right;
+      gap: 0;
+    }
+
+    &__title {
+      gap: 4px;
     }
 
     &__image--desktop {
@@ -913,11 +926,13 @@ const openMenu = () => emit("open-menu");
 
     &__title-line--primary {
       font-size: clamp(32px, 10vw, 56px);
+      line-height: 1.06;
     }
 
     &__title-line--secondary,
     &__title-line--accent {
       font-size: clamp(32px, 9vw, 48px);
+      line-height: 1.06;
     }
 
     &__cta {

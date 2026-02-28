@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import LocationOverlayCard from "./LocationOverlayCard.vue";
 
@@ -10,48 +10,162 @@ type LocationTab = {
   address: string;
   hours: string;
   mapsUrl: string;
-  images: {
-    main: string;
-    sideTop: string;
-    sideBottom: string;
-  };
+  images: string[];
 };
 
 const { t } = useI18n();
 const activeTab = ref("center");
+const isMobile = ref(false);
 
-const tabs = computed<LocationTab[]>(() => {
-  const sharedImages = {
-    main: "/assets/locations/opt/location1.jpg",
-    sideTop: "/assets/locations/opt/location2.jpg",
-    sideBottom: "/assets/locations/opt/location3.jpg",
-  };
+const photoIndex = ref(0);
+const trackRef = ref<HTMLElement | null>(null);
+const slideRefs = ref<HTMLElement[]>([]);
 
-  return [
-    {
-      id: "center",
-      label: t("location.tabs.center"),
-      title: t("location.cards.center.title"),
-      address: t("location.cards.center.address"),
-      hours: t("location.cards.center.hours"),
-      mapsUrl: "https://maps.app.goo.gl/Zd1wQMk6bM4qWXFv8",
-      images: sharedImages,
-    },
-    {
-      id: "rightBank",
-      label: t("location.tabs.rightBank"),
-      title: t("location.cards.rightBank.title"),
-      address: t("location.cards.rightBank.address"),
-      hours: t("location.cards.rightBank.hours"),
-      mapsUrl: "https://maps.google.com/?q=Тютюнника+39,+Київ",
-      images: sharedImages,
-    },
-  ];
-});
+const isDragging = ref(false);
+const dragStartX = ref(0);
+const dragOffsetX = ref(0);
+const dragPointerId = ref<number | null>(null);
+
+const tabs = computed<LocationTab[]>(() => [
+  {
+    id: "center",
+    label: t("location.tabs.center"),
+    title: t("location.cards.center.title"),
+    address: t("location.cards.center.address"),
+    hours: t("location.cards.center.hours"),
+    mapsUrl: "https://maps.app.goo.gl/Zd1wQMk6bM4qWXFv8",
+    images: [
+      "/assets/locations/opt/location1-1.jpg",
+      "/assets/locations/opt/location1-2.jpg",
+      "/assets/locations/opt/location1-3.jpg",
+    ],
+  },
+  {
+    id: "rightBank",
+    label: t("location.tabs.rightBank"),
+    title: t("location.cards.rightBank.title"),
+    address: t("location.cards.rightBank.address"),
+    hours: t("location.cards.rightBank.hours"),
+    mapsUrl: "https://maps.google.com/?q=Тютюнника+39,+Київ",
+    images: [
+      "/assets/locations/opt/location2-1.jpg",
+      "/assets/locations/opt/location2-2.jpg",
+      "/assets/locations/opt/location2-3.jpg",
+    ],
+  },
+]);
 
 const activeLocation = computed<LocationTab>(
   () => tabs.value.find((tab) => tab.id === activeTab.value) || tabs.value[0]!
 );
+
+const maxPhotoIndex = computed(() => Math.max(0, activeLocation.value.images.length - 1));
+
+const updateIsMobile = () => {
+  isMobile.value = window.innerWidth <= 768;
+};
+
+const updatePosition = () => {
+  if (!isMobile.value) return;
+
+  const track = trackRef.value;
+  const slide = slideRefs.value[0];
+  if (!track || !slide) return;
+
+  const styles = getComputedStyle(track);
+  const gap = parseFloat(styles.columnGap || styles.gap || "0");
+  const slideWidth = slide.getBoundingClientRect().width;
+  const offset = (slideWidth + gap) * photoIndex.value;
+  track.style.transform = `translateX(${dragOffsetX.value - offset}px)`;
+};
+
+const onTabClick = (id: string) => {
+  activeTab.value = id;
+  photoIndex.value = 0;
+  nextTick(updatePosition);
+};
+
+const onDragStart = (event: PointerEvent) => {
+  if (!isMobile.value) return;
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+
+  const viewport = event.currentTarget as HTMLElement | null;
+  if (!viewport) return;
+
+  isDragging.value = true;
+  dragPointerId.value = event.pointerId;
+  dragStartX.value = event.clientX;
+  dragOffsetX.value = 0;
+
+  viewport.setPointerCapture?.(event.pointerId);
+  if (trackRef.value) {
+    trackRef.value.style.transition = "none";
+  }
+};
+
+const onDragMove = (event: PointerEvent) => {
+  if (!isMobile.value) return;
+  if (!isDragging.value || dragPointerId.value !== event.pointerId) return;
+
+  dragOffsetX.value = event.clientX - dragStartX.value;
+  requestAnimationFrame(updatePosition);
+};
+
+const onDragEnd = (event: PointerEvent) => {
+  if (!isMobile.value) return;
+  if (!isDragging.value || dragPointerId.value !== event.pointerId) return;
+
+  const slide = slideRefs.value[0];
+  const threshold = slide
+    ? Math.min(120, slide.getBoundingClientRect().width * 0.2)
+    : 80;
+  const dragged = dragOffsetX.value;
+
+  isDragging.value = false;
+  dragPointerId.value = null;
+  dragOffsetX.value = 0;
+
+  if (trackRef.value) {
+    trackRef.value.style.transition = "transform 320ms ease";
+  }
+
+  if (dragged <= -threshold) {
+    photoIndex.value = Math.min(photoIndex.value + 1, maxPhotoIndex.value);
+  } else if (dragged >= threshold) {
+    photoIndex.value = Math.max(photoIndex.value - 1, 0);
+  }
+
+  requestAnimationFrame(updatePosition);
+};
+
+const handleResize = () => {
+  const wasMobile = isMobile.value;
+  updateIsMobile();
+
+  if (wasMobile && !isMobile.value) {
+    photoIndex.value = 0;
+    dragOffsetX.value = 0;
+  }
+
+  requestAnimationFrame(updatePosition);
+};
+
+onMounted(() => {
+  updateIsMobile();
+  nextTick(updatePosition);
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
+watch(activeTab, () => {
+  photoIndex.value = 0;
+  nextTick(updatePosition);
+});
+
+watch(photoIndex, () => requestAnimationFrame(updatePosition));
 </script>
 
 <template>
@@ -71,45 +185,74 @@ const activeLocation = computed<LocationTab>(
           type="button"
           role="tab"
           :aria-selected="activeTab === tab.id"
-          @click="activeTab = tab.id"
+          @click="onTabClick(tab.id)"
         >
           {{ tab.label }}
         </button>
       </div>
 
-      <div class="location__grid">
-        <Transition name="location-fade" mode="out-in">
-          <div :key="activeTab" class="location__grid-pane">
-            <article class="location__main">
-              <img
-                :src="activeLocation.images.main"
-                :alt="activeLocation.title"
-                loading="lazy"
-              />
-              <LocationOverlayCard
-                :title="activeLocation.title"
-                :address="activeLocation.address"
-                :hours="activeLocation.hours"
-                :maps-label="t('location.maps')"
-                :maps-aria-label="t('location.mapsAria')"
-                :maps-url="activeLocation.mapsUrl"
-              />
-            </article>
+      <div class="location__desktop-pane">
+        <article class="location__main">
+          <img :src="activeLocation.images[0]" :alt="activeLocation.title" loading="lazy" />
+          <LocationOverlayCard
+            :title="activeLocation.title"
+            :address="activeLocation.address"
+            :hours="activeLocation.hours"
+            :maps-label="t('location.maps')"
+            :maps-aria-label="t('location.mapsAria')"
+            :maps-url="activeLocation.mapsUrl"
+          />
+        </article>
 
-            <div class="location__side">
-              <img
-                :src="activeLocation.images.sideTop"
-                :alt="`${activeLocation.title} view 1`"
-                loading="lazy"
-              />
-              <img
-                :src="activeLocation.images.sideBottom"
-                :alt="`${activeLocation.title} view 2`"
-                loading="lazy"
-              />
+        <div class="location__side">
+          <img
+            :src="activeLocation.images[1]"
+            :alt="`${activeLocation.title} view 1`"
+            loading="lazy"
+          />
+          <img
+            :src="activeLocation.images[2]"
+            :alt="`${activeLocation.title} view 2`"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="location__mobile-pane">
+        <article class="location__gallery">
+          <div
+            class="location__viewport"
+            @pointerdown="onDragStart"
+            @pointermove="onDragMove"
+            @pointerup="onDragEnd"
+            @pointercancel="onDragEnd"
+          >
+            <div ref="trackRef" class="location__track">
+              <div
+                v-for="(image, idx) in activeLocation.images"
+                :key="`${activeLocation.id}-${idx}`"
+                ref="slideRefs"
+                class="location__slide"
+              >
+                <img
+                  :src="image"
+                  :alt="`${activeLocation.title} view ${idx + 1}`"
+                  loading="lazy"
+                  draggable="false"
+                />
+              </div>
             </div>
           </div>
-        </Transition>
+
+          <LocationOverlayCard
+            :title="activeLocation.title"
+            :address="activeLocation.address"
+            :hours="activeLocation.hours"
+            :maps-label="t('location.maps')"
+            :maps-aria-label="t('location.mapsAria')"
+            :maps-url="activeLocation.mapsUrl"
+          />
+        </article>
       </div>
     </div>
   </section>
@@ -120,7 +263,6 @@ const activeLocation = computed<LocationTab>(
   background: var(--color-bg);
   color: var(--color-text);
   padding: 108px 0 136px;
-  --location-photo-gap: 24px;
 }
 
 .location__heading {
@@ -190,28 +332,11 @@ const activeLocation = computed<LocationTab>(
   transform: scaleX(1);
 }
 
-.location__grid-pane {
+.location__desktop-pane {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.95fr);
-  gap: var(--location-photo-gap);
+  gap: 24px;
   align-items: stretch;
-}
-
-.location-fade-enter-active,
-.location-fade-leave-active {
-  transition: opacity 0.32s ease, transform 0.32s ease;
-}
-
-.location-fade-enter-from,
-.location-fade-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.location-fade-enter-to,
-.location-fade-leave-from {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .location__main {
@@ -230,10 +355,47 @@ const activeLocation = computed<LocationTab>(
 .location__side {
   display: grid;
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: var(--location-photo-gap);
+  gap: 24px;
 }
 
 .location__side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.location__mobile-pane {
+  display: none;
+}
+
+.location__gallery {
+  position: relative;
+}
+
+.location__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.location__track {
+  --gap: 14px;
+  display: flex;
+  gap: var(--gap);
+  transform: translateX(0);
+  transition: transform 320ms ease;
+  will-change: transform;
+  user-select: none;
+}
+
+.location__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.location__slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -289,7 +451,7 @@ const activeLocation = computed<LocationTab>(
 }
 
 @media (max-width: 900px) {
-  .location__grid-pane {
+  .location__desktop-pane {
     grid-template-columns: 1fr;
   }
 
@@ -306,7 +468,7 @@ const activeLocation = computed<LocationTab>(
 
 @media (max-width: 768px) {
   .location {
-    padding: 72px 0 96px;
+    padding: 72px 0 0;
   }
 
   .location__heading {
@@ -314,12 +476,18 @@ const activeLocation = computed<LocationTab>(
   }
 
   .location__title-main {
-    font-size: 44px;
+    font-size: 30px;
     line-height: 1.15;
   }
 
   .location__title-accent {
-    font-size: 66px;
+    color: #ff6c1c;
+    text-align: right;
+    font-family: "Classica Two";
+    font-size: 44px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 48px;
   }
 
   .location__tabs {
@@ -328,12 +496,21 @@ const activeLocation = computed<LocationTab>(
   }
 
   .location__tab {
-    font-size: 28px;
+    font-size: 18px;
     padding-bottom: 10px;
   }
 
-  .location__main {
-    min-height: 300px;
+  .location__desktop-pane {
+    display: none;
+  }
+
+  .location__mobile-pane {
+    display: block;
+  }
+
+  .location__slide {
+    flex: 0 0 calc(100% - 44px);
+    min-width: calc(100% - 44px);
   }
 }
 </style>

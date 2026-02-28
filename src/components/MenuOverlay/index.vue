@@ -194,8 +194,19 @@ onBeforeUnmount(() => {
     padding: 24px 16px;
   }
 
+  .menu__inner {
+    width: 100%;
+    max-width: 343px;
+    margin: 0 auto;
+  }
+
+  .menu__nav {
+    width: 100%;
+  }
+
   .menu__link {
     font-size: 32px;
+    text-align: center;
   }
 }
 

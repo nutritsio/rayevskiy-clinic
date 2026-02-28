@@ -372,7 +372,7 @@ const handleSubmit = async () => {
             </button>
           </div>
 
-          <div class="consult__status" aria-live="polite">
+          <div v-if="status !== 'idle'" class="consult__status" aria-live="polite">
             <span v-if="status === 'success'" class="consult__status--success">
               {{ t("consult.success") }}
             </span>
@@ -710,8 +710,8 @@ const handleSubmit = async () => {
 }
 
 .consult__status {
-  min-height: 18px;
   font-size: 13px;
+  margin-top: 8px;
 }
 
 .consult__status--success {
@@ -756,7 +756,14 @@ const handleSubmit = async () => {
   }
 
   .consult__media {
-    max-height: 360px;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .consult__media img {
+    height: auto;
+    object-fit: contain;
   }
 
   .consult__form {
@@ -773,11 +780,47 @@ const handleSubmit = async () => {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+    margin-bottom: 35px;
   }
 
   .consult__title {
+    order: 1;
     align-items: flex-start;
     text-align: left;
+  }
+
+  .consult__title-main {
+    color: #f9f9f9;
+    font-family: Unbounded;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 36px;
+    text-transform: uppercase;
+  }
+
+  .consult__title-accent {
+    color: #ff6c1c;
+    text-align: right;
+    font-family: "Classica Two";
+    font-size: 44px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 48px;
+  }
+
+  .consult__discount {
+    order: 2;
+    margin-left: 0;
+    margin-right: 32px;
+    margin-top: 8px;
+    align-self: flex-end;
+    text-align: right;
+    color: #e0e0e0;
+    font-family: Manrope;
+    font-size: 14px;
+    font-weight: 450;
+    line-height: 1.2;
   }
 
   .consult__title-accent {
@@ -791,6 +834,7 @@ const handleSubmit = async () => {
   .consult__footer {
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 0;
   }
 
   .consult__submit {

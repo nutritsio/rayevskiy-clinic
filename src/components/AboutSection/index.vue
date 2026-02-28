@@ -245,7 +245,10 @@ const cards = computed(() => [
     line-height: 1.2;
     padding: 0 24px;
     text-align: center;
-    transition: transform 0.25s ease, box-shadow 0.3s ease, opacity 0.25s ease;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.3s ease,
+      opacity 0.25s ease;
     box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.35);
     overflow: hidden;
     transform: scale(1);
@@ -279,50 +282,50 @@ const cards = computed(() => [
     }
   }
 
-@keyframes pulse-core {
-  0% {
-    transform: translateY(0) scale(1);
-    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
+  @keyframes pulse-core {
+    0% {
+      transform: translateY(0) scale(1);
+      box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
+    }
+    50% {
+      transform: translateY(-2px) scale(1.06);
+      box-shadow: 0 14px 32px rgba(255, 107, 0, 0.28);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
+    }
   }
-  50% {
-    transform: translateY(-2px) scale(1.06);
-    box-shadow: 0 14px 32px rgba(255, 107, 0, 0.28);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-    box-shadow: 0 6px 18px rgba(255, 107, 0, 0.18);
-  }
-}
 
-@keyframes pulse-ring {
-  0% {
-    opacity: 0.35;
-    transform: scale(0.9);
+  @keyframes pulse-ring {
+    0% {
+      opacity: 0.35;
+      transform: scale(0.9);
+    }
+    60% {
+      opacity: 0;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.25);
+    }
   }
-  60% {
-    opacity: 0;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.25);
-  }
-}
 
-@keyframes pulse-ring-soft {
-  0% {
-    opacity: 0.25;
-    transform: scale(0.95);
+  @keyframes pulse-ring-soft {
+    0% {
+      opacity: 0.25;
+      transform: scale(0.95);
+    }
+    60% {
+      opacity: 0;
+      transform: scale(1.25);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.3);
+    }
   }
-  60% {
-    opacity: 0;
-    transform: scale(1.25);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.3);
-  }
-}
 
   @media (min-width: 1025px) and (max-width: 1700px) {
     padding: 92px 24px 24px;
@@ -419,7 +422,69 @@ const cards = computed(() => [
       top: 180px;
       right: 24px;
     }
+  }
 
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: 84px 0 40px;
+
+    &__inner {
+      padding: 0 24px;
+    }
+
+    &__header {
+      display: block;
+      margin-bottom: 34px;
+      padding: 0 24px;
+    }
+
+    &__title {
+      align-items: flex-end;
+      gap: 0 6px;
+    }
+
+    &__title-line {
+      font-size: 56px;
+      line-height: 1.04;
+
+      &--small {
+        font-size: 56px;
+        line-height: 1.04;
+        margin-left: 32px;
+      }
+    }
+
+    &__title-line:first-child {
+      width: 100%;
+    }
+
+    &__title-accent {
+      font-size: clamp(82px, 13vw, 108px);
+      line-height: 0.82;
+      letter-spacing: -2px;
+      transform: translateY(12px);
+    }
+
+    &__aside {
+      margin-top: 16px;
+      align-items: flex-start;
+    }
+
+    &__subtitle {
+      max-width: 420px;
+      text-align: left;
+    }
+
+    &__cta-floating {
+      width: 164px;
+      height: 164px;
+      min-width: 164px;
+      min-height: 164px;
+      font-size: 18px;
+      line-height: 1.06;
+      top: 112px;
+      right: 24px;
+      padding: 0 14px;
+    }
   }
 
   @media (max-width: 768px) {

@@ -80,9 +80,14 @@ const socials = [
               {{ t("footer.contacts.title") }}
             </div>
             <a class="footer__nav-link" href="tel:0777775103">077 777 51 03</a>
-            <div class="footer__nav-link footer__nav-link--muted">
+            <a
+              class="footer__nav-link footer__nav-link--muted"
+              href="https://maps.google.com/?q=вул.+Василя+Тютюнника,+28а,+Київ"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {{ t("hero.address") }}
-            </div>
+            </a>
           </div>
 
           <div class="footer__col footer__col--hours">
@@ -523,6 +528,10 @@ const socials = [
 @media (max-width: 768px) {
   .footer {
     padding: 64px 0 24px;
+  }
+
+  .footer__left {
+    display: none;
   }
 
   .footer__logo {

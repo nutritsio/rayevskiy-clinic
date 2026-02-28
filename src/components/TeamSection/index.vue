@@ -46,9 +46,9 @@ const memberPresets: TeamMember[] = [
   {
     id: 4,
     name: "Daria",
-    role: "Dentist",
+    role: "Orthodontist",
     description:
-      "Specializes in aesthetic and therapeutic dentistry, combining professionalism with patient comfort.",
+      "Specializes in aesthetic and therapeutic dentistry, combining professionalism with care for patient comfort.",
     photo: "/assets/team/daria.png",
   },
 ];
@@ -88,6 +88,10 @@ const activeIndex = ref(0);
 const slidesPerView = ref(3.5);
 const trackRef = ref<HTMLElement | null>(null);
 const cardRefs = ref<HTMLElement[]>([]);
+const isDragging = ref(false);
+const dragStartX = ref(0);
+const dragOffsetX = ref(0);
+const dragPointerId = ref<number | null>(null);
 
 const maxIndex = computed(() =>
   Math.max(0, Math.ceil(members.value.length - slidesPerView.value))
@@ -113,7 +117,7 @@ const updatePosition = () => {
   const gap = parseFloat(styles.columnGap || styles.gap || "0");
   const cardWidth = card.getBoundingClientRect().width;
   const offset = (cardWidth + gap) * activeIndex.value;
-  track.style.transform = `translateX(${-offset}px)`;
+  track.style.transform = `translateX(${dragOffsetX.value - offset}px)`;
 };
 
 const handleResize = () => {
@@ -129,6 +133,55 @@ const goNext = () => {
 const goPrev = () => {
   activeIndex.value =
     activeIndex.value <= 0 ? maxIndex.value : activeIndex.value - 1;
+};
+
+const onDragStart = (event: PointerEvent) => {
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+
+  const viewport = event.currentTarget as HTMLElement | null;
+  if (!viewport) return;
+
+  isDragging.value = true;
+  dragPointerId.value = event.pointerId;
+  dragStartX.value = event.clientX;
+  dragOffsetX.value = 0;
+
+  viewport.setPointerCapture?.(event.pointerId);
+  if (trackRef.value) {
+    trackRef.value.style.transition = "none";
+  }
+};
+
+const onDragMove = (event: PointerEvent) => {
+  if (!isDragging.value || dragPointerId.value !== event.pointerId) return;
+  dragOffsetX.value = event.clientX - dragStartX.value;
+  requestAnimationFrame(updatePosition);
+};
+
+const onDragEnd = (event: PointerEvent) => {
+  if (!isDragging.value || dragPointerId.value !== event.pointerId) return;
+
+  const card = cardRefs.value[0];
+  const threshold = card
+    ? Math.min(120, card.getBoundingClientRect().width * 0.2)
+    : 80;
+  const dragged = dragOffsetX.value;
+
+  isDragging.value = false;
+  dragPointerId.value = null;
+  dragOffsetX.value = 0;
+
+  if (trackRef.value) {
+    trackRef.value.style.transition = "transform 360ms ease";
+  }
+
+  if (dragged <= -threshold) {
+    goNext();
+  } else if (dragged >= threshold) {
+    goPrev();
+  } else {
+    requestAnimationFrame(updatePosition);
+  }
 };
 
 onMounted(() => {
@@ -198,6 +251,10 @@ watch(slidesPerView, () => {
             ref="trackRef"
             class="team__track"
             :style="{ '--per': slidesPerView }"
+            @pointerdown="onDragStart"
+            @pointermove="onDragMove"
+            @pointerup="onDragEnd"
+            @pointercancel="onDragEnd"
           >
             <article
               v-for="member in members"
@@ -206,7 +263,12 @@ watch(slidesPerView, () => {
               ref="cardRefs"
             >
               <div class="team__photo">
-                <img :src="member.photo" :alt="member.name" loading="lazy" />
+                <img
+                  :src="member.photo"
+                  :alt="member.name"
+                  loading="lazy"
+                  draggable="false"
+                />
               </div>
               <div class="team__meta">
                 <div class="team__info">
@@ -337,6 +399,7 @@ watch(slidesPerView, () => {
 
 .team__viewport {
   overflow: hidden;
+  touch-action: pan-y;
 }
 
 .team__track {
@@ -346,6 +409,7 @@ watch(slidesPerView, () => {
   transform: translateX(0);
   transition: transform 360ms ease;
   will-change: transform;
+  user-select: none;
 }
 
 .team__card {
@@ -545,16 +609,7 @@ watch(slidesPerView, () => {
   }
 
   .team__controls {
-    position: static;
-    margin-bottom: 16px;
-    gap: 10px;
-    justify-content: flex-end;
-  }
-
-  .team__nav-btn {
-    width: 56px;
-    height: 56px;
-    font-size: 18px;
+    display: none;
   }
 
   .team__track {
@@ -562,6 +617,8 @@ watch(slidesPerView, () => {
   }
 
   .team__card {
+    flex: 0 0 calc(100% - 44px);
+    min-width: calc(100% - 44px);
     min-height: 0;
     padding: 14px 14px 24px;
   }
@@ -586,12 +643,6 @@ watch(slidesPerView, () => {
 }
 
 @media (max-width: 360px) {
-  .team__nav-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 16px;
-  }
-
   .team__card {
     padding: 12px 12px 20px;
   }
