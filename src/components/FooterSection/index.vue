@@ -522,7 +522,7 @@ const socials = [
 
 @media (max-width: 768px) {
   .footer {
-    padding: 64px 0 84px;
+    padding: 64px 0 24px;
   }
 
   .footer__logo {

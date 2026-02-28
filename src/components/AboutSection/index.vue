@@ -69,10 +69,11 @@ const cards = computed(() => [
             <p class="about__card-text">{{ card.text }}</p>
           </div>
         </article>
-        <a class="about__cta-floating" href="#consult">
-          {{ t("hero.cta") }}
-        </a>
       </div>
+      <p class="about__subtitle-mobile" v-html="t('about.subtitle')" />
+      <a class="about__cta-floating" href="#consult">
+        {{ t("hero.cta") }}
+      </a>
     </div>
   </section>
 </template>
@@ -220,9 +221,13 @@ const cards = computed(() => [
     margin-top: 140px;
   }
 
+  &__subtitle-mobile {
+    display: none;
+  }
+
   &__cta-floating {
     position: absolute;
-    top: -80px;
+    top: 220px;
     right: 50px;
     width: 250px;
     height: 250px;
@@ -245,6 +250,7 @@ const cards = computed(() => [
     overflow: hidden;
     transform: scale(1);
     text-decoration: none;
+    animation: pulse-core 1.4s ease-in-out infinite;
 
     &::after,
     &::before {
@@ -256,25 +262,14 @@ const cards = computed(() => [
       opacity: 0;
       transform: scale(0.9);
       pointer-events: none;
-      animation: none;
+      animation: pulse-ring 1.2s ease-out infinite;
     }
 
     &::before {
       inset: -14px;
       border-width: 1.5px;
       border-color: rgba(255, 200, 150, 0.28);
-    }
-
-    &:hover {
-      animation: pulse-core 1.4s ease-in-out infinite;
-
-      &::after {
-        animation: pulse-ring 1.2s ease-out infinite;
-      }
-
-      &::before {
-        animation: pulse-ring-soft 1.4s ease-out infinite;
-      }
+      animation: pulse-ring-soft 1.4s ease-out infinite;
     }
 
     &:active {
@@ -330,7 +325,7 @@ const cards = computed(() => [
 }
 
   @media (min-width: 1025px) and (max-width: 1700px) {
-    padding: 92px 24px 104px;
+    padding: 92px 24px 24px;
 
     &__header {
       margin-bottom: 56px;
@@ -392,7 +387,7 @@ const cards = computed(() => [
       height: 200px;
       font-size: 22px;
       right: 28px;
-      top: -56px;
+      top: 190px;
     }
   }
 
@@ -401,8 +396,16 @@ const cards = computed(() => [
       display: flex;
       gap: 24px;
       overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
       padding-bottom: 16px;
       scroll-snap-type: x mandatory;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+      }
     }
 
     &__card,
@@ -413,31 +416,117 @@ const cards = computed(() => [
     }
 
     &__cta-floating {
-      position: static;
-      flex: 0 0 200px;
-      min-width: 200px;
-      min-height: 200px;
-      align-self: flex-end;
-      margin-top: 24px;
+      top: 180px;
+      right: 24px;
     }
+
   }
 
   @media (max-width: 768px) {
+    padding: 64px 0 0;
+
+    &__inner {
+      padding: 0 16px;
+    }
+
+    &__header {
+      display: block;
+      margin-bottom: 22px;
+      padding: 0 16px;
+    }
+
+    &__title {
+      align-items: flex-end;
+      gap: 0 2px;
+    }
+
+    &__title-line {
+      font-size: 24px;
+      line-height: 1.08;
+
+      &--small {
+        font-size: 24px;
+        line-height: 1.08;
+        margin-left: 20px;
+      }
+    }
+
+    &__title-line:first-child {
+      width: 100%;
+    }
+
+    &__title-accent {
+      font-size: clamp(48px, 14vw, 64px);
+      line-height: 0.82;
+      letter-spacing: -1px;
+      transform: translateY(15px);
+    }
+
+    &__aside {
+      display: none;
+    }
+
     &__grid {
       gap: 16px;
-      padding-bottom: 128px;
+      padding: 0 0 150px;
+      scroll-snap-type: x mandatory;
+    }
+
+    &__card,
+    &__card--offset {
+      min-width: calc(100% - 44px);
+      max-width: none;
+    }
+
+    &__card-media {
+      height: 250px;
+      background-position: center;
+    }
+
+    &__card-body {
+      padding-top: 14px;
+      gap: 8px;
+    }
+
+    &__card-title {
+      font-size: 18px;
+      line-height: 1.12;
+    }
+
+    &__card-index {
+      margin-top: 32px;
+    }
+
+    &__card-text {
+      font-size: 15px;
+      line-height: 1.38;
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    &__subtitle-mobile {
+      display: block;
+      position: absolute;
+      left: 22px;
+      bottom: 170px;
+      width: min(100%, 250px);
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #f0f0f0;
+      z-index: 1;
     }
 
     &__cta-floating {
       position: absolute;
-      right: 16px;
-      bottom: 12px;
-      width: 112px;
-      height: 112px;
-      min-width: 112px;
-      min-height: 112px;
+      top: auto;
+      right: 10px;
+      bottom: 20px;
+      width: 144px;
+      height: 144px;
+      min-width: 144px;
+      min-height: 144px;
       margin-top: 0;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1.1;
       padding: 0 10px;
       z-index: 2;
@@ -446,17 +535,25 @@ const cards = computed(() => [
 
   @media (max-width: 360px) {
     &__grid {
-      padding-bottom: 112px;
+      padding: 0 0 150px;
     }
 
     &__cta-floating {
-      right: 12px;
-      bottom: 8px;
-      width: 96px;
-      height: 96px;
-      min-width: 96px;
-      min-height: 96px;
-      font-size: 14px;
+      top: auto;
+      right: 8px;
+      bottom: 16px;
+      width: 116px;
+      height: 116px;
+      min-width: 116px;
+      min-height: 116px;
+      font-size: 15px;
+    }
+
+    &__subtitle-mobile {
+      width: min(100%, 220px);
+      font-size: 15px;
+      bottom: 138px;
+      left: 16px;
     }
   }
 }

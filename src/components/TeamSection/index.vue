@@ -49,7 +49,7 @@ const memberPresets: TeamMember[] = [
     role: "Dentist",
     description:
       "Specializes in aesthetic and therapeutic dentistry, combining professionalism with patient comfort.",
-    photo: "/assets/team/vadym.png",
+    photo: "/assets/team/daria.png",
   },
 ];
 
@@ -518,7 +518,7 @@ watch(slidesPerView, () => {
 
 @media (max-width: 768px) {
   .team {
-    padding: 72px 0 96px;
+    padding: 0 0 96px;
   }
 
   .team__title {

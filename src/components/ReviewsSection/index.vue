@@ -88,7 +88,7 @@ const handleTrackPointerUp = (event: PointerEvent) => {
         </div>
       </div>
       <a
-        class="reviews__cta"
+        class="reviews__cta reviews__cta--desktop"
         href="https://maps.app.goo.gl/JgE4UcntBuGbSLSdA"
         target="_blank"
         rel="noreferrer"
@@ -124,6 +124,19 @@ const handleTrackPointerUp = (event: PointerEvent) => {
           </div>
         </article>
       </div>
+    </div>
+    <div class="container reviews__cta-wrap-mobile">
+      <a
+        class="reviews__cta reviews__cta--mobile"
+        href="https://maps.app.goo.gl/JgE4UcntBuGbSLSdA"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span class="reviews__cta-icon">
+          <img src="/assets/reviews/google.svg" alt="" />
+        </span>
+        <span class="reviews__cta-text">{{ t("reviews.leaveReview") }}</span>
+      </a>
     </div>
   </section>
 </template>
@@ -251,6 +264,10 @@ const handleTrackPointerUp = (event: PointerEvent) => {
 
   &__cta-text {
     line-height: 1;
+  }
+
+  &__cta-wrap-mobile {
+    display: none;
   }
 
   &__slider {
@@ -425,8 +442,41 @@ const handleTrackPointerUp = (event: PointerEvent) => {
     }
 
     &__card {
-      min-width: 90%;
-      max-width: 90%;
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 0;
+      align-self: start;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    &__rating-value {
+      font-size: 36px;
+    }
+
+    &__clinic {
+      font-size: 28px;
+      line-height: 1.15;
+    }
+
+    &__address {
+      font-size: 15px;
+    }
+
+    &__name {
+      font-size: 17px;
+    }
+
+    &__text {
+      font-size: 15px;
+      line-height: 1.38;
+    }
+
+    &__cta {
+      align-self: flex-start;
+      margin-left: 0;
     }
   }
 
@@ -444,7 +494,7 @@ const handleTrackPointerUp = (event: PointerEvent) => {
   }
 
   @media (max-width: 768px) {
-    padding: 76px 0 96px;
+    padding: 76px 0 0;
 
     &__head {
       margin-bottom: 24px;
@@ -452,26 +502,38 @@ const handleTrackPointerUp = (event: PointerEvent) => {
     }
 
     &__rating-value {
-      font-size: 38px;
-    }
-
-    &__rating-stars {
-      font-size: 18px;
+      font-size: 30px;
     }
 
     &__clinic {
-      font-size: 30px;
+      font-size: 20px;
       line-height: 1.15;
     }
 
     &__address {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     &__cta {
       font-size: 13px;
       padding: 10px 16px;
       gap: 8px;
+    }
+
+    &__cta--desktop {
+      display: none;
+    }
+
+    &__cta-wrap-mobile {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 16px;
+      margin-top: 18px;
+    }
+
+    &__cta--mobile {
+      margin-left: 0;
+      align-self: flex-end;
     }
 
     &__slider {
@@ -485,6 +547,9 @@ const handleTrackPointerUp = (event: PointerEvent) => {
     &__card {
       min-width: 100%;
       max-width: 100%;
+      height: auto;
+      min-height: 0;
+      align-self: start;
       padding: 16px;
       grid-template-columns: 48px 1fr;
       gap: 12px;
@@ -498,8 +563,12 @@ const handleTrackPointerUp = (event: PointerEvent) => {
 
     &__name,
     &__text {
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.35;
+    }
+
+    &__name {
+      font-size: 16px;
     }
 
     &__stars,

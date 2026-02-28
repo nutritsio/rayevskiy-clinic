@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { VueCompareImage } from "vue3-compare-image";
 import { useI18n } from "vue-i18n";
 
@@ -56,6 +56,9 @@ const total = slideConfigs.length;
 const createSlideArray = (value: number) => slideConfigs.map(() => value);
 const sliderPositions = ref<number[]>(createSlideArray(0.5));
 const resetKeys = ref<number[]>(createSlideArray(0));
+const viewportWidth = ref(
+  typeof window !== "undefined" ? window.innerWidth : 1280
+);
 
 const normalizeOffset = (index: number) => {
   const diff = index - activeIndex.value;
@@ -99,6 +102,31 @@ const updateSliderPosition = (index: number, position: number) => {
 const goPrev = () => goTo(activeIndex.value - 1);
 const goNext = () => goTo(activeIndex.value + 1);
 
+const syncViewport = () => {
+  viewportWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  syncViewport();
+  window.addEventListener("resize", syncViewport, { passive: true });
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", syncViewport);
+});
+
+const handleSize = computed(() => {
+  if (viewportWidth.value <= 640) return 40;
+  if (viewportWidth.value <= 900) return 110;
+  return 130;
+});
+
+const handleIconSrc = computed(() =>
+  viewportWidth.value <= 640
+    ? "/assets/transform/slider-mob.svg"
+    : "/assets/transform/slider.png"
+);
+
 const handleMarkup = computed(
   () => `
   <div class="transform__handle">
@@ -106,7 +134,7 @@ const handleMarkup = computed(
     <div class="transform__handle-core">
       <img
         class="transform__handle-img"
-        src="/assets/transform/slider.png"
+        src="${handleIconSrc.value}"
         alt=""
         aria-hidden="true"
       />
@@ -158,7 +186,7 @@ const handleMarkup = computed(
             :right-image-alt="rightAlt"
             :left-image-label="leftLabel"
             :right-image-label="rightLabel"
-            :handle-size="130"
+            :handle-size="handleSize"
             :handle="handleMarkup"
             :slide-on-click="true"
             :slider-line-color="'rgba(255, 255, 255, 0.9)'"
@@ -591,7 +619,7 @@ const handleMarkup = computed(
 
 @media (max-width: 640px) {
   .transform {
-    padding: 72px 0 96px;
+    padding: 72px 0 0;
   }
 
   .transform__head {
@@ -599,17 +627,31 @@ const handleMarkup = computed(
   }
 
   .transform__title-main {
-    font-size: clamp(30px, 10vw, 42px);
+    font-size: 30px;
   }
 
   .transform__title-accent {
-    font-size: clamp(38px, 12vw, 52px);
+    font-size: 44px;
     transform: translateY(-3px);
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 43px;
   }
 
   .transform__stage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
     padding: 0 16px;
     min-height: 360px;
+  }
+
+  .transform__slides {
+    order: 1;
+    width: 100%;
   }
 
   .transform__slide {
@@ -617,6 +659,9 @@ const handleMarkup = computed(
     transform: translateX(calc(var(--pos) * 6%));
     opacity: 0.9;
     filter: none;
+    border-radius: 0;
+    height: 228px;
+    aspect-ratio: auto;
   }
 
   .transform__slide--left,
@@ -626,18 +671,69 @@ const handleMarkup = computed(
   }
 
   .transform__nav {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+    position: static;
+    top: auto;
+    transform: none;
+    order: 2;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
     background: rgba(12, 12, 13, 0.82);
   }
 
+  .transform__nav:hover,
+  .transform__nav:active {
+    transform: none;
+  }
+
   .transform__nav--prev {
-    left: 12px;
+    margin-right: 0;
+    color: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.28);
   }
 
   .transform__nav--next {
-    right: 12px;
+    margin-left: 0;
+    color: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  :global(.transform .vci--container) {
+    border-radius: 0;
+  }
+
+  :global(.transform .vci--left-label),
+  :global(.transform .vci--right-label) {
+    top: 22px !important;
+    height: 24px;
+    min-height: 24px;
+    padding: 0 14px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px !important;
+    line-height: 24px !important;
+    border-radius: 999px;
+  }
+
+  .transform__handle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .transform__handle-ring {
+    border-width: 1px;
+  }
+
+  .transform__handle-core {
+    width: 34px;
+    height: 34px;
+    border-width: 1px;
+  }
+
+  .transform__handle-img {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -663,17 +759,9 @@ const handleMarkup = computed(
   }
 
   .transform__nav {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-
-  .transform__nav--prev {
-    left: 8px;
-  }
-
-  .transform__nav--next {
-    right: 8px;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
 }
 </style>
