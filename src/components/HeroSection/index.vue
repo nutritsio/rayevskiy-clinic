@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ArrowIcon from "../ui/ArrowIcon.vue";
 
 const { t, locale } = useI18n();
+const isHeroVideoEnabled = ref(true);
 
 const languages = [
   { code: "ua", label: t("hero.langUa") },
@@ -18,6 +20,63 @@ const emit = defineEmits<{
 }>();
 
 const openMenu = () => emit("open-menu");
+
+type NetworkInformationLike = {
+  saveData?: boolean;
+  effectiveType?: string;
+  addEventListener?: (type: "change", listener: () => void) => void;
+  removeEventListener?: (type: "change", listener: () => void) => void;
+};
+
+const getNetworkInfo = (): NetworkInformationLike | null => {
+  const nav = navigator as Navigator & { connection?: NetworkInformationLike };
+  return nav.connection ?? null;
+};
+
+let reducedMotionMediaQuery: MediaQueryList | null = null;
+let networkInfo: NetworkInformationLike | null = null;
+
+const updateHeroVideoState = () => {
+  const hasReducedMotion = reducedMotionMediaQuery?.matches ?? false;
+  const saveDataEnabled = networkInfo?.saveData ?? false;
+  const effectiveType = networkInfo?.effectiveType ?? "";
+  const isSlowNetwork =
+    effectiveType === "slow-2g" || effectiveType === "2g";
+
+  isHeroVideoEnabled.value = !(
+    hasReducedMotion ||
+    saveDataEnabled ||
+    isSlowNetwork
+  );
+};
+
+onMounted(() => {
+  if (typeof window === "undefined") return;
+
+  reducedMotionMediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  networkInfo = getNetworkInfo();
+  updateHeroVideoState();
+
+  if (reducedMotionMediaQuery.addEventListener) {
+    reducedMotionMediaQuery.addEventListener("change", updateHeroVideoState);
+  } else {
+    reducedMotionMediaQuery.addListener(updateHeroVideoState);
+  }
+
+  networkInfo?.addEventListener?.("change", updateHeroVideoState);
+});
+
+onBeforeUnmount(() => {
+  if (!reducedMotionMediaQuery) return;
+
+  if (reducedMotionMediaQuery.removeEventListener) {
+    reducedMotionMediaQuery.removeEventListener("change", updateHeroVideoState);
+  } else {
+    reducedMotionMediaQuery.removeListener(updateHeroVideoState);
+  }
+
+  networkInfo?.removeEventListener?.("change", updateHeroVideoState);
+});
 </script>
 
 <template>
@@ -26,12 +85,13 @@ const openMenu = () => emit("open-menu");
       <div class="hero__image hero__image--desktop" />
       <div class="hero__image hero__image--mobile" />
       <video
+        v-if="isHeroVideoEnabled"
         class="hero__video"
         autoplay
         muted
         loop
         playsinline
-        preload="metadata"
+        preload="none"
         poster="/assets/hero/hero-bg-desktop.jpg"
       >
         <source src="/assets/hero/hero-bg.webm" type="video/webm" />
