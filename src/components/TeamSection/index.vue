@@ -45,7 +45,7 @@ const memberPresets: TeamMember[] = [
   },
   {
     id: 4,
-    name: "Daria",
+    name: "Alina Bratus",
     role: "Orthodontist",
     description:
       "Specializes in aesthetic and therapeutic dentistry, combining professionalism with care for patient comfort.",

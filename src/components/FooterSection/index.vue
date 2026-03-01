@@ -92,7 +92,7 @@ const socials = [
             </a>
             <a
               class="footer__nav-link footer__nav-link--muted"
-              href="https://maps.google.com/?q=вулиця+Василя+Тютюнника,+39,+Київ,+Україна"
+              href="https://maps.google.com/?q=вул.+Василя+Тютюнника,+39,+Київ,+Україна"
               target="_blank"
               rel="noopener noreferrer"
             >

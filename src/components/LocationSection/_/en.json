@@ -11,12 +11,12 @@
       "center": {
         "title": "Location #1",
         "address": "28A Vasylya Tyutyunnyka Street, Kyiv",
-        "hours": "MON SAT - 10:00-20:00"
+        "hours": "MON - SAT - 10:00-20:00"
       },
       "rightBank": {
         "title": "Location #2",
         "address": "39 Vasylya Tyutyunnyka Street, Kyiv",
-        "hours": "MON SAT - 10:00-20:00"
+        "hours": "MON - SAT - 10:00-20:00"
       }
     },
     "maps": "Google Maps",
