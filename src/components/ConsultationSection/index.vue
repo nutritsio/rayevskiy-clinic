@@ -200,7 +200,7 @@ const handleSubmit = async () => {
       <div class="consult__card">
         <div class="consult__media">
           <img
-            src="/assets/vetal.png"
+            src="/assets/vetal.jpg"
             :alt="t('consult.photoAlt')"
             loading="lazy"
           />
@@ -472,7 +472,7 @@ const handleSubmit = async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top center;
   display: block;
 }
 
@@ -756,14 +756,14 @@ const handleSubmit = async () => {
   }
 
   .consult__media {
-    height: auto;
-    max-height: none;
-    overflow: visible;
+    height: clamp(320px, 58svh, 520px);
+    overflow: hidden;
   }
 
   .consult__media img {
-    height: auto;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 
   .consult__form {
