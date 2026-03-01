@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import { useI18n } from "vue-i18n";
 import ArrowIcon from "../ui/ArrowIcon.vue";
 
 const { t, locale } = useI18n();
 const isHeroVideoEnabled = ref(true);
+const hasHeroVideoAutoplayFailed = ref(false);
+const heroVideoRef = ref<HTMLVideoElement | null>(null);
 
 const languages = [
   { code: "ua", label: t("hero.langUa") },
@@ -35,6 +44,9 @@ const getNetworkInfo = (): NetworkInformationLike | null => {
 
 let reducedMotionMediaQuery: MediaQueryList | null = null;
 let networkInfo: NetworkInformationLike | null = null;
+const canRenderHeroVideo = computed(
+  () => isHeroVideoEnabled.value && !hasHeroVideoAutoplayFailed.value,
+);
 
 const updateHeroVideoState = () => {
   const hasReducedMotion = reducedMotionMediaQuery?.matches ?? false;
@@ -48,6 +60,35 @@ const updateHeroVideoState = () => {
     saveDataEnabled ||
     isSlowNetwork
   );
+};
+
+const tryStartHeroVideo = async () => {
+  const videoEl = heroVideoRef.value;
+  if (!videoEl || !canRenderHeroVideo.value) return;
+
+  // Safari iOS is stricter: set media flags as properties before play().
+  videoEl.defaultMuted = true;
+  videoEl.muted = true;
+  videoEl.playsInline = true;
+
+  try {
+    await videoEl.play();
+  } catch {
+    // If autoplay is blocked (e.g., iOS Low Power Mode), keep image fallback only.
+    hasHeroVideoAutoplayFailed.value = true;
+  }
+};
+
+const handleVisibilityChange = () => {
+  const videoEl = heroVideoRef.value;
+  if (!videoEl) return;
+
+  if (document.visibilityState === "hidden") {
+    videoEl.pause();
+    return;
+  }
+
+  void tryStartHeroVideo();
 };
 
 onMounted(() => {
@@ -64,6 +105,7 @@ onMounted(() => {
   }
 
   networkInfo?.addEventListener?.("change", updateHeroVideoState);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 });
 
 onBeforeUnmount(() => {
@@ -76,7 +118,19 @@ onBeforeUnmount(() => {
   }
 
   networkInfo?.removeEventListener?.("change", updateHeroVideoState);
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
 });
+
+watch(
+  canRenderHeroVideo,
+  (isEnabled) => {
+    if (!isEnabled) return;
+    nextTick(() => {
+      void tryStartHeroVideo();
+    });
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -85,12 +139,16 @@ onBeforeUnmount(() => {
       <div class="hero__image hero__image--desktop" />
       <div class="hero__image hero__image--mobile" />
       <video
-        v-if="isHeroVideoEnabled"
+        v-if="canRenderHeroVideo"
+        ref="heroVideoRef"
         class="hero__video"
         autoplay
         muted
         loop
         playsinline
+        webkit-playsinline="true"
+        disablepictureinpicture
+        controlslist="nodownload nofullscreen noremoteplayback"
         preload="none"
         poster="/assets/hero/hero-bg-desktop.jpg"
       >
