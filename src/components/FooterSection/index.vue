@@ -49,6 +49,7 @@ const socials = [
 
           <div class="footer__clinic">{{ t("reviews.clinic") }}</div>
           <div class="footer__address">{{ t("reviews.address") }}</div>
+          <div class="footer__address">{{ t("reviews.addressSecondary") }}</div>
 
           <a
             class="footer__cta"
@@ -88,6 +89,14 @@ const socials = [
               rel="noopener noreferrer"
             >
               {{ t("hero.address") }}
+            </a>
+            <a
+              class="footer__nav-link footer__nav-link--muted"
+              href="https://maps.google.com/?q=вулиця+Василя+Тютюнника,+39,+Київ,+Україна"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ t("reviews.addressSecondary") }}
             </a>
           </div>
 

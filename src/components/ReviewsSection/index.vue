@@ -85,6 +85,7 @@ const handleTrackPointerUp = (event: PointerEvent) => {
         <div class="reviews__meta">
           <div class="reviews__clinic">{{ t("reviews.clinic") }}</div>
           <div class="reviews__address">{{ t("reviews.address") }}</div>
+          <div class="reviews__address">{{ t("reviews.addressSecondary") }}</div>
         </div>
       </div>
       <a
