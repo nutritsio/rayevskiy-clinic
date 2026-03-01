@@ -25,6 +25,18 @@ const openMenu = () => emit("open-menu");
     <div class="hero__background" aria-hidden="true">
       <div class="hero__image hero__image--desktop" />
       <div class="hero__image hero__image--mobile" />
+      <video
+        class="hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="/assets/hero/hero-bg-desktop.jpg"
+      >
+        <source src="/assets/hero/hero-bg.webm" type="video/webm" />
+        <source src="/assets/hero/hero-bg.mp4" type="video/mp4" />
+      </video>
       <div class="hero__overlay" />
     </div>
 
@@ -162,6 +174,7 @@ const openMenu = () => emit("open-menu");
   &__image {
     position: absolute;
     inset: 0;
+    z-index: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -177,9 +190,21 @@ const openMenu = () => emit("open-menu");
     }
   }
 
+  &__video {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    pointer-events: none;
+  }
+
   &__overlay {
     position: absolute;
     inset: 0;
+    z-index: 2;
     background: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0.32) 0%,
@@ -924,6 +949,11 @@ const openMenu = () => emit("open-menu");
       background-position: center top;
     }
 
+    &__video {
+      display: block;
+      object-position: center top;
+    }
+
     &__title-line--primary {
       font-size: clamp(32px, 10vw, 56px);
       line-height: 1.06;
@@ -1040,6 +1070,12 @@ const openMenu = () => emit("open-menu");
     &__counter-label {
       max-width: 215px;
       width: 215px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__video {
+      display: none;
     }
   }
 
