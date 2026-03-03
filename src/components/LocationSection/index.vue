@@ -268,7 +268,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
 .location__heading {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
+  gap: clamp(10px, 1.4vw, 20px);
   flex-wrap: wrap;
   margin-bottom: 28px;
 }
@@ -276,7 +276,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
 .location__title-main {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 100px;
+  font-size: clamp(44px, 5.2vw, 100px);
   font-weight: 300;
   line-height: 1.1;
   text-transform: uppercase;
@@ -284,8 +284,8 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
 
 .location__title-accent {
   font-family: var(--font-accent);
-  font-size: 130px;
-  line-height: 1.03;
+  font-size: clamp(58px, 7vw, 130px);
+  line-height: 0.96;
   color: var(--color-accent);
   font-style: italic;
 }
@@ -294,6 +294,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   display: flex;
   align-items: center;
   gap: 24px;
+  flex-wrap: wrap;
   margin-bottom: 34px;
 }
 
@@ -304,7 +305,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   padding: 0 0 16px;
   color: #656565;
   font-family: var(--font-display);
-  font-size: 40px;
+  font-size: clamp(24px, 2.1vw, 40px);
   font-weight: 300;
   line-height: 1.1;
   cursor: pointer;
@@ -334,14 +335,15 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
 
 .location__desktop-pane {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
   gap: 24px;
   align-items: stretch;
 }
 
 .location__main {
   position: relative;
-  min-height: 640px;
+  min-height: 0;
+  aspect-ratio: 5 / 4;
   overflow: hidden;
 }
 
@@ -360,7 +362,8 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
 
 .location__side img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
 }
@@ -408,11 +411,11 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   }
 
   .location__title-main {
-    font-size: 76px;
+    font-size: clamp(44px, 4.8vw, 76px);
   }
 
   .location__title-accent {
-    font-size: 100px;
+    font-size: clamp(58px, 6.2vw, 100px);
   }
 
   .location__tabs {
@@ -420,11 +423,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   }
 
   .location__tab {
-    font-size: 32px;
-  }
-
-  .location__main {
-    min-height: 540px;
+    font-size: clamp(22px, 2.2vw, 32px);
   }
 }
 
@@ -434,19 +433,15 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   }
 
   .location__title-main {
-    font-size: 72px;
+    font-size: clamp(42px, 5vw, 72px);
   }
 
   .location__title-accent {
-    font-size: 92px;
+    font-size: clamp(54px, 6.5vw, 92px);
   }
 
   .location__tab {
-    font-size: 30px;
-  }
-
-  .location__main {
-    min-height: 520px;
+    font-size: clamp(22px, 2.5vw, 30px);
   }
 }
 
@@ -456,7 +451,7 @@ watch(photoIndex, () => requestAnimationFrame(updatePosition));
   }
 
   .location__main {
-    min-height: 420px;
+    aspect-ratio: 16 / 10;
     overflow: visible;
   }
 

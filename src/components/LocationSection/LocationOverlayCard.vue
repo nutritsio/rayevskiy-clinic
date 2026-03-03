@@ -80,21 +80,25 @@ defineProps<Props>();
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 30px;
-  padding: 32px;
+  gap: clamp(14px, 2vw, 30px);
+  padding: clamp(16px, 2vw, 32px);
   background: rgba(17, 17, 17, 0.9);
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .location-overlay__content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(10px, 1.5vw, 24px);
+  flex: 1 1 420px;
+  min-width: 0;
 }
 
 .location-overlay__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: clamp(16px, 1.2vw, 24px);
   font-weight: 300;
   line-height: 1.1;
   text-transform: uppercase;
@@ -113,10 +117,16 @@ defineProps<Props>();
   gap: 10px;
   color: #e0e0e0;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: clamp(13px, 0.92vw, 16px);
   font-weight: 300;
   line-height: 1.3;
   text-transform: uppercase;
+  min-width: 0;
+}
+
+.location-overlay__line span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .location-overlay__icon {
@@ -136,10 +146,12 @@ defineProps<Props>();
   padding: 16px 20px;
   color: #f9f9f9;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: clamp(13px, 1vw, 18px);
   font-weight: 300;
   text-transform: uppercase;
   transition: background-color 0.25s ease, color 0.25s ease;
+  flex: 0 1 auto;
+  max-width: 100%;
 }
 
 .location-overlay__maps img {
@@ -160,16 +172,16 @@ defineProps<Props>();
   }
 
   .location-overlay__title {
-    font-size: 32px;
+    font-size: clamp(16px, 1.2vw, 22px);
   }
 
   .location-overlay__line {
-    font-size: 16px;
+    font-size: clamp(13px, 0.9vw, 15px);
   }
 
   .location-overlay__maps {
     min-height: 48px;
-    font-size: 15px;
+    font-size: clamp(13px, 0.9vw, 15px);
     padding: 12px 16px;
   }
 }
@@ -181,11 +193,11 @@ defineProps<Props>();
   }
 
   .location-overlay__title {
-    font-size: 28px;
+    font-size: clamp(16px, 1.6vw, 20px);
   }
 
   .location-overlay__line {
-    font-size: 14px;
+    font-size: clamp(13px, 1.1vw, 14px);
   }
 
   .location-overlay__maps {
