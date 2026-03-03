@@ -371,6 +371,7 @@ watch(
     align-items: flex-start;
     gap: 32px;
     width: auto;
+    color: #fff;
 
     @media (max-width: 768px) {
       justify-content: flex-start;
@@ -393,7 +394,7 @@ watch(
 
   &__meta-title {
     margin: 0;
-    color: #9f9f9f;
+    color: #fff;
     font-family: Unbounded;
     font-size: 14px;
     font-style: normal;

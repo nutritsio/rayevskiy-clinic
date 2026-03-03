@@ -49,6 +49,14 @@ const memberPresets: TeamMember[] = [
     role: "Orthodontist",
     description:
       "Specializes in aesthetic and therapeutic dentistry, combining professionalism with care for patient comfort.",
+    photo: "/assets/team/alina.png",
+  },
+  {
+    id: 5,
+    name: "Daria",
+    role: "Therapist-\nperiodontist",
+    description:
+      "Specializes in aesthetic and therapeutic dentistry, combining professionalism with care for patient comfort.",
     photo: "/assets/team/daria.png",
   },
 ];
@@ -460,6 +468,7 @@ watch(slidesPerView, () => {
   letter-spacing: -1.12px;
   flex: 0 0 36%;
   max-width: 180px;
+  white-space: pre-line;
 }
 
 .team__desc {
