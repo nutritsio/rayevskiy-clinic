@@ -222,6 +222,12 @@ defineProps<Props>();
     gap: 18px;
   }
 
+  .location-overlay__content {
+    flex: none;
+    width: 100%;
+    gap: 14px;
+  }
+
   .location-overlay__title {
     font-size: 24px;
     line-height: 1.1;
