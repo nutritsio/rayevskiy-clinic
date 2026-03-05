@@ -278,7 +278,7 @@ watch(
         </div>
       </div>
 
-      <a class="hero__cta" href="#consult">
+      <a class="hero__cta" href="/consult">
         <span class="hero__cta-text">{{ t("hero.cta") }}</span>
         <span class="hero__cta-arrow" aria-hidden="true">
           <ArrowIcon />

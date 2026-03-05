@@ -1,45 +1,122 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean
-}>()
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
+const props = defineProps<{
+  open: boolean;
+}>();
 
 const emit = defineEmits<{
-  (e: 'close'): void
-}>()
+  (e: "close"): void;
+}>();
 
-import { computed, ref, onBeforeUnmount } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
+const { t } = useI18n();
 
 const links = computed(() => [
-  { label: t('nav.why'), href: '#about' },
-  { label: t('nav.services'), href: '#services' },
-  { label: t('nav.beforeAfter'), href: '#transform' },
-  { label: t('nav.team'), href: '#team' },
-  { label: t('nav.cta'), href: '#consult' },
-])
+  { label: t("nav.why"), href: "/about" },
+  { label: t("nav.services"), href: "/services" },
+  { label: t("nav.beforeAfter"), href: "/transform" },
+  { label: t("nav.team"), href: "/team" },
+  { label: t("nav.cta"), href: "/consult" },
+]);
 
-const activeLink = ref<string | null>(null)
-const closeTimer = ref<number | null>(null)
+const sectionPathById = {
+  hero: "/",
+  about: "/about",
+  services: "/services",
+  transform: "/transform",
+  team: "/team",
+  consult: "/consult",
+} as const;
 
-const close = () => emit('close')
+const trackedSections = Object.keys(sectionPathById) as Array<keyof typeof sectionPathById>;
+
+const activeLink = ref<string | null>(null);
+const closeTimer = ref<number | null>(null);
+
+const close = () => emit("close");
+
+const normalizePath = (path: string) =>
+  path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+
+const getVisibleSectionPath = (): string | null => {
+  if (typeof window === "undefined") return null;
+
+  const offset = 140;
+  let currentId: keyof typeof sectionPathById = "hero";
+
+  for (const id of trackedSections) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+
+    const top = el.getBoundingClientRect().top;
+    if (top - offset <= 0) {
+      currentId = id;
+    } else {
+      break;
+    }
+  }
+
+  return sectionPathById[currentId];
+};
+
+const syncMenuStateFromViewport = () => {
+  if (typeof window === "undefined") return;
+
+  const sectionPath = getVisibleSectionPath();
+  if (!sectionPath) return;
+  const currentPath = normalizePath(window.location.pathname);
+
+  if (currentPath !== sectionPath) {
+    history.replaceState(null, "", sectionPath);
+  }
+
+  activeLink.value = links.value.some((link) => link.href === sectionPath)
+    ? sectionPath
+    : null;
+};
 
 const onLink = (href: string) => {
-  activeLink.value = href
+  activeLink.value = href;
+
   if (closeTimer.value) {
-    clearTimeout(closeTimer.value)
+    clearTimeout(closeTimer.value);
   }
+
   closeTimer.value = window.setTimeout(() => {
-    emit('close')
-  }, 260)
-}
+    emit("close");
+  }, 260);
+};
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (!isOpen) return;
+    syncMenuStateFromViewport();
+  },
+);
+
+onMounted(() => {
+  if (typeof window === "undefined") return;
+
+  window.addEventListener("scroll", syncMenuStateFromViewport, { passive: true });
+  window.addEventListener("resize", syncMenuStateFromViewport);
+  window.addEventListener("popstate", syncMenuStateFromViewport);
+
+  syncMenuStateFromViewport();
+});
 
 onBeforeUnmount(() => {
   if (closeTimer.value) {
-    clearTimeout(closeTimer.value)
+    clearTimeout(closeTimer.value);
   }
-})
+
+  if (typeof window !== "undefined") {
+    window.removeEventListener("scroll", syncMenuStateFromViewport);
+    window.removeEventListener("resize", syncMenuStateFromViewport);
+    window.removeEventListener("popstate", syncMenuStateFromViewport);
+  }
+});
 </script>
 
 <template>
@@ -56,15 +133,15 @@ onBeforeUnmount(() => {
           <nav class="menu__nav">
             <a
               v-for="link in links"
-            :key="link.href"
-            class="menu__link"
-            :class="{
+              :key="link.href"
+              class="menu__link"
+              :class="{
                 'menu__link--active': activeLink === link.href,
               }"
-            :href="link.href"
-            @click="onLink(link.href)"
-          >
-            {{ link.label }}
+              :href="link.href"
+              @click="onLink(link.href)"
+            >
+              {{ link.label }}
             </a>
           </nav>
         </div>
