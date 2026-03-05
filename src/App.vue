@@ -27,21 +27,34 @@ const sections = [
 
 type SectionId = (typeof sections)[number];
 
-const sectionPathById: Record<SectionId, string> = {
-  hero: "/",
-  about: "/about",
-  services: "/services",
-  transform: "/transform",
-  team: "/team",
-  consult: "/consult",
+const sectionSlugById: Record<SectionId, string> = {
+  hero: "",
+  about: "about",
+  services: "services",
+  transform: "transform",
+  team: "team",
+  consult: "consult",
 };
 
-const sectionIdByPath = new Map<string, SectionId>(
-  Object.entries(sectionPathById).map(([id, path]) => [path, id as SectionId]),
+const sectionIdBySlug = new Map<string, SectionId>(
+  Object.entries(sectionSlugById).map(([id, slug]) => [slug, id as SectionId]),
 );
 
-const normalizePath = (path: string) =>
-  path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+const normalizeHash = (hash: string) =>
+  hash.startsWith("#") ? hash.slice(1) : hash;
+
+const getSectionUrl = (id: SectionId) => {
+  const slug = sectionSlugById[id];
+  return slug ? `/#${slug}` : "/";
+};
+
+const getSectionIdFromLocation = (url: URL): SectionId | undefined => {
+  if (url.pathname !== "/") return undefined;
+
+  const slug = normalizeHash(url.hash);
+  if (!slug) return "hero";
+  return sectionIdBySlug.get(slug);
+};
 
 const getCurrentSectionId = (): SectionId => {
   const offset = 140;
@@ -68,14 +81,20 @@ const scrollToSection = (id: SectionId, behavior: ScrollBehavior) => {
   sectionEl.scrollIntoView({ behavior, block: "start" });
 };
 
+const getCurrentSectionUrl = () => {
+  const currentPath = window.location.pathname;
+  const currentHash = normalizeHash(window.location.hash);
+  return currentPath === "/" ? (currentHash ? `/#${currentHash}` : "/") : currentPath;
+};
+
 const syncPathWithViewport = () => {
   if (typeof window === "undefined") return;
 
-  const sectionPath = sectionPathById[getCurrentSectionId()];
-  const currentPath = normalizePath(window.location.pathname);
+  const sectionUrl = getSectionUrl(getCurrentSectionId());
+  const currentUrl = getCurrentSectionUrl();
 
-  if (currentPath !== sectionPath) {
-    history.replaceState(null, "", sectionPath);
+  if (currentUrl !== sectionUrl) {
+    history.replaceState(null, "", sectionUrl);
   }
 };
 
@@ -93,14 +112,14 @@ const handleInternalSectionLinkClick = (event: MouseEvent) => {
   const url = new URL(anchor.href, window.location.origin);
   if (url.origin !== window.location.origin) return;
 
-  const targetPath = normalizePath(url.pathname);
-  const sectionId = sectionIdByPath.get(targetPath);
+  const sectionId = getSectionIdFromLocation(url);
   if (!sectionId) return;
 
   event.preventDefault();
 
-  if (normalizePath(window.location.pathname) !== targetPath) {
-    history.pushState(null, "", targetPath);
+  const targetUrl = getSectionUrl(sectionId);
+  if (getCurrentSectionUrl() !== targetUrl) {
+    history.pushState(null, "", targetUrl);
   }
 
   scrollToSection(sectionId, "smooth");
@@ -109,17 +128,11 @@ const handleInternalSectionLinkClick = (event: MouseEvent) => {
 const handlePopState = () => {
   if (typeof window === "undefined") return;
 
-  const sectionId = sectionIdByPath.get(normalizePath(window.location.pathname));
+  const sectionId = getSectionIdFromLocation(
+    new URL(window.location.href, window.location.origin),
+  );
   if (!sectionId) return;
   scrollToSection(sectionId, "auto");
-};
-
-const resetPathBeforeReload = () => {
-  if (typeof window === "undefined") return;
-
-  if (normalizePath(window.location.pathname) !== "/") {
-    history.replaceState(null, "", "/");
-  }
 };
 
 const applyInitialPath = async () => {
@@ -128,8 +141,9 @@ const applyInitialPath = async () => {
 
   hasAppliedInitialPath.value = true;
 
-  const currentPath = normalizePath(window.location.pathname);
-  const sectionId = sectionIdByPath.get(currentPath);
+  const sectionId = getSectionIdFromLocation(
+    new URL(window.location.href, window.location.origin),
+  );
 
   await nextTick();
 
@@ -164,8 +178,6 @@ onMounted(() => {
   window.addEventListener("scroll", syncPathWithViewport, { passive: true });
   window.addEventListener("resize", syncPathWithViewport);
   window.addEventListener("popstate", handlePopState);
-  window.addEventListener("beforeunload", resetPathBeforeReload);
-  window.addEventListener("pagehide", resetPathBeforeReload);
   document.addEventListener("click", handleInternalSectionLinkClick);
 
   void applyInitialPath();
@@ -192,8 +204,6 @@ onBeforeUnmount(() => {
     window.removeEventListener("scroll", syncPathWithViewport);
     window.removeEventListener("resize", syncPathWithViewport);
     window.removeEventListener("popstate", handlePopState);
-    window.removeEventListener("beforeunload", resetPathBeforeReload);
-    window.removeEventListener("pagehide", resetPathBeforeReload);
     document.removeEventListener("click", handleInternalSectionLinkClick);
   }
 });

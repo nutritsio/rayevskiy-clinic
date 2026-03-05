@@ -13,20 +13,20 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const links = computed(() => [
-  { label: t("nav.why"), href: "/about" },
-  { label: t("nav.services"), href: "/services" },
-  { label: t("nav.beforeAfter"), href: "/transform" },
-  { label: t("nav.team"), href: "/team" },
-  { label: t("nav.cta"), href: "/consult" },
+  { label: t("nav.why"), href: "/#about" },
+  { label: t("nav.services"), href: "/#services" },
+  { label: t("nav.beforeAfter"), href: "/#transform" },
+  { label: t("nav.team"), href: "/#team" },
+  { label: t("nav.cta"), href: "/#consult" },
 ]);
 
 const sectionPathById = {
   hero: "/",
-  about: "/about",
-  services: "/services",
-  transform: "/transform",
-  team: "/team",
-  consult: "/consult",
+  about: "/#about",
+  services: "/#services",
+  transform: "/#transform",
+  team: "/#team",
+  consult: "/#consult",
 } as const;
 
 const trackedSections = Object.keys(sectionPathById) as Array<keyof typeof sectionPathById>;
@@ -38,6 +38,8 @@ const close = () => emit("close");
 
 const normalizePath = (path: string) =>
   path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+const normalizeHash = (hash: string) =>
+  hash.startsWith("#") ? hash.slice(1) : hash;
 
 const getVisibleSectionPath = (): string | null => {
   if (typeof window === "undefined") return null;
@@ -66,8 +68,11 @@ const syncMenuStateFromViewport = () => {
   const sectionPath = getVisibleSectionPath();
   if (!sectionPath) return;
   const currentPath = normalizePath(window.location.pathname);
+  const currentHash = normalizeHash(window.location.hash);
+  const currentUrl =
+    currentPath === "/" ? (currentHash ? `/#${currentHash}` : "/") : currentPath;
 
-  if (currentPath !== sectionPath) {
+  if (currentUrl !== sectionPath) {
     history.replaceState(null, "", sectionPath);
   }
 

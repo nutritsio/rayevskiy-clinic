@@ -6,11 +6,11 @@ const { t } = useI18n();
 const currentYear = new Date().getFullYear();
 
 const navLinks = computed(() => [
-  { label: t("footer.nav.choose"), href: "/services" },
-  { label: t("footer.nav.why"), href: "/about" },
-  { label: t("footer.nav.services"), href: "/services" },
-  { label: t("footer.nav.doctors"), href: "/team" },
-  { label: t("footer.nav.consult"), href: "/consult" },
+  { label: t("footer.nav.choose"), href: "/#services" },
+  { label: t("footer.nav.why"), href: "/#about" },
+  { label: t("footer.nav.services"), href: "/#services" },
+  { label: t("footer.nav.doctors"), href: "/#team" },
+  { label: t("footer.nav.consult"), href: "/#consult" },
 ]);
 
 const socials = [

@@ -71,7 +71,7 @@ const cards = computed(() => [
         </article>
       </div>
       <p class="about__subtitle-mobile" v-html="t('about.subtitle')" />
-      <a class="about__cta-floating" href="/consult">
+      <a class="about__cta-floating" href="/#consult">
         {{ t("hero.cta") }}
       </a>
     </div>

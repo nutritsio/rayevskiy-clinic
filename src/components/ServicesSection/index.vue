@@ -155,7 +155,7 @@ const setActive = (id: string) => {
                       </p>
                     </div>
 
-                    <a class="services__cta" href="/consult">
+                    <a class="services__cta" href="/#consult">
                       {{ t("hero.cta") }} ↗
                     </a>
                   </div>
