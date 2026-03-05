@@ -114,6 +114,14 @@ const handlePopState = () => {
   scrollToSection(sectionId, "auto");
 };
 
+const resetPathBeforeReload = () => {
+  if (typeof window === "undefined") return;
+
+  if (normalizePath(window.location.pathname) !== "/") {
+    history.replaceState(null, "", "/");
+  }
+};
+
 const applyInitialPath = async () => {
   if (typeof window === "undefined") return;
   if (isPreloaderVisible.value || hasAppliedInitialPath.value) return;
@@ -156,6 +164,8 @@ onMounted(() => {
   window.addEventListener("scroll", syncPathWithViewport, { passive: true });
   window.addEventListener("resize", syncPathWithViewport);
   window.addEventListener("popstate", handlePopState);
+  window.addEventListener("beforeunload", resetPathBeforeReload);
+  window.addEventListener("pagehide", resetPathBeforeReload);
   document.addEventListener("click", handleInternalSectionLinkClick);
 
   void applyInitialPath();
@@ -182,6 +192,8 @@ onBeforeUnmount(() => {
     window.removeEventListener("scroll", syncPathWithViewport);
     window.removeEventListener("resize", syncPathWithViewport);
     window.removeEventListener("popstate", handlePopState);
+    window.removeEventListener("beforeunload", resetPathBeforeReload);
+    window.removeEventListener("pagehide", resetPathBeforeReload);
     document.removeEventListener("click", handleInternalSectionLinkClick);
   }
 });
