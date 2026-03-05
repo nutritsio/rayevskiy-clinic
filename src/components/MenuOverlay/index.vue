@@ -78,6 +78,7 @@ const syncMenuStateFromViewport = () => {
 
 const onLink = (href: string) => {
   activeLink.value = href;
+  syncMenuStateFromViewport();
 
   if (closeTimer.value) {
     clearTimeout(closeTimer.value);
@@ -222,10 +223,18 @@ onBeforeUnmount(() => {
 }
 
 .menu__link:hover {
-  color: var(--color-accent);
+  color: #f7f7f7;
 }
 
 .menu__link:hover::after {
+  transform: translateX(-50%) scaleX(0);
+}
+
+.menu__link.menu__link--active:hover {
+  color: var(--color-accent);
+}
+
+.menu__link.menu__link--active:hover::after {
   transform: translateX(-50%) scaleX(1);
 }
 
