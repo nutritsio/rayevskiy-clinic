@@ -214,6 +214,8 @@ const handleMarkup = computed(
 
 <style scoped lang="scss">
 .transform {
+  position: relative;
+  z-index: 0;
   background: var(--color-bg);
   color: var(--color-text);
   padding: 120px 0 140px;
@@ -249,6 +251,7 @@ const handleMarkup = computed(
 
 .transform__stage {
   position: relative;
+  z-index: 0;
   max-width: 1800px;
   margin: 0 auto;
   min-height: clamp(320px, 50vw, 760px);

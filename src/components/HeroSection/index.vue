@@ -14,6 +14,7 @@ const { t, locale } = useI18n();
 const isHeroVideoEnabled = ref(true);
 const hasHeroVideoAutoplayFailed = ref(false);
 const heroVideoRef = ref<HTMLVideoElement | null>(null);
+const isTopbarScrolled = ref(false);
 
 const languages = [
   { code: "ua", label: t("hero.langUa") },
@@ -91,6 +92,11 @@ const handleVisibilityChange = () => {
   void tryStartHeroVideo();
 };
 
+const handleScroll = () => {
+  if (typeof window === "undefined") return;
+  isTopbarScrolled.value = window.scrollY > 8;
+};
+
 onMounted(() => {
   if (typeof window === "undefined") return;
 
@@ -106,19 +112,24 @@ onMounted(() => {
 
   networkInfo?.addEventListener?.("change", updateHeroVideoState);
   document.addEventListener("visibilitychange", handleVisibilityChange);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll();
 });
 
 onBeforeUnmount(() => {
-  if (!reducedMotionMediaQuery) return;
-
-  if (reducedMotionMediaQuery.removeEventListener) {
-    reducedMotionMediaQuery.removeEventListener("change", updateHeroVideoState);
-  } else {
-    reducedMotionMediaQuery.removeListener(updateHeroVideoState);
+  if (reducedMotionMediaQuery) {
+    if (reducedMotionMediaQuery.removeEventListener) {
+      reducedMotionMediaQuery.removeEventListener("change", updateHeroVideoState);
+    } else {
+      reducedMotionMediaQuery.removeListener(updateHeroVideoState);
+    }
   }
 
   networkInfo?.removeEventListener?.("change", updateHeroVideoState);
   document.removeEventListener("visibilitychange", handleVisibilityChange);
+  if (typeof window !== "undefined") {
+    window.removeEventListener("scroll", handleScroll);
+  }
 });
 
 watch(
@@ -134,7 +145,11 @@ watch(
 </script>
 
 <template>
-  <section class="hero" id="hero">
+  <section
+    class="hero"
+    :class="{ 'hero--topbar-scrolled': isTopbarScrolled }"
+    id="hero"
+  >
     <div class="hero__background" aria-hidden="true">
       <div class="hero__image hero__image--desktop" />
       <div class="hero__image hero__image--mobile" />
@@ -159,7 +174,10 @@ watch(
     </div>
 
     <div class="hero__content">
-      <header class="hero__topbar">
+      <header
+        class="hero__topbar"
+        :class="{ 'hero__topbar--scrolled': isTopbarScrolled }"
+      >
         <div class="hero__brand">
           <img
             class="hero__brand-image"
@@ -276,7 +294,6 @@ watch(
   min-height: 1064px;
   width: 100%;
   color: var(--color-text);
-  isolation: isolate;
   overflow: hidden;
 
   &__background {
@@ -345,11 +362,24 @@ watch(
     top: 39px;
     left: 64px;
     right: 64px;
+    z-index: 12000;
     height: auto;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 32px;
+
+    &--scrolled {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 64px;
+      border-bottom: 1px solid #272727;
+      background: rgba(17, 17, 17, 0.9);
+      backdrop-filter: blur(12px);
+      align-items: center;
+    }
   }
 
   &__brand {
@@ -666,6 +696,13 @@ watch(
       left: 24px;
       right: 24px;
       gap: 20px;
+
+      &--scrolled {
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 24px;
+      }
     }
 
     &__brand {
@@ -803,6 +840,13 @@ watch(
       left: 20px;
       right: 20px;
       gap: 14px;
+
+      &--scrolled {
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 20px;
+      }
     }
 
     &__brand {
@@ -966,6 +1010,10 @@ watch(
   }
 
   @media (max-width: 1024px) {
+    &--topbar-scrolled &__content {
+      padding-top: 88px;
+    }
+
     min-height: 100svh;
 
     &__content {
@@ -984,6 +1032,20 @@ watch(
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 0;
+
+      &--scrolled {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 12000;
+        margin-bottom: 0;
+        padding: 12px 24px;
+        border-bottom: 1px solid #272727;
+        background: rgba(17, 17, 17, 0.9);
+        backdrop-filter: blur(12px);
+        align-items: center;
+      }
     }
 
     &__brand {
@@ -1094,6 +1156,14 @@ watch(
   }
 
   @media (max-width: 768px) {
+    &--topbar-scrolled &__content {
+      padding-top: 76px;
+    }
+
+    &__topbar--scrolled {
+      padding: 10px 16px;
+    }
+
     &__content {
       padding: 16px 16px 14px;
     }
@@ -1199,6 +1269,14 @@ watch(
   }
 
   @media (max-width: 360px) {
+    &--topbar-scrolled &__content {
+      padding-top: 68px;
+    }
+
+    &__topbar--scrolled {
+      padding: 10px 12px;
+    }
+
     &__content {
       padding: 12px 12px 12px;
     }

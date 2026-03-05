@@ -76,7 +76,7 @@ defineProps<Props>();
   left: 3%;
   right: 3%;
   bottom: 3.8%;
-  z-index: 3;
+  z-index: 0;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

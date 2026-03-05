@@ -229,6 +229,7 @@ const cards = computed(() => [
     position: absolute;
     top: 220px;
     right: 50px;
+    z-index: 0;
     width: 250px;
     height: 250px;
     border-radius: 50%;
@@ -578,7 +579,7 @@ const cards = computed(() => [
       font-size: 16px;
       line-height: 1.35;
       color: #f0f0f0;
-      z-index: 1;
+      z-index: 0;
     }
 
     &__cta-floating {
@@ -594,7 +595,7 @@ const cards = computed(() => [
       font-size: 18px;
       line-height: 1.1;
       padding: 0 10px;
-      z-index: 2;
+      z-index: 0;
     }
   }
 
