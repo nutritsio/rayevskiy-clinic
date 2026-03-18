@@ -43,6 +43,11 @@ const sectionIdBySlug = new Map<string, SectionId>(
 const normalizeHash = (hash: string) =>
   hash.startsWith("#") ? hash.slice(1) : hash;
 
+const getHashParts = (hash: string) =>
+  normalizeHash(hash)
+    .split("/")
+    .filter(Boolean);
+
 const getSectionUrl = (id: SectionId) => {
   const slug = sectionSlugById[id];
   return slug ? `/#${slug}` : "/";
@@ -51,7 +56,7 @@ const getSectionUrl = (id: SectionId) => {
 const getSectionIdFromLocation = (url: URL): SectionId | undefined => {
   if (url.pathname !== "/") return undefined;
 
-  const slug = normalizeHash(url.hash);
+  const [slug] = getHashParts(url.hash);
   if (!slug) return "hero";
   return sectionIdBySlug.get(slug);
 };
@@ -76,6 +81,25 @@ const getCurrentSectionId = (): SectionId => {
 };
 
 const scrollToSection = (id: SectionId, behavior: ScrollBehavior) => {
+  if (typeof window !== "undefined" && id === "services") {
+    const hash = normalizeHash(window.location.hash);
+    if (hash.startsWith("services/")) {
+      const slug = hash.slice("services/".length).trim().toLowerCase();
+      if (slug) {
+        const targetEl =
+          document.getElementById(`service-panel-${slug}`) ??
+          document.getElementById(`service-item-${slug}`);
+        if (targetEl) {
+          const topOffset = 112;
+          const nextTop =
+            targetEl.getBoundingClientRect().top + window.scrollY - topOffset;
+          window.scrollTo({ top: Math.max(0, nextTop), behavior });
+          return;
+        }
+      }
+    }
+  }
+
   const sectionEl = document.getElementById(id);
   if (!sectionEl) return;
   sectionEl.scrollIntoView({ behavior, block: "start" });
@@ -90,7 +114,13 @@ const getCurrentSectionUrl = () => {
 const syncPathWithViewport = () => {
   if (typeof window === "undefined") return;
 
-  const sectionUrl = getSectionUrl(getCurrentSectionId());
+  const currentSectionId = getCurrentSectionId();
+  const currentHash = normalizeHash(window.location.hash);
+  const hasServicesDeepLink =
+    currentSectionId === "services" && currentHash.startsWith("services/");
+  const sectionUrl = hasServicesDeepLink
+    ? `/#${currentHash}`
+    : getSectionUrl(currentSectionId);
   const currentUrl = getCurrentSectionUrl();
 
   if (currentUrl !== sectionUrl) {
@@ -117,9 +147,11 @@ const handleInternalSectionLinkClick = (event: MouseEvent) => {
 
   event.preventDefault();
 
-  const targetUrl = getSectionUrl(sectionId);
-  if (getCurrentSectionUrl() !== targetUrl) {
-    history.pushState(null, "", targetUrl);
+  const targetHash = normalizeHash(url.hash);
+  const normalizedTargetUrl =
+    url.pathname === "/" ? (targetHash ? `/#${targetHash}` : "/") : url.pathname;
+  if (getCurrentSectionUrl() !== normalizedTargetUrl) {
+    history.pushState(null, "", normalizedTargetUrl);
   }
 
   scrollToSection(sectionId, "smooth");

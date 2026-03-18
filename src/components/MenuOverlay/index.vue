@@ -36,11 +36,6 @@ const closeTimer = ref<number | null>(null);
 
 const close = () => emit("close");
 
-const normalizePath = (path: string) =>
-  path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
-const normalizeHash = (hash: string) =>
-  hash.startsWith("#") ? hash.slice(1) : hash;
-
 const getVisibleSectionPath = (): string | null => {
   if (typeof window === "undefined") return null;
 
@@ -67,14 +62,6 @@ const syncMenuStateFromViewport = () => {
 
   const sectionPath = getVisibleSectionPath();
   if (!sectionPath) return;
-  const currentPath = normalizePath(window.location.pathname);
-  const currentHash = normalizeHash(window.location.hash);
-  const currentUrl =
-    currentPath === "/" ? (currentHash ? `/#${currentHash}` : "/") : currentPath;
-
-  if (currentUrl !== sectionPath) {
-    history.replaceState(null, "", sectionPath);
-  }
 
   activeLink.value = links.value.some((link) => link.href === sectionPath)
     ? sectionPath

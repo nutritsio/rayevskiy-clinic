@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ArrowIcon from "../ui/ArrowIcon.vue";
 
 const { t } = useI18n();
 
+const SERVICE_SLUGS = [
+  "dental-implants",
+  "orthodontics",
+  "prosthodontics",
+  "gnathology",
+  "ceramic-veneers",
+] as const;
+
 const services = computed(() => [
   {
-    id: "01",
+    id: SERVICE_SLUGS[0],
+    order: "01",
     title: t("services.items.0.title"),
     detailTitle:
       t("services.items.0.detailTitle") || t("services.items.0.title"),
@@ -16,7 +25,8 @@ const services = computed(() => [
     image: "/assets/services/1.png",
   },
   {
-    id: "02",
+    id: SERVICE_SLUGS[1],
+    order: "02",
     title: t("services.items.1.title"),
     detailTitle:
       t("services.items.1.detailTitle") || t("services.items.1.title"),
@@ -27,7 +37,8 @@ const services = computed(() => [
     image: "/assets/services/2.png",
   },
   {
-    id: "03",
+    id: SERVICE_SLUGS[2],
+    order: "03",
     title: t("services.items.2.title"),
     detailTitle:
       t("services.items.2.detailTitle") || t("services.items.2.title"),
@@ -38,7 +49,8 @@ const services = computed(() => [
     image: "/assets/services/3.png",
   },
   {
-    id: "04",
+    id: SERVICE_SLUGS[3],
+    order: "04",
     title: t("services.items.3.title"),
     detailTitle:
       t("services.items.3.detailTitle") || t("services.items.3.title"),
@@ -49,7 +61,8 @@ const services = computed(() => [
     image: "/assets/services/4.png",
   },
   {
-    id: "05",
+    id: SERVICE_SLUGS[4],
+    order: "05",
     title: t("services.items.4.title"),
     detailTitle:
       t("services.items.4.detailTitle") || t("services.items.4.title"),
@@ -61,14 +74,107 @@ const services = computed(() => [
   },
 ]);
 
-const activeId = ref<string | null>("01");
+const activeId = ref<string | null>(SERVICE_SLUGS[0]);
 const activeItem = computed(
   () => services.value.find((s) => s.id === activeId.value) || null
 );
 
-const setActive = (id: string) => {
-  activeId.value = activeId.value === id ? null : id;
+const normalizeHash = (hash: string) =>
+  hash.startsWith("#") ? hash.slice(1) : hash;
+
+const getIdFromHash = (hash: string): string | null => {
+  const normalizedHash = normalizeHash(hash);
+  if (!normalizedHash.startsWith("services/")) return null;
+
+  const rawSlug = normalizedHash.slice("services/".length).trim().toLowerCase();
+  if (!rawSlug) return null;
+
+  if (services.value.some((item) => item.id === rawSlug)) {
+    return rawSlug;
+  }
+
+  if (/^\d{1,2}$/.test(rawSlug)) {
+    const index = Number(rawSlug) - 1;
+    if (index >= 0 && index < SERVICE_SLUGS.length) {
+      const slug = SERVICE_SLUGS[index];
+      if (slug) return slug;
+    }
+  }
+
+  return null;
 };
+
+const syncActiveFromHash = () => {
+  if (typeof window === "undefined") return;
+  const normalizedHash = normalizeHash(window.location.hash);
+  const idFromHash = getIdFromHash(window.location.hash);
+  if (idFromHash) {
+    activeId.value = idFromHash;
+    return;
+  }
+
+  if (normalizedHash === "services") {
+    activeId.value = SERVICE_SLUGS[0];
+  }
+};
+
+const scrollToActiveFromHash = (behavior: ScrollBehavior = "auto") => {
+  if (typeof window === "undefined") return;
+  const idFromHash = getIdFromHash(window.location.hash);
+  if (!idFromHash) return;
+
+  void nextTick(() => {
+    const targetEl =
+      document.getElementById(`service-panel-${idFromHash}`) ??
+      document.getElementById(`service-item-${idFromHash}`);
+    if (!targetEl) return;
+
+    const topOffset = 112;
+    const nextTop = targetEl.getBoundingClientRect().top + window.scrollY - topOffset;
+    window.scrollTo({ top: Math.max(0, nextTop), behavior });
+  });
+};
+
+const handleHashNavigation = () => {
+  syncActiveFromHash();
+  scrollToActiveFromHash("auto");
+};
+
+const updateHash = (id: string | null) => {
+  if (typeof window === "undefined") return;
+
+  const nextUrl = id ? `/#services/${id}` : "/#services";
+  const currentHash = normalizeHash(window.location.hash);
+  const currentUrl = currentHash ? `/#${currentHash}` : "/";
+
+  if (currentUrl !== nextUrl) {
+    history.pushState(null, "", nextUrl);
+  }
+};
+
+const setActive = (id: string) => {
+  const nextId = activeId.value === id ? null : id;
+  activeId.value = nextId;
+  updateHash(nextId);
+};
+
+const closeActive = () => {
+  activeId.value = null;
+  updateHash(null);
+};
+
+onMounted(() => {
+  if (typeof window === "undefined") return;
+  handleHashNavigation();
+  window.addEventListener("hashchange", handleHashNavigation);
+  window.addEventListener("popstate", handleHashNavigation);
+});
+
+onBeforeUnmount(() => {
+  if (typeof window === "undefined") return;
+  window.removeEventListener("hashchange", handleHashNavigation);
+  window.removeEventListener("popstate", handleHashNavigation);
+});
 </script>
 
 <template>
@@ -99,12 +205,13 @@ const setActive = (id: string) => {
           <template v-for="item in services" :key="item.id">
             <button
               v-if="activeId !== item.id"
+              :id="`service-item-${item.id}`"
               class="services__item"
               :class="{ 'services__item--active': activeId === item.id }"
               type="button"
               @click="setActive(item.id)"
             >
-              <span class="services__item-index">{{ item.id }}</span>
+              <span class="services__item-index">{{ item.order }}</span>
               <span class="services__item-title">{{ item.title }}</span>
               <span class="services__item-arrow">
                 <ArrowIcon />
@@ -114,13 +221,14 @@ const setActive = (id: string) => {
             <transition name="services-panel" mode="out-in">
               <div
                 v-if="activeId === item.id && activeItem"
+                :id="`service-panel-${item.id}`"
                 class="services__panel"
                 :key="`panel-${item.id}`"
               >
                 <div class="services__panel-inner">
                   <div class="services__panel-media">
                     <div class="services__panel-index">
-                      {{ activeItem.id }}
+                      {{ activeItem.order }}
                     </div>
                     <img :src="activeItem.image" alt="service" loading="lazy" />
                   </div>
@@ -133,7 +241,7 @@ const setActive = (id: string) => {
                       <button
                         class="services__panel-close"
                         type="button"
-                        @click.stop="activeId = null"
+                        @click.stop="closeActive"
                         aria-label="close"
                       >
                         ✕
